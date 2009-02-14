@@ -2,15 +2,13 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Regex Compiler
 
-t/regex.t - Lua Regex Compiler
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/regex.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Lua Regex Compiler
 (implemented in F<languages/lua/src/lib/luaregex.pir>).

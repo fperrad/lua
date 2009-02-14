@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 complex library
 
-t/complex.t - complex library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/complex.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests complex
 (implemented in F<languages/lua/src/lib/complex.pir>).

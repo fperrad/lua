@@ -1,17 +1,15 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Markdown library
 
-lib/markdown.pir - Markdown library
-
-=head1 DESCRIPTION
+=head2 Description
 
 See L<http://daringfireball.net/projects/markdown/>.
 
 This implementation is based on F<languages/markdown/markdown.pir>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

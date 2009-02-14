@@ -1,19 +1,17 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua 5.1 VM bytecode to Parrot PIR Translator
 
-luac2pir - Lua 5.1 VM bytecode to Parrot PIR Translator
-
-=head1 SYNOPSYS
+=head2 Synopsis
 
  parrot luac2pir.pir file.luac
 
-=head1 DESCRIPTION
+=head2 Description
 
 B<luac2pir> translates a Lua 5.1 VM bytecode file to Parrot PIR.
 
-=head1 SEE ALSO
+=head2 See Also
 
 luad
 

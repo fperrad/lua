@@ -2,15 +2,13 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Debug Library
 
-t/debug.t - Lua Debug Library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/debug.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Lua Debug Library
 (implemented in F<languages/lua/src/lib/luadebug.pir>).

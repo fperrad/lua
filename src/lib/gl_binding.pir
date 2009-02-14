@@ -1,11 +1,9 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 OpenGL library
 
-lib/gl_binding.pir - OpenGL library
-
-=head1 DESCRIPTION
+=head2 Description
 
 This file implements the OpenGL binding for Lua.
 

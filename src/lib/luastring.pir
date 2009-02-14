@@ -1,11 +1,9 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua String Library
 
-lib/luastring.pir - Lua String Library
-
-=head1 DESCRIPTION
+=head2 Description
 
 This library provides generic functions for string manipulation, such as
 finding and extracting substrings, and pattern matching. When indexing a
@@ -23,7 +21,7 @@ C<s:byte(i)>.
 See "Lua 5.1 Reference Manual", section 5.4 "String Manipulation",
 L<http://www.lua.org/manual/5.1/manual.html#5.4>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

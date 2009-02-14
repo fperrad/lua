@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Disassembler test
 
-t/luad.t - Lua Disassembler test
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/luad.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Lua Disassembler
 (implemented in F<languages/lua/luad.pir>).

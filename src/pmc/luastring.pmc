@@ -2,16 +2,14 @@
 Copyright (C) 2005-2009, Parrot Foundation.
 $Id$
 
-=head1 NAME
+=head1 Lua String
 
-pmc/luastring.pmc - Lua String
-
-=head1 DESCRIPTION
+=head2 Description
 
 C<LuaString> extends C<LuaAny> to provide a class with the behaviour of
 the Lua C<String> type.
 
-=head2 Overloaded Methods
+=head3 Overloaded Methods
 
 =over 4
 
@@ -273,7 +271,7 @@ Used to unarchive the string.
 
 =back
 
-=head2 non-Vtable Methods
+=head3 non-Vtable Methods
 
 =over 4
 
@@ -969,7 +967,7 @@ Throws an exception unless C<value> is a LuaString.
 
 =back
 
-=head2 Specific Methods
+=head3 Specific Methods
 
 =over 4
 

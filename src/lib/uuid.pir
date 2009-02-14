@@ -1,17 +1,15 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 uuid library
 
-lib/uuid.pir - uuid library
-
-=head1 DESCRIPTION
+=head2 Description
 
 See original on L<http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/#luuid/>
 
 This implementation is based on F<runtime/parrot/library/uuid.pir>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

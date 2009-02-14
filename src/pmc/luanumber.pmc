@@ -2,16 +2,14 @@
 Copyright (C) 2005-2009, Parrot Foundation.
 $Id$
 
-=head1 NAME
+=head1 Lua Number
 
-pmc/luanumber.pmc - Lua Number
-
-=head1 DESCRIPTION
+=head2 Description
 
 C<LuaNumber> extends C<LuaAny> to provide a class with the behaviour of
 the Lua C<Number> type.
 
-=head2 Overloaded Methods
+=head3 Overloaded Methods
 
 =over 4
 
@@ -306,7 +304,7 @@ Used to unarchive the number.
 
 =back
 
-=head2 non-Vtable Methods
+=head3 non-Vtable Methods
 
 =over 4
 
@@ -930,7 +928,7 @@ Used to unarchive the number.
 
 =back
 
-=head2 Specific Methods
+=head3 Specific Methods
 
 =over 4
 

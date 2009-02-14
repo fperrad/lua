@@ -1,11 +1,9 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 bitwise operations library
 
-lib/bitlib.pir - bitwise operations library
-
-=head1 DESCRIPTION
+=head2 Description
 
 bitlib is a library for Lua 5.1 that provides bitwise operations.
 
@@ -14,7 +12,7 @@ See original on L<http://luaforge.net/projects/bitlib/>
 The library provides the constant C<bit.bits> that gives the number of bits
 that can be used in bitwise operations, and the following functions:
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

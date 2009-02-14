@@ -1,11 +1,9 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 elements of grammar for Lua 5.1
 
-src/grammar51.pir -- elements of grammar for Lua 5.1
-
-=head1 DESCRIPTION
+=head2 Description
 
 Used by F<languages/lua/lua.pir> and F<languages/lua/test_lex.pir>.
 
@@ -13,7 +11,7 @@ Used by F<languages/lua/lua.pir> and F<languages/lua/test_lex.pir>.
 
 .namespace [ 'Lua';'Grammar' ]
 
-=head2 Functions
+=head3 Functions
 
 Some grammar routines are handly written in PIR.
 

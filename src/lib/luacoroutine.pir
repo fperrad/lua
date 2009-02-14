@@ -1,11 +1,9 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Coroutine Library
 
-lib/luacoroutine.pir - Lua Coroutine Library
-
-=head1 DESCRIPTION
+=head2 Description
 
 The operations related to coroutines comprise a sub-library of the basic
 library and come inside the table C<coroutine>.
@@ -13,7 +11,7 @@ library and come inside the table C<coroutine>.
 See "Lua 5.1 Reference Manual", section 5.2 "Coroutine Manipulation",
 L<http://www.lua.org/manual/5.1/manual.html#5.2>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

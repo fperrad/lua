@@ -2,15 +2,13 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua File System Library
 
-t/lfs.t - Lua File System Library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/lfs.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Lua File System Library
 (implemented in F<languages/lua/src/lib/lfs.pir>).

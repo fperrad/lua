@@ -1,11 +1,9 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 big number library
 
-lib/bc.pir - big number library
-
-=head1 DESCRIPTION
+=head2 Description
 
 See original on L<http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/#lbc/>
 
@@ -14,7 +12,7 @@ multiple precision arithmetic library), see F<src/pmc/bigint.pmc>.
 
 Use PMC BigFloat when available.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

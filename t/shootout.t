@@ -2,15 +2,13 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 The Computer Language Shootout
 
-t/shootout.t - The Computer Language Shootout
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/shootout.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 See L<http://shootout.alioth.debian.org>.
 

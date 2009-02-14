@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Markdown library
 
-t/markdown.t - Markdown library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/markdown.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Markdown
 (implemented in F<languages/lua/src/lib/markdown.pir>).

@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 random library
 
-t/random.t - random library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/random.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests random
 (implemented in F<languages/lua/src/lib/random.pir>).

@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 bitwise operations library
 
-t/bitlib.t - bitwise operations library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/bitlib.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests bitlib
 (implemented in F<languages/lua/src/lib/bitlib.pir>).

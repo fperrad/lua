@@ -1,18 +1,16 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 random library
 
-lib/random.pir - random library
-
-=head1 DESCRIPTION
+=head2 Description
 
 See original on L<http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/#lrandom/>
 
 This implementation is based on the Mersenne Twisted random generator,
 see F<runtime/parrot/library/Math/Random/mt19937ar.pir>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

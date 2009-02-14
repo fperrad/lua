@@ -2,15 +2,13 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua lexicography test
 
-t/test_lex.t - Lua lexicography test
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/test_lex.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Lua lexicograaphy
 (implemented in F<languages/lua/test_lex.pir>).

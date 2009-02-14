@@ -1,19 +1,17 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Disassembler
 
-luad - Lua Disassembler
-
-=head1 SYNOPSYS
+=head2 Synopsis
 
  parrot luad.pir file.luac
 
-=head1 DESCRIPTION
+=head2 Description
 
 B<luad> disassembles Lua 5.1 bytecode produced by C<luac>.
 
-=head1 SEE ALSO
+=head2 See Also
 
 L<http://luaforge.net/projects/chunkspy/>
 

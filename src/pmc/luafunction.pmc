@@ -2,16 +2,14 @@
 Copyright (C) 2005-2009, Parrot Foundation.
 $Id$
 
-=head1 NAME
+=head1 Lua Function
 
-pmc/luafunction.pmc - Lua Function
-
-=head1 DESCRIPTION
+=head2 Description
 
 C<LuaFunction> extends C<Parrot Sub> and C<LuaAny> to provide a class
 with the behaviour of the Lua C<Function> type.
 
-=head2 Overloaded Methods
+=head3 Overloaded Methods
 
 =over 4
 
@@ -122,7 +120,7 @@ Return the string "function".
 
 =back
 
-=head2 non-Vtable Methods
+=head3 non-Vtable Methods
 
 =over 4
 
@@ -144,7 +142,7 @@ Return the string "function".
 
 =back
 
-=head2 Specific Methods
+=head3 Specific Methods
 
 =over 4
 

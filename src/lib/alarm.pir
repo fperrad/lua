@@ -1,17 +1,15 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Alarm Library
 
-lib/alarm.pir - Lua Alarm Library
-
-=head1 DESCRIPTION
+=head2 Description
 
 The library exports a single function: alarm(s,[f]).
 
 See original on L<http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/#lalarm/>
 
-=head2 Function
+=head3 Function
 
 =over 4
 

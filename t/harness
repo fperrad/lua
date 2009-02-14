@@ -1,11 +1,9 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 A harness for Parrot Lua
 
-languages/lua/t/harness - A harness for Parrot Lua
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     perl t/harness --files
 
@@ -17,7 +15,7 @@ languages/lua/t/harness - A harness for Parrot Lua
 
     perl t/harness lua/t/pmc/nil.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 If I'm called with a single
 argument of "--files", I just return a list of files to process.
@@ -169,11 +167,11 @@ else {
     }
 }
 
-=head1 HISTORY
+=head2 History
 
 Mostly taken from F<languages/bc/t/harness>.
 
-=head1 SEE ALSO
+=head2 See Also
 
 F<languages/scheme/t/harness>, F<languages/python/t/harness>
 

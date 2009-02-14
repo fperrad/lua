@@ -1,18 +1,16 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 md5 library
 
-lib/md5.pir - md5 library
-
-=head1 DESCRIPTION
+=head2 Description
 
 See original on L<http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/#lmd5/>
 
 This implementation is based on a wrapper over libcrypto (a part of libssl),
 see F<src/dynpmc/mdx.pmc>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

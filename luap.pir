@@ -1,11 +1,9 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 A compiler for Lua 5.1
 
-luap -- A compiler for Lua 5.1
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
   $ parrot luap.pir script.lua
   $ parrot luap.pir --target=parse script.lua
@@ -13,7 +11,7 @@ luap -- A compiler for Lua 5.1
                              POST
                              PIR
 
-=head1 DESCRIPTION
+=head2 Description
 
 C<luap> is a compiler for Lua 5.1 on Parrot.
 

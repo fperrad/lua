@@ -2,15 +2,13 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 some Lua code examples
 
-t/examples.t - some Lua code examples
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/examples.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 First tests in order to check infrastructure.
 

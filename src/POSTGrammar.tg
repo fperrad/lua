@@ -1,13 +1,12 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 PAST to POST
 
-POSTGrammar.tg - A grammar for transforming the abstract syntax tree (PAST)
+=head2 Description
+
+A grammar for transforming the abstract syntax tree (PAST)
 into an opcode syntax tree (POST).
-
-=head1 DESCRIPTION
-
 
 =cut
 

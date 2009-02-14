@@ -2,15 +2,13 @@
 Copyright (C) 2006-2009, Parrot Foundation.
 $Id$
 
-=head1 NAME
+=head1 Lua abstract base class
 
-pmc/luaany.pmc - Lua abstract base class
-
-=head1 DESCRIPTION
+=head2 Description
 
 C<LuaAny> provides an abstract base class for some Lua types.
 
-=head2 PMC Inheritance Summary
+=head3 PMC Inheritance Summary
 
  Class                  Parents
  -----------------------------------------------
@@ -23,7 +21,7 @@ C<LuaAny> provides an abstract base class for some Lua types.
  LuaThread              LuaAny, Default
  LuaUserdata            LuaAny, Default
 
-=head2 PMC "Attribute" Summary
+=head3 PMC "Attribute" Summary
 
  Class                  Metatable       Environment     Userdata
      accessor           get_metatable   getfenv         get_attr_str (getattribute)
@@ -41,7 +39,7 @@ C<LuaAny> provides an abstract base class for some Lua types.
 
 The metatable supports the OO mecanism.
 
-=head2 Methods
+=head3 Methods
 
 =over 4
 
@@ -285,7 +283,7 @@ Throws an exception.
 
 =back
 
-=head2 non-Vtable Methods
+=head3 non-Vtable Methods
 
 =over 4
 
@@ -557,7 +555,7 @@ Without shortcut like in Default PMC.
 
 =back
 
-=head2 Specific Methods
+=head3 Specific Methods
 
 =over 4
 

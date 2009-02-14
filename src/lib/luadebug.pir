@@ -1,11 +1,9 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Debug Library
 
-lib/luadebug.pir - Lua Debug Library
-
-=head1 DESCRIPTION
+=head2 Description
 
 This library provides the functionality of the debug interface to Lua programs.
 You should exert care when using this library. The functions provided here
@@ -22,7 +20,7 @@ All functions in this library are provided inside the C<debug> table.
 See "Lua 5.1 Reference Manual", section 5.9 "The Debug Library",
 L<http://www.lua.org/manual/5.1/manual.html#5.9>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

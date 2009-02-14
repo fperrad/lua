@@ -2,15 +2,13 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua functions
 
-t/function.t - Lua functions
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/function.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 See "Lua 5.1 Reference Manual", section 2.5.9 "Function Definitions",
 L<http://www.lua.org/manual/5.1/manual.html#2.5.9>.

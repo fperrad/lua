@@ -2,15 +2,13 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Stand-alone
 
-t/standalone.t
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/standalone.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 See "Lua 5.1 Reference Manual", section 6 "Lua Stand-alone",
 L<http://www.lua.org/manual/5.1/manual.html#6>.

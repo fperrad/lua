@@ -1,13 +1,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 math library
 
-lib/math.pir - math library
-
-=head1 DESCRIPTION
+=head2 Description
 
 See original on L<http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/#lmathx>.
+
+=head3 Functions
 
 =over 4
 

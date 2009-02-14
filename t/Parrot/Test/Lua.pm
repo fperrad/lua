@@ -5,17 +5,15 @@ package Parrot::Test::Lua;
 
 require Parrot::Test;
 
-=head1 NAME
+=head1 Testing routines specific to 'lua'.
 
-Test/Lua.pm - Testing routines specific to 'lua'.
-
-=head1 DESCRIPTION
+=head2 Description
 
 Call 'Lua on Parrot' and 'original lua'.
 
-=head1 METHODS
+=head2 Methods
 
-=head2 new
+=head3 new
 
 Yet another constructor.
 
@@ -132,11 +130,11 @@ foreach my $func ( keys %language_test_map ) {
         }
 }
 
-=head1 HISTORY
+=head2 History
 
 Mostly taken from F<languages/bc/lib/Parrot/Test/Bc.pm>.
 
-=head1 SEE ALSO
+=head2 See Also
 
 F<languages/tcl/lib/Parrot/Test/Tcl.pm>
 

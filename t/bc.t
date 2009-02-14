@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 bc library
 
-t/bc.t - bc library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/bc.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests bc
 (implemented in F<languages/lua/src/lib/bc.pir>).

@@ -2,17 +2,15 @@
 Copyright (C) 2005-2009, Parrot Foundation.
 $Id$
 
-=head1 NAME
+=head1 Lua Thread
 
-pmc/luathread.pmc - Lua Thread
-
-=head1 DESCRIPTION
+=head2 Description
 
 C<LuaThread> extends C<LuaAny> to provide a class with the behaviour
 of the Lua C<Thread> type.
 This implementation is based on C<Parrot::Coroutine>.
 
-=head2 Overloaded Methods
+=head3 Overloaded Methods
 
 =over 4
 
@@ -186,7 +184,7 @@ Return the string "thread".
 
 =back
 
-=head2 non-Vtable Methods
+=head3 non-Vtable Methods
 
 =over 4
 
@@ -207,7 +205,7 @@ Return the string "thread".
 
 =back
 
-=head2 Specific Methods
+=head3 Specific Methods
 
 =over 4
 

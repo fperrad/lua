@@ -1,19 +1,17 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Parsing Expression Grammar for Lua, version 0.9
 
-lib/lpeg.pir - Parsing Expression Grammar for Lua, version 0.9
-
-=head1 DESCRIPTION
+=head2 Description
 
 See original on L<http://www.inf.puc-rio.br/~roberto/lpeg.html>
 
-=head2 Introduction
+=head3 Introduction
 
 See on L<http://www.inf.puc-rio.br/~roberto/lpeg.html#intro>
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 
@@ -391,7 +389,7 @@ Returns a string with the running version of LPEG.
 
 =back
 
-=head2 Basic Constructions
+=head3 Basic Constructions
 
 The following operations build patterns. All operations that expect a
 pattern as an argument may receive also strings, tables, numbers, booleans,
@@ -695,7 +693,7 @@ NOT YET IMPLEMENTED.
 
 =back
 
-=head2 Grammars
+=head3 Grammars
 
 With the use of Lua variables, it is possible to define patterns incrementally,
 with each new pattern using previously defined ones. However, this technique
@@ -729,7 +727,7 @@ the same number of a's and b's:
   B = "b" * lpeg.V"S" + "a" * lpeg.V"B" * lpeg.V"B",
  } * -1
 
-=head2 Captures
+=head3 Captures
 
 Captures specify what a match operation should return (the so called
 I<semantic information>). LPeg offers several kinds of captures, which
@@ -1171,11 +1169,11 @@ LIST
 
 =back
 
-=head2 Some Examples
+=head3 Some Examples
 
 L<http://www.inf.puc-rio.br/~roberto/lpeg.html#ex>
 
-=head1 LINKS
+=head2 Links
 
 =over 4
 

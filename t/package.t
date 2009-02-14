@@ -2,15 +2,13 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Package Library
 
-t/package.t - Lua Package Library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/package.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Lua Package Library
 (implemented in F<languages/lua/src/lib/luapackage.pir>).

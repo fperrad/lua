@@ -1,11 +1,9 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 A dumper for Lua 5.1 lexicography
 
-test_lex -- A dumper for Lua 5.1 lexicography
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
   $ parrot test_lex.pir script.lua
   $ parrot test_lex.pir --target=parse script.lua
@@ -13,7 +11,7 @@ test_lex -- A dumper for Lua 5.1 lexicography
                                  POST
                                  PIR
 
-=head1 DESCRIPTION
+=head2 Description
 
 This compiler is a C<PCT::HLLCompiler>,
 see F<compilers/pct/src/PCT/HLLCompiler.pir>)

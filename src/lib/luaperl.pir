@@ -1,11 +1,9 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Perl Compiler
 
-lib/luaperl.pir
-
-=head1 DESCRIPTION
+=head2 Description
 
 Encapsulation of the compiler written in Perl as a Parrot registered compiler.
 
@@ -23,7 +21,7 @@ This encapsulation is used to implement some Lua functions :
 
 It's a temporary work. Waiting for the real PIR compiler/interpreter.
 
-=head2 Methods
+=head3 Methods
 
 =over 4
 

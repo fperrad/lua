@@ -1,13 +1,11 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Auxiliary PIR Library
 
-lib/luaaux.pir - Lua Auxiliary PIR Library
+=head2 Description
 
-=head1 DESCRIPTION
-
-=head2 Functions
+=head3 Functions
 
 =over 4
 
@@ -912,7 +910,7 @@ This function never returns.
 
 =back
 
-=head2 Others functions
+=head3 Others functions
 
 =over 4
 

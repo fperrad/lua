@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 mathx library
 
-t/mathx.t - mathx library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/mathx.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests mathx
 (implemented in F<languages/lua/src/lib/mathx.pir>).

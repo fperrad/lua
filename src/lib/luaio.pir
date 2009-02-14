@@ -1,11 +1,9 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Input/Output Library
 
-lib/luaio.pir - Lua Input/Output Library
-
-=head1 DESCRIPTION
+=head2 Description
 
 The I/O library provides two different styles for file manipulation. The first
 one uses implicit file descriptors, that is, there are operations to set a
@@ -27,7 +25,7 @@ success.
 See "Lua 5.1 Reference Manual", section 5.7 "Input and Ouput Facilities",
 L<http://www.lua.org/manual/5.1/manual.html#5.7>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

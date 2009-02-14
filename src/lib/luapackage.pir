@@ -1,11 +1,9 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Package Library
 
-lib/luapackage.pir - Lua Package Library
-
-=head1 DESCRIPTION
+=head2 Description
 
 The package library provides basic facilities for loading and building
 modules in Lua. It exports two of its functions directly in the global
@@ -289,7 +287,7 @@ LIST
 .end
 
 
-=head2 Functions & Variables
+=head3 Functions & Variables
 
 =over 4
 

@@ -2,15 +2,13 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Table Library
 
-t/table.t - Lua Table Library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/table.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Lua Table Library
 (implemented in F<languages/lua/lib/luatable.pir>).

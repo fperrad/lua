@@ -2,16 +2,14 @@
 Copyright (C) 2005-2009, Parrot Foundation.
 $Id$
 
-=head1 NAME
+=head1 Lua Userdata
 
-pmc/luauserdata.pmc - Lua Userdata
-
-=head1 DESCRIPTION
+=head2 Description
 
 C<LuaUserdata> extends C<LuaAny> to provide a class with the behaviour of
 the Lua C<Userdata> type.
 
-=head2 Overloaded Methods
+=head3 Overloaded Methods
 
 =over 4
 
@@ -198,7 +196,7 @@ Return the string "userdata".
 
 =back
 
-=head2 non-Vtable Methods
+=head3 non-Vtable Methods
 
 =over 4
 
@@ -295,7 +293,7 @@ The C<==> operation. Compares reference (not in depth).
 
 =back
 
-=head2 Specific Methods
+=head3 Specific Methods
 
 =over 4
 

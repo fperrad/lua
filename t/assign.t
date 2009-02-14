@@ -2,15 +2,13 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua assignment
 
-t/assign.t - Lua assignment
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/assign.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 See "Lua 5.1 Reference Manual", section 2.4.3 "Assignment",
 L<http://www.lua.org/manual/5.1/manual.html#2.4.3>.

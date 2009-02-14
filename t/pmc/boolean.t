@@ -2,15 +2,13 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 LuaBoolean
 
-t/pmc/boolean.t - LuaBoolean
-
-=head1 SYNOPSIS
+=head1 Synopsis
 
     % perl t/pmc/boolean.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests C<LuaBoolean> PMC
 (implemented in F<languages/lua/src/pmc/luaboolean.pmc>).

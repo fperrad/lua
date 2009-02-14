@@ -2,15 +2,13 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Operating System Library
 
-t/os.t - Lua Operating System Library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/os.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Lua Operating System Library
 (implemented in F<languages/lua/src/lib/luaos.pir>).

@@ -2,18 +2,16 @@
 Copyright (C) 2005-2009, Parrot Foundation.
 $Id$
 
-=head1 NAME
+=head1 Lua Boolean
 
-pmc/luaboolean.pmc - Lua Boolean
-
-=head1 DESCRIPTION
+=head2 Description
 
 C<LuaBoolean> extends C<LuaAny> to provide a class with the behaviour of
 the Lua C<Boolean> type.
 
 The value is stored as an Integer.
 
-=head2 Methods
+=head3 Methods
 
 =over 4
 
@@ -230,7 +228,7 @@ Used to unarchive the boolean.
 
 =back
 
-=head2 non-Vtable Methods
+=head3 non-Vtable Methods
 
 =over 4
 
@@ -251,7 +249,7 @@ Used to unarchive the boolean.
 
 =back
 
-=head2 Specific Methods
+=head3 Specific Methods
 
 =over 4
 

@@ -1,15 +1,13 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 A stand-alone interpreter for Lua 5.1
 
-lua.pbc -- A stand-alone interpreter for Lua 5.1
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
   $ parrot lua.pbc [options] [script [args]]
 
-=head1 DESCRIPTION
+=head2 Description
 
 B<lua> is the stand-alone Lua interpreter. It loads and executes Lua programs.
 
@@ -55,7 +53,7 @@ command line (but in this case you have to be careful with quotes if the
 prompt string contains a space; otherwise you may confuse the shell.) The
 default prompts are "> " and ">> ".
 
-=head1 OPTIONS
+=head2 Options
 
 =over 4
 
@@ -511,7 +509,7 @@ USAGE
 .include 'languages/lua/src/lib/luabytecode.pir'
 
 
-=head1 SEE ALSO
+=head2 See Also
 
 F<languages/lua/doc/status.pod>
 

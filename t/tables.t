@@ -2,15 +2,13 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua tables
 
-t/tables.t - Lua tables
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/tables.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 See "Programming in Lua", section 2.5 "Tables".
 

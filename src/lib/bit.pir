@@ -1,15 +1,15 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 bitwise operations library
 
-lib/bit.pir - bitwise operations library
-
-=head1 DESCRIPTION
+=head2 Description
 
 bit is a library for Lua 5.1 that provides bitwise operations on number.
 
 See original on L<http://bitop.luajit.org/>
+
+=head3 Functions
 
 =over 4
 

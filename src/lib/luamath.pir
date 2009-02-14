@@ -1,11 +1,9 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Mathematical Library
 
-lib/luamath.pir - Lua Mathematical Library
-
-=head1 DESCRIPTION
+=head2 Description
 
 This library is an interface to the standard C math library. It provides all
 its functions inside the table C<math>. The library provides the following

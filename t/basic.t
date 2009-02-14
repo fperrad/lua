@@ -2,15 +2,13 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Basic Library
 
-t/basic.t - Lua Basic Library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/basic.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Lua Basic Library
 (implemented in F<languages/lua/lib/luabasic.pir>).

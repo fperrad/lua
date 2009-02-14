@@ -5,17 +5,15 @@ package Parrot::Test::Lua_lex;
 
 require Parrot::Test;
 
-=head1 NAME
+=head1 Testing routines specific to 'lua' lexicography.
 
-Test/Lua_lex.pm - Testing routines specific to 'lua' lexicography.
-
-=head1 DESCRIPTION
+=head2 Description
 
 Call F<languages/lua/test_lex.pir>.
 
-=head1 METHODS
+=head2 Methods
 
-=head2 new
+=head3 new
 
 Yet another constructor.
 
@@ -86,7 +84,7 @@ foreach my $func ( keys %language_test_map ) {
         }
 }
 
-=head1 SEE ALSO
+=head2 See Also
 
 F<languages/lua/t/Parrot/Test/Lua.pm>
 

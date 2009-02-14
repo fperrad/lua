@@ -2,11 +2,9 @@
 Copyright (C) 2005-2009, Parrot Foundation.
 $Id$
 
-=head1 NAME
+=head1 Lua Nil
 
-pmc/luanil.pmc - Lua Nil
-
-=head1 DESCRIPTION
+=head2 Description
 
 C<LuaNil> extends C<LuaAny> to provide a class with the behaviour of
 the Lua C<Nil> type.
@@ -20,7 +18,7 @@ and so a new PMC is constructed anyway. Therefore, we may as well create
 a new PMC right away. Also, creating a new PMC from a singleton class is
 troublesome (if not possible?).
 
-=head2 Methods
+=head3 Methods
 
 =over 4
 
@@ -129,7 +127,7 @@ Return always C<false>.
 
 =back
 
-=head2 non-Vtable Methods
+=head3 non-Vtable Methods
 
 =over 4
 
@@ -150,7 +148,7 @@ Return always C<false>.
 
 =back
 
-=head2 Specific Methods
+=head3 Specific Methods
 
 =over 4
 

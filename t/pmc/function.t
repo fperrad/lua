@@ -2,15 +2,13 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 LuaFunction
 
-t/pmc/function.t - LuaFunction
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/pmc/function.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests C<LuaFunction> PMC
 (implemented in F<languages/lua/src/pmc/luafunction.pmc>).

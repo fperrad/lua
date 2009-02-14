@@ -1,11 +1,9 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 The compiler for Lua 5.1
 
-src/lua51.pir -- The compiler for Lua 5.1
-
-=head1 DESCRIPTION
+=head2 Description
 
 This compiler extends C<PCT::HLLCompiler>
 (see F<compilers/pct/src/PCT/HLLCompiler.pir>)
@@ -47,7 +45,7 @@ Used by F<languages/lua/lua.pir>.
 
 .namespace [ 'Lua';'Compiler' ]
 
-=head2 Overloaded methods
+=head3 Overloaded methods
 
 =over 4
 
@@ -95,7 +93,7 @@ resulting ost.
 
 .namespace [ 'Lua'; 'PAST'; 'Grammar' ]
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

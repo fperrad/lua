@@ -2,15 +2,13 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Table Constructors
 
-t/constructor.t - Lua Table Constructors
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/constructor.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 See "Lua 5.1 Reference Manual", section 2.5.7 "Table Constructors",
 L<http://www.lua.org/manual/5.1/manual.html#2.5.7>.

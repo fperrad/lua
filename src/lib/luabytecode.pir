@@ -1,11 +1,9 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua bytecode translation Library
 
-lib/luabytecode.pir - Lua bytecode translation Library
-
-=head1 DESCRIPTION
+=head2 Description
 
 =cut
 

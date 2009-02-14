@@ -1,17 +1,15 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 base64 library
 
-lib/base64.pir - base64 library
-
-=head1 DESCRIPTION
+=head2 Description
 
 See original on L<http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/#lbase64/>
 
 This implementation is based on F<runtime/parrot/library/MIME/Base64.pir>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

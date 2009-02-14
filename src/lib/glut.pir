@@ -1,11 +1,9 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 GLUT library
 
-lib/glut.pir - GLUT library
-
-=head1 DESCRIPTION
+=head2 Description
 
 This file implements the GLUT binding for Lua.
 
@@ -13,6 +11,8 @@ See original on L<http://luagl.wikidot.com/>
 
 This implementation is based on a wrapper over OpenGL,
 see F<runtime/parrot/library/OpenGL.pir>.
+
+=head3 Functions
 
 =over 4
 

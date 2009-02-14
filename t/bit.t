@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 bitwise operations library
 
-t/bit.t - bitwise operations library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/bit.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests bit
 (implemented in F<languages/lua/src/lib/bit.pir>).

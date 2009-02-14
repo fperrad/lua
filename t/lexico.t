@@ -2,15 +2,13 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua lexicography
 
-t/lexico.t - Lua lexicography
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/lexico.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 See "Lua 5.1 Reference Manual", section 2.1 "Lexical Conventions",
 L<http://www.lua.org/manual/5.1/manual.html#2.1>.

@@ -1,11 +1,9 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 struct library
 
-lib/struct.pir - struct library
-
-=head1 DESCRIPTION
+=head2 Description
 
 See original on L<http://www.inf.puc-rio.br/~roberto/struct/>
 
@@ -97,7 +95,7 @@ In that case, this previous value is not returned.
 
 =back
 
-=head2 Functions
+=head3 Functions
 
 All functions are registered inside a table C<struct>.
 

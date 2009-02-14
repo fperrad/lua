@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 struct library
 
-t/struct.t - struct library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/struct.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests struct
 (implemented in F<languages/lua/src/lib/struct.pir>).

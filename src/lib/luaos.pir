@@ -1,18 +1,16 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Operating System Library
 
-lib/luaos.pir - Lua Operating System Library
-
-=head1 DESCRIPTION
+=head2 Description
 
 This library is implemented through table C<os>.
 
 See "Lua 5.1 Reference Manual", section 5.8 "Operating System Facilities",
 L<http://www.lua.org/manual/5.1/manual.html#5.8>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

@@ -2,15 +2,13 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Alarm Library
 
-t/alarm.t - Lua Alarm Library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/alarm.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Lua Alarm Library
 (implemented in F<languages/lua/src/lib/alarm.pir>).

@@ -1,13 +1,12 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 PGE Parse to PAST
 
-PASTGrammar.tg - A grammar for transforming the output of a PGE parse
+=head2 Description
+
+A grammar for transforming the output of a PGE parse
 into an abstract syntax tree (PAST).
-
-=head1 DESCRIPTION
-
 
 =cut
 

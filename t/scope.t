@@ -2,15 +2,13 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua scope
 
-t/scope.t - Lua scope
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/scope.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 See "Lua 5.1 Reference Manual", section 2.6 "Visibility Rules",
 L<http://www.lua.org/manual/5.1/manual.html#2.6>.

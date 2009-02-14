@@ -2,16 +2,13 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Mathematic Library
 
-t/math.t - Lua Mathematic Library
-
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/math.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests Lua Mathematic Library
 (implemented in F<languages/lua/src/lib/luamath.pir>).

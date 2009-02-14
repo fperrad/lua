@@ -1,17 +1,15 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 complex library
 
-lib/complex.pir - complex library
-
-=head1 DESCRIPTION
+=head2 Description
 
 See original on L<http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/#lcomplex>
 
 This implementation is based on F<src/pmc/complex.pmc>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

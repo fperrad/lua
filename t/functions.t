@@ -2,15 +2,13 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua function & coercion
 
-t/functions.t - Lua function & coercion
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/functions.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 =cut
 

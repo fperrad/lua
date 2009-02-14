@@ -1,16 +1,14 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua regex compiler
 
-lib/luaregex.pir - Lua regex compiler
-
-=head1 DESCRIPTION
+=head2 Description
 
 See "Lua 5.1 Reference Manual", section 5.4.1 "Patterns",
 L<http://www.lua.org/manual/5.1/manual.html#5.4.1>.
 
-=head2 Character Class:
+=head3 Character Class:
 
 A I<character class> is used to represent a set of characters. The following
 combinations are allowed in describing a character class:
@@ -100,7 +98,7 @@ The definitions of letter, space, and other character groups depend on the
 current locale. In particular, the class C<[a-z]> may not be equivalent to
 C<%l>.
 
-=head2 Pattern Item:
+=head3 Pattern Item:
 
 A I<pattern item> may be
 
@@ -149,7 +147,7 @@ expressions with balanced parentheses.
 
 =back
 
-=head2 Pattern:
+=head3 Pattern:
 
 A I<pattern> is a sequence of pattern items. A C<'^'> at the beginning of a
 pattern anchors the match at the beginning of the subject string. A C<'$'> at
@@ -157,7 +155,7 @@ the end of a pattern anchors the match at the end of the subject string. At
 other positions, C<'^'> and C<'$'> have no special meaning and represent
 themselves.
 
-=head2 Captures:
+=head3 Captures:
 
 A pattern may contain sub-patterns enclosed in parentheses; they describe
 I<captures>. When a match succeeds, the substrings of the subject string that
@@ -174,7 +172,7 @@ string C<"flaaap">, there will be two captures: 3 and 5.
 
 A pattern cannot contain embedded zeros. Use C<%z> instead.
 
-=head1 HISTORY
+=head2 History
 
 Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
 

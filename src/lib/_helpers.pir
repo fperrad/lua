@@ -1,13 +1,11 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 helpers library
 
-lib/_helpers.pir - library
+=head2 Description
 
-=head1 DESCRIPTION
-
-=head2 Functions
+=head3 Functions
 
 =over 4
 

@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 sha1 library
 
-t/sha1.t - sha1 library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/sha1.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests sha1
 (implemented as md5 in F<languages/lua/src/lib/md5.pir>).

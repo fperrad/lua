@@ -1,15 +1,13 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Input/Output Library
 
-lib/luafile.pir - Lua Input/Output Library
-
-=head1 DESCRIPTION
+=head2 Description
 
 See F<languages/lua/lib/luaio.pir>.
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

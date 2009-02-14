@@ -1,11 +1,9 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 a grammar for testing lexico
 
-src/lua51_testlex.pg - a grammar for testing lexico
-
-=head1 DESCRIPTION
+=head2 Description
 
 This grammar allows to test the lexico part of Lua::Grammar.
 

@@ -2,15 +2,13 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 simple tests from Lua distribution
 
-t/test-from-lua.t - simple tests from Lua distribution
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/test-from-lua.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 These are simple tests for Lua.  Some of them contain useful code.
 They are meant to be run to make sure Lua is built correctly and also

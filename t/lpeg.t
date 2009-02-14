@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 LPeg library
 
-t/lpeg.t - LPeg library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/lpeg.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests LPeg
 (implemented in F<languages/lua/src/lib/lpeg.pir>).

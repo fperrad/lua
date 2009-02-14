@@ -1,11 +1,9 @@
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua File System Library v1.4.0
 
-lib/lfs.pir - Lua File System Library v1.4.0
-
-=head1 DESCRIPTION
+=head2 Description
 
 LuaFileSystem is a Lua library developed to complement the set of functions
 related to file systems offered by the standard Lua distribution.
@@ -15,7 +13,7 @@ structure and file attributes.
 
 See original on L<http://luaforge.net/projects/luafilesystem/>
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 uuid library
 
-t/uuid.t - uuid library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/uuid.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests uuid
 (implemented in F<languages/lua/src/lib/uuid.pir>).

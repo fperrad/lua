@@ -1,11 +1,9 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 a grammar for testing lexico
 
-src/dumplex.tg - a grammar for testing lexico
-
-=head1 DESCRIPTION
+=head2 Description
 
 Just emits code that prints terminal nodes.
 
@@ -16,7 +14,7 @@ Used by F<languages/lua/test_lex.pir>.
 grammar Lua::DumpLex is TGE::Grammar;
 
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

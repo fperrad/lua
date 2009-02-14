@@ -58,15 +58,13 @@ unless ( exists $parser->YYData->{nb_error} ) {
 
 __END__
 
-=head1 NAME
+=head1 Lua compiler
 
-luac - Lua compiler
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
  luac [options] I<source>.lua
 
-=head1 OPTIONS
+=head2 Options
 
 =over 8
 
@@ -80,7 +78,7 @@ Display version.
 
 =back
 
-=head1 DESCRIPTION
+=head2 Description
 
 =cut
 

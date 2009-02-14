@@ -1,13 +1,11 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 a Lua 5.1 grammar in PGE
 
-lua.pg - a Lua 5.1 grammar in PGE
+=head2 Description
 
-=head1 DESCRIPTION
-
-=head2 GRAMMAR RULES
+=head3 Grammar Rules
 
 The grammar rules are according to the original Lua parser as defined lparser.c
 in the lua distribution.
@@ -203,7 +201,7 @@ rule simple_expression {
 }
 
 
-=head2 HELPER RULES
+=head3 Helper Rules
 
 Helper rules will match a specific token, otherwise a syntax error is generated.
 These rules make the grammar more readable, so the calls to syntaxerror() are
@@ -248,7 +246,7 @@ rule closeparen {
 }
 
 
-=head2 TOKENS
+=head3 Tokens
 
 Tokens not defined here (in PGE) are written in PIR in
 F<languages/lua/src/lua51.pir>.
@@ -292,7 +290,7 @@ token shebang {
     '#' \N*
 }
 
-=head2 EXPRESSIONS
+=head3 Expressions
 
 Operator precedence is implemented using an optable.
 

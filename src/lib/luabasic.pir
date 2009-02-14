@@ -1,18 +1,16 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua Basic Library
 
-lib/luabasic.pir - Lua Basic Library
-
-=head1 DESCRIPTION
+=head2 Description
 
 The basic library provides some core functions to Lua.
 
 See "Lua 5.1 Reference Manual", section 5.1 "Basic Functions",
 L<http://www.lua.org/manual/5.1/manual.html#5.1>.
 
-=head2 Variables
+=head3 Variables
 
 =over 4
 
@@ -96,7 +94,7 @@ interpreter version. The current contents of this variable is C<"Lua 5.1">.
 
 =back
 
-=head2 Functions
+=head3 Functions
 
 =over 4
 

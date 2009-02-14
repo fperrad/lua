@@ -2,15 +2,13 @@
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 base64 library
 
-t/base64.t - base64 library
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/base64.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 Tests base64
 (implemented in F<languages/lua/src/lib/base64.pir>).

@@ -2,15 +2,13 @@
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
-=head1 NAME
+=head1 Lua object
 
-t/object.t - Lua object
-
-=head1 SYNOPSIS
+=head2 Synopsis
 
     % perl t/object.t
 
-=head1 DESCRIPTION
+=head2 Description
 
 See "Programming in Lua", section 16 "Object-Oriented Programming".
 
