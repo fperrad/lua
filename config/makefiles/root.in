@@ -315,6 +315,7 @@ codetest-c:
 	- $(PERL) @build_dir@/t/codingstd/linelength.t $(T_C)
 	- $(PERL) @build_dir@/t/codingstd/tabs.t $(T_C)
 	- $(PERL) @build_dir@/t/codingstd/trailing_space.t $(T_C)
+	- $(PERL) @build_dir@/t/doc/pod.t $(T_C)
 
 codetest-make:
 	- $(PERL) @build_dir@/t/codingstd/copyright.t $(T_MAKE)
@@ -330,6 +331,7 @@ codetest-perl: clean
 #	- $(PERL) @build_dir@/t/codingstd/linelength.t $(T_PERL)
 	- $(PERL) @build_dir@/t/codingstd/perlcritic.t $(T_PERL)
 	- $(PERL) @build_dir@/t/codingstd/trailing_space.t $(T_PERL)
+	- $(PERL) @build_dir@/t/doc/pod.t $(T_PERL)
 
 codetest-pir: clean
 	- $(PERL) @build_dir@/t/codingstd/copyright.t $(T_PIR)
@@ -338,6 +340,7 @@ codetest-pir: clean
 	- $(PERL) @build_dir@/t/codingstd/pir_code_coda.t $(T_PIR)
 	- $(PERL) @build_dir@/t/codingstd/tabs.t $(T_PIR)
 	- $(PERL) @build_dir@/t/codingstd/trailing_space.t $(T_PIR)
+	- $(PERL) @build_dir@/t/doc/pod.t $(T_PIR)
 
 codetest-pod:
 	- $(PERL) @build_dir@/t/codingstd/copyright.t $(T_POD)
