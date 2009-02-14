@@ -1,4 +1,4 @@
-# Copyright (C) 2005-2008, The Perl Foundation.
+# Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
 use strict;

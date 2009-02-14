@@ -1,4 +1,4 @@
-# Copyright (C) 2008, The Perl Foundation.
+# Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
 =head1 NAME
@@ -57,7 +57,7 @@ LIST
 
     new $P2, 'LuaString'
 
-#    set $P2, "Copyright (C) 2008, The Perl Foundation"
+#    set $P2, "Copyright (C) 2008-2009, Parrot Foundation"
 #    set $P1, "_COPYRIGHT"
 #    _uuid[$P1] = $P2
 

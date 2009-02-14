@@ -16,7 +16,7 @@ use Parse::Yapp::Driver;
 
 #line 1 "src\yapp\Lua\lua51.yp"
 
-# Copyright (C) 2005-2008, The Perl Foundation.
+# Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
 

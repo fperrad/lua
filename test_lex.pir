@@ -1,4 +1,4 @@
-# Copyright (C) 2006-2008, The Perl Foundation.
+# Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
 =head1 NAME
@@ -42,7 +42,7 @@ and imports many definitions from the full Lua compiler
     $P0.'parsegrammar'('Lua::TestLex')
     $P0.'astgrammar'('Lua::DumpLex')
 
-    $S0 = "Lexico of Lua 5.1 on Parrot\nCopyright (C) 2005-2008, The Perl Foundation.\n"
+    $S0 = "Lexico of Lua 5.1 on Parrot\nCopyright (C) 2005-2009, Parrot Foundation.\n"
     $P0.'commandline_banner'($S0)
     $P0.'commandline_prompt'('> ')
 
