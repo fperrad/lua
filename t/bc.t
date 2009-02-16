@@ -211,7 +211,7 @@ CODE
 8
 OUTPUT
 
-my @todo = ( todo => 'sqrt not implemented with BigInt' );
+my @todo = ( todo => 'sqrt not implemented with BigNum' );
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'bc.sqrt ()', @todo );
 require 'bc'
 n = bc.sqrt(4)

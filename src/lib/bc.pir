@@ -7,10 +7,8 @@
 
 See original on L<http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/#lbc/>
 
-This implementation is based on the PMC BigInt, a wrapper over gmp (GNU
-multiple precision arithmetic library), see F<src/pmc/bigint.pmc>.
-
-Use PMC BigFloat when available.
+This implementation is based on the PMC BigNum, a wrapper over gmp (GNU
+multiple precision arithmetic library), see F<src/pmc/bignum.pmc>.
 
 =head3 Functions
 
@@ -30,8 +28,7 @@ Use PMC BigFloat when available.
 
 .const string MYNAME = 'bc'
 .const string MYTYPE = 'bc bignumber'
-#.const string MYPMC = 'BigFloat'
-.const string MYPMC = 'BigInt'
+.const string MYPMC  = 'BigNum'
 
 .sub 'luaopen_bc'
 
