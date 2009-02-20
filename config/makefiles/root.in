@@ -97,25 +97,25 @@ all: \
  $(PMCDIR)/lua_group$(LOAD_EXT) \
  $(LIB_PBCS) \
  $(LIBPATH)/luaperl.pbc \
- _helpers.pbc \
- alarm.pbc \
- base64.pbc \
- bc.pbc \
- bit.pbc \
- bitlib.pbc \
- complex.pbc \
-#IF(has_opengl): $(LIBPATH)/gl.pbc \
-#IF(has_opengl): gl_binding.pbc \
-#IF(has_opengl): glut.pbc \
- lfs.pbc \
- lpeg.pbc \
- markdown.pbc \
- mathx.pbc \
-#IF(has_crypto): md5.pbc \
- random.pbc \
-#IF(has_crypto): sha1.pbc \
- struct.pbc \
- uuid.pbc \
+ library/_helpers.pbc \
+ library/alarm.pbc \
+ library/base64.pbc \
+ library/bc.pbc \
+ library/bit.pbc \
+ library/bitlib.pbc \
+ library/complex.pbc \
+#IF(has_opengl): library/gl.pbc \
+#IF(has_opengl): library/gl_binding.pbc \
+#IF(has_opengl): library/glut.pbc \
+ library/lfs.pbc \
+ library/lpeg.pbc \
+ library/markdown.pbc \
+ library/mathx.pbc \
+#IF(has_crypto): library/md5.pbc \
+ library/random.pbc \
+#IF(has_crypto): library/sha1.pbc \
+ library/struct.pbc \
+ library/uuid.pbc \
  $(GEN_PIR) \
  $(GEN_PBC) \
  src/yapp/Lua/parser.pm
@@ -194,66 +194,66 @@ $(LIBPATH)/luadebug.pbc: $(LIBPATH)/luadebug.pir
 $(LIBPATH)/luabytecode.pbc: $(LIBPATH)/luabytecode.pir $(LIBPATH)/luabytecode_gen.pir
 	-$(PARROT) --output=$(LIBPATH)/luabytecode.pbc $(LIBPATH)/luabytecode.pir
 
-_helpers.pbc: $(LIBPATH)/_helpers.pir
-	$(PARROT) --output=_helpers.pbc $(LIBPATH)/_helpers.pir
+library/_helpers.pbc: $(LIBPATH)/_helpers.pir
+	$(PARROT) --output=library/_helpers.pbc $(LIBPATH)/_helpers.pir
 
-alarm.pbc: $(LIBPATH)/alarm.pir
-	-$(PARROT) --output=alarm.pbc $(LIBPATH)/alarm.pir
+library/alarm.pbc: $(LIBPATH)/alarm.pir
+	-$(PARROT) --output=library/alarm.pbc $(LIBPATH)/alarm.pir
 
-base64.pbc: $(LIBPATH)/base64.pir
-	-$(PARROT) --output=base64.pbc $(LIBPATH)/base64.pir
+library/base64.pbc: $(LIBPATH)/base64.pir
+	-$(PARROT) --output=library/base64.pbc $(LIBPATH)/base64.pir
 
-bc.pbc: $(LIBPATH)/bc.pir
-	-$(PARROT) --output=bc.pbc $(LIBPATH)/bc.pir
+library/bc.pbc: $(LIBPATH)/bc.pir
+	-$(PARROT) --output=library/bc.pbc $(LIBPATH)/bc.pir
 
-bit.pbc: $(LIBPATH)/bit.pir
-	-$(PARROT) --output=bit.pbc $(LIBPATH)/bit.pir
+library/bit.pbc: $(LIBPATH)/bit.pir
+	-$(PARROT) --output=library/bit.pbc $(LIBPATH)/bit.pir
 
-bitlib.pbc: $(LIBPATH)/bitlib.pir
-	-$(PARROT) --output=bitlib.pbc $(LIBPATH)/bitlib.pir
+library/bitlib.pbc: $(LIBPATH)/bitlib.pir
+	-$(PARROT) --output=library/bitlib.pbc $(LIBPATH)/bitlib.pir
 
-complex.pbc: $(LIBPATH)/complex.pir
-	-$(PARROT) --output=complex.pbc $(LIBPATH)/complex.pir
+library/complex.pbc: $(LIBPATH)/complex.pir
+	-$(PARROT) --output=library/complex.pbc $(LIBPATH)/complex.pir
 
 #IF(has_opengl):$(LIBPATH)/gl.pir: $(LIBPATH)/gl.lua lua.pbc
 #IF(has_opengl):	-$(PARROT) luap.pir --target=pir $(LIBPATH)/gl.lua > $(LIBPATH)/gl.pir
 #IF(has_opengl):
-#IF(has_opengl):$(LIBPATH)/gl.pbc: $(LIBPATH)/gl.pir
-#IF(has_opengl):	-$(PARROT) --output=$(LIBPATH)/gl.pbc $(LIBPATH)/gl.pir
+#IF(has_opengl):library/gl.pbc: $(LIBPATH)/gl.pir
+#IF(has_opengl):	-$(PARROT) --output=library/gl.pbc $(LIBPATH)/gl.pir
 #IF(has_opengl):
-#IF(has_opengl):gl_binding.pbc: $(LIBPATH)/gl_binding.pir
-#IF(has_opengl):	-$(PARROT) --output=gl_binding.pbc $(LIBPATH)/gl_binding.pir
+#IF(has_opengl):library/gl_binding.pbc: $(LIBPATH)/gl_binding.pir
+#IF(has_opengl):	-$(PARROT) --output=library/gl_binding.pbc $(LIBPATH)/gl_binding.pir
 #IF(has_opengl):
-#IF(has_opengl):glut.pbc: $(LIBPATH)/glut.pir
-#IF(has_opengl):	-$(PARROT) --output=glut.pbc $(LIBPATH)/glut.pir
+#IF(has_opengl):library/glut.pbc: $(LIBPATH)/glut.pir
+#IF(has_opengl):	-$(PARROT) --output=library/glut.pbc $(LIBPATH)/glut.pir
 
-lfs.pbc: $(LIBPATH)/lfs.pir
-	-$(PARROT) --output=lfs.pbc $(LIBPATH)/lfs.pir
+library/lfs.pbc: $(LIBPATH)/lfs.pir
+	-$(PARROT) --output=library/lfs.pbc $(LIBPATH)/lfs.pir
 
-lpeg.pbc: $(LIBPATH)/lpeg.pir
-	-$(PARROT) --output=lpeg.pbc $(LIBPATH)/lpeg.pir
+library/lpeg.pbc: $(LIBPATH)/lpeg.pir
+	-$(PARROT) --output=library/lpeg.pbc $(LIBPATH)/lpeg.pir
 
-markdown.pbc: $(LIBPATH)/markdown.pir
-	-$(PARROT) --output=markdown.pbc $(LIBPATH)/markdown.pir
+library/markdown.pbc: $(LIBPATH)/markdown.pir
+	-$(PARROT) --output=library/markdown.pbc $(LIBPATH)/markdown.pir
 
-mathx.pbc: $(LIBPATH)/mathx.pir
-	-$(PARROT) --output=mathx.pbc $(LIBPATH)/mathx.pir
+library/mathx.pbc: $(LIBPATH)/mathx.pir
+	-$(PARROT) --output=library/mathx.pbc $(LIBPATH)/mathx.pir
 
-#IF(has_crypto):md5.pbc: $(LIBPATH)/md5.pir
-#IF(has_crypto):	-$(PARROT) --output=md5.pbc $(LIBPATH)/md5.pir
+#IF(has_crypto):library/md5.pbc: $(LIBPATH)/md5.pir
+#IF(has_crypto):	-$(PARROT) --output=library/md5.pbc $(LIBPATH)/md5.pir
 
-random.pbc: $(LIBPATH)/random.pir
-	-$(PARROT) --output=random.pbc $(LIBPATH)/random.pir
+library/random.pbc: $(LIBPATH)/random.pir
+	-$(PARROT) --output=library/random.pbc $(LIBPATH)/random.pir
 
-#IF(has_crypto):sha1.pbc: $(LIBPATH)/md5.pir
+#IF(has_crypto):library/sha1.pbc: $(LIBPATH)/md5.pir
 #IF(has_crypto):	$(PERL) -pe "s|md5|sha1|g; s|MD5|SHA1|g" $(LIBPATH)/md5.pir > $(LIBPATH)/sha1.pir
-#IF(has_crypto):	-$(PARROT) --output=sha1.pbc $(LIBPATH)/sha1.pir
+#IF(has_crypto):	-$(PARROT) --output=library/sha1.pbc $(LIBPATH)/sha1.pir
 
-struct.pbc: $(LIBPATH)/struct.pir
-	-$(PARROT) --output=struct.pbc $(LIBPATH)/struct.pir
+library/struct.pbc: $(LIBPATH)/struct.pir
+	-$(PARROT) --output=library/struct.pbc $(LIBPATH)/struct.pir
 
-uuid.pbc: $(LIBPATH)/uuid.pir
-	-$(PARROT) --output=uuid.pbc $(LIBPATH)/uuid.pir
+library/uuid.pbc: $(LIBPATH)/uuid.pir
+	-$(PARROT) --output=library/uuid.pbc $(LIBPATH)/uuid.pir
 
 $(LIBPATH)/luabytecode_gen.pir: $(LIBPATH)/luabytecode.rules src/build/translator.pl
 	$(PERL) src/build/translator.pl $(LIBPATH)/luabytecode.rules \
@@ -368,7 +368,8 @@ BUILD_CLEANERS = \
  lua@exe@ \
  lua$(O) \
  lua.c \
- "*.pbc" \
+ lua.pbc \
+ "library/*.pbc" \
  $(GEN_PIR) \
  "$(PMCDIR)/*.dump" \
  "$(PMCDIR)/*.c" \
