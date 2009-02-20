@@ -6,6 +6,12 @@ lua.o
 lua.obj
 lua
 lua.exe
+installable_lua
+installable_lua.exe
+parrot-lua.exe
+
+*.tmp
+man
 
 src/*_gen.pir
 

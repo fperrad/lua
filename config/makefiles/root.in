@@ -1,20 +1,29 @@
 # Copyright (C) 2005-2009, Parrot Foundation.
 # $Id$
 
+## arguments we want to run parrot with
+PARROT_ARGS   =
+
 ## configuration settings
-O        = @o@
-LOAD_EXT = @load_ext@
+BUILD_DIR     = @build_dir@
+LOAD_EXT      = @load_ext@
+O             = @o@
+BIN_DIR       = @bin_dir@
+LIB_DIR       = @lib_dir@@versiondir@
+DOC_DIR       = @doc_dir@@versiondir@
+MANDIR        = @mandir@@versiondir@
+PARROT_DYNEXT = $(BUILD_DIR)/runtime/parrot/dynext
 
 ## Setup some commands
-MAKE    = @make_c@
-RM_F    = @rm_f@
-PERL    = @perl@
-PARROT  = ../../parrot@exe@
-PBC_MERGE = ../../pbc_merge@exe@
-PGE      = $(PARROT) ../../runtime/parrot/library/PGE/Perl6Grammar.pir
-TGE      = $(PARROT) ../../compilers/tge/tgc.pir
-PBC_TO_EXE = ../../pbc_to_exe@exe@
-PMCBUILD = $(PERL) @build_dir@/tools/build/dynpmc.pl
+PERL          = @perl@
+RM_F          = @rm_f@
+CP            = @cp@
+CAT           = @cat@
+MKPATH        = @mkpath@
+#IF(parrot_is_shared and not(cygwin or win32)):export LD_RUN_PATH := @blib_dir@:$(LD_RUN_PATH)
+PARROT        = ../../parrot@exe@
+PBC_TO_EXE    = ../../pbc_to_exe@exe@
+PMCBUILD      = $(PERL) $(BUILD_DIR)/tools/build/dynpmc.pl
 #IF(darwin):
 #IF(darwin):# MACOSX_DEPLOYMENT_TARGET must be defined for OS X compilation/linking
 #IF(darwin):export MACOSX_DEPLOYMENT_TARGET := @osx_version@
@@ -22,7 +31,6 @@ PMCBUILD = $(PERL) @build_dir@/tools/build/dynpmc.pl
 ## places to look for things
 LIBPATH  = src/lib
 PMCDIR   = src/pmc
-PARROT_DYNEXT = @build_dir@/runtime/parrot/dynext
 
 PMCS = \
  lua \
@@ -93,7 +101,7 @@ GEN_PIR = \
 GEN_PBC = \
  lua.pbc
 
-all: \
+build: \
  $(PMCDIR)/lua_group$(LOAD_EXT) \
  $(LIB_PBCS) \
  $(LIBPATH)/luaperl.pbc \
@@ -120,6 +128,7 @@ all: \
  $(GEN_PBC) \
  src/yapp/Lua/parser.pm
 
+all: build lua@exe@ installable
 
 src/lua51_testlex_gen.pir: src/lua51_testlex.pg
 	$(PGE) --output=src/lua51_testlex_gen.pir src/lua51_testlex.pg
@@ -262,6 +271,11 @@ $(LIBPATH)/luabytecode_gen.pir: $(LIBPATH)/luabytecode.rules src/build/translato
 src/yapp/Lua/parser.pm: src/yapp/Lua/lua51.yp
 	yapp -v -m Lua::parser -o src/yapp/Lua/parser.pm src/yapp/Lua/lua51.yp
 
+installable: installable_lua@exe@
+
+installable_lua@exe@: lua.pbc
+	$(PBC_TO_EXE) lua.pbc --install
+
 # regenerate the Makefile
 Makefile: config/makefiles/root.in
 	$(PERL) Configure.pl
@@ -270,8 +284,12 @@ help:
 	@echo ""
 	@echo "Following targets are available for the user:"
 	@echo ""
-	@echo "  all:"
+	@echo "  build:             lua.pbc"
 	@echo "                     This is the default."
+	@echo "  all:               lua.pbc lua@exe@ installable"
+	@echo "  installable:       Create libs and self-hosting binaries to be installed."
+	@echo "  install:           Install the installable targets and docs."
+	@echo ""
 	@echo "Testing:"
 	@echo "  test:              Run the test suite."
 	@echo "  codetest:          Run file metadata and coding standards tests."
@@ -352,6 +370,28 @@ codetest-pod:
 # run the test suite, create a TAP archive and send it off to smolder
 smoke : all
 	-$(PERL) t/harness --archive --send-to-smolder
+
+test-installable: installable
+	./installable_lua@exe@ -e "print 'ok'"
+
+install: installable
+	$(CP) installable_lua@exe@ $(BIN_DIR)/parrot-lua@exe@
+	@cd $(PMC_DIR) && $(PMCBUILD) copy "--destination=$(LIB_DIR)/dynext" $(PMCS)
+	-$(MKPATH) $(LIB_DIR)/languages/lua
+	$(CP) lua.pbc $(LIB_DIR)/languages/lua/lua.pbc
+	-$(MKPATH) $(LIB_DIR)/languages/lua/library
+	$(CP) library/*.pbc $(LIB_DIR)/languages/lua/library
+	-$(MKPATH) $(MANDIR)/man1
+	pod2man doc/running.pod > $(MANDIR)/man1/parrot-lua.1
+
+win32-inno-installer: installable
+	-$(MKPATH) man/man1
+	pod2man doc/running.pod > man/man1/parrot-lua.1
+	-$(MKPATH) man/html
+	pod2html --infile doc/running.pod --outfile man/html/parrot-lua.html
+	$(CP) installable_lua@exe@ parrot-lua@exe@
+	cd @build_dir@ && $(PERL) tools/dev/mk_inno_language.pl lua
+	cd @build_dir@ && iscc parrot-lua.iss
 
 TEST_CLEANERS = \
  "t/pmc/*.pir" \
