@@ -1,6 +1,6 @@
 Makefile
-*.pbc
 
+lua.pbc
 lua.c
 lua.o
 lua.obj
@@ -12,6 +12,7 @@ src/*_gen.pir
 src/lib/gl.pir
 src/lib/luabytecode_gen.pir
 src/lib/sha1.pir
+src/lib/*.pbc
 
 src/pmc/*.bundle
 src/pmc/*.c
