@@ -18,10 +18,13 @@ PARROT_DYNEXT = $(BUILD_DIR)/runtime/parrot/dynext
 PERL          = @perl@
 RM_F          = @rm_f@
 CP            = @cp@
+CHMOD         = @chmod@
 CAT           = @cat@
 MKPATH        = @mkpath@
 #IF(parrot_is_shared and not(cygwin or win32)):export LD_RUN_PATH := @blib_dir@:$(LD_RUN_PATH)
 PARROT        = ../../parrot@exe@
+PGE           = $(PARROT) ../../runtime/parrot/library/PGE/Perl6Grammar.pir
+TGE           = $(PARROT) ../../compilers/tge/tgc.pir
 PBC_TO_EXE    = ../../pbc_to_exe@exe@
 PMCBUILD      = $(PERL) $(BUILD_DIR)/tools/build/dynpmc.pl
 #IF(darwin):
@@ -376,7 +379,8 @@ test-installable: installable
 
 install: installable
 	$(CP) installable_lua@exe@ $(BIN_DIR)/parrot-lua@exe@
-	@cd $(PMC_DIR) && $(PMCBUILD) copy "--destination=$(LIB_DIR)/dynext" $(PMCS)
+	$(CHMOD) 0755 $(BIN_DIR)/parrot-lua@exe@
+	@cd $(PMCDIR) && $(PMCBUILD) copy "--destination=$(LIB_DIR)/dynext" $(PMCS)
 	-$(MKPATH) $(LIB_DIR)/languages/lua
 	$(CP) lua.pbc $(LIB_DIR)/languages/lua/lua.pbc
 	-$(MKPATH) $(LIB_DIR)/languages/lua/library
