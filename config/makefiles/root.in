@@ -8,10 +8,11 @@ PARROT_ARGS   =
 BUILD_DIR     = @build_dir@
 LOAD_EXT      = @load_ext@
 O             = @o@
+VERSION       = @versiondir@
 BIN_DIR       = @bin_dir@
-LIB_DIR       = @lib_dir@@versiondir@
-DOC_DIR       = @doc_dir@@versiondir@
-MANDIR        = @mandir@@versiondir@
+LIB_DIR       = @lib_dir@$(VERSION)
+DOC_DIR       = @doc_dir@$(VERSION)
+MANDIR        = @mandir@$(VERSION)
 PARROT_DYNEXT = $(BUILD_DIR)/runtime/parrot/dynext
 
 ## Setup some commands
@@ -102,7 +103,8 @@ GEN_PIR = \
  $(LIBPATH)/sha1.pir
 
 GEN_PBC = \
- lua.pbc
+ lua.pbc \
+ luap.pbc
 
 build: \
  $(PMCDIR)/lua_group$(LOAD_EXT) \
@@ -131,7 +133,7 @@ build: \
  $(GEN_PBC) \
  src/yapp/Lua/parser.pm
 
-all: build lua@exe@ installable
+all: build lua@exe@ luap@exe installable
 
 src/lua51_testlex_gen.pir: src/lua51_testlex.pg
 	$(PGE) --output=src/lua51_testlex_gen.pir src/lua51_testlex.pg
@@ -154,6 +156,12 @@ src/PASTGrammar_gen.pir src/POSTGrammar_gen.pir $(LIB_SRCS)
 
 lua@exe@: lua.pbc
 	$(PBC_TO_EXE) lua.pbc
+
+luap.pbc: luap.pir
+	$(PARROT) -o luap.pbc --output-pbc luap.pir
+
+luap@exe@: luap.pbc
+	$(PBC_TO_EXE) luap.pbc
 
 $(LIBPATH)/lualibs.pbc: $(LIB_PBCS)
 	$(PBC_MERGE) -o $(LIBPATH)/lualibs.pbc $(LIB_PBCS)
@@ -274,10 +282,13 @@ $(LIBPATH)/luabytecode_gen.pir: $(LIBPATH)/luabytecode.rules src/build/translato
 src/yapp/Lua/parser.pm: src/yapp/Lua/lua51.yp
 	yapp -v -m Lua::parser -o src/yapp/Lua/parser.pm src/yapp/Lua/lua51.yp
 
-installable: installable_lua@exe@
+installable: installable_lua@exe@  installable_luap@exe@
 
 installable_lua@exe@: lua.pbc
 	$(PBC_TO_EXE) lua.pbc --install
+
+installable_luap@exe@: luap.pbc
+	$(PBC_TO_EXE) luap.pbc --install
 
 # regenerate the Makefile
 Makefile: config/makefiles/root.in
@@ -380,20 +391,26 @@ test-installable: installable
 install: installable
 	$(CP) installable_lua@exe@ $(BIN_DIR)/parrot-lua@exe@
 	$(CHMOD) 0755 $(BIN_DIR)/parrot-lua@exe@
+	$(CP) installable_luap@exe@ $(BIN_DIR)/parrot-luap@exe@
+	$(CHMOD) 0755 $(BIN_DIR)/parrot-luap@exe@
 	@cd $(PMCDIR) && $(PMCBUILD) copy "--destination=$(LIB_DIR)/dynext" $(PMCS)
 	-$(MKPATH) $(LIB_DIR)/languages/lua
 	$(CP) lua.pbc $(LIB_DIR)/languages/lua/lua.pbc
 	-$(MKPATH) $(LIB_DIR)/languages/lua/library
 	$(CP) library/*.pbc $(LIB_DIR)/languages/lua/library
 	-$(MKPATH) $(MANDIR)/man1
-	pod2man doc/running.pod > $(MANDIR)/man1/parrot-lua.1
+	pod2man lua.pir > $(MANDIR)/man1/parrot-lua.1
+	pod2man luap.pir > $(MANDIR)/man1/parrot-luap.1
 
 win32-inno-installer: installable
 	-$(MKPATH) man/man1
-	pod2man doc/running.pod > man/man1/parrot-lua.1
+	pod2man lua.pir > man/man1/parrot-lua.1
+	pod2man luap.pir > man/man1/parrot-luap.1
 	-$(MKPATH) man/html
-	pod2html --infile doc/running.pod --outfile man/html/parrot-lua.html
+	pod2html --infile lua.pir --outfile man/html/parrot-lua.html
+	pod2html --infile luap.pir --outfile man/html/parrot-luap.html
 	$(CP) installable_lua@exe@ parrot-lua@exe@
+	$(CP) installable_luap@exe@ parrot-luap@exe@
 	cd @build_dir@ && $(PERL) tools/dev/mk_inno_language.pl lua
 	cd @build_dir@ && iscc parrot-lua.iss
 

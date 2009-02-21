@@ -5,15 +5,16 @@
 
 =head2 Synopsis
 
-  $ parrot luap.pir script.lua
-  $ parrot luap.pir --target=parse script.lua
-                             PAST
-                             POST
-                             PIR
+  $ parrot-luap script.lua
+  $ parrot-luap --target=parse script.lua
+                         PAST
+                         POST
+                         PIR
 
 =head2 Description
 
-C<luap> is a compiler for Lua 5.1 on Parrot.
+C<luap> is a compiler for Lua 5.1 on Parrot
+with the standard interface of PCT::HLLCompiler.
 
 =cut
 

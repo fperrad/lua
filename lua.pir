@@ -5,7 +5,7 @@
 
 =head2 Synopsis
 
-  $ parrot lua.pbc [options] [script [args]]
+  $ parrot-lua [options] [script [args]]
 
 =head2 Description
 

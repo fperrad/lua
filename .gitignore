@@ -1,14 +1,12 @@
 Makefile
 
-lua.pbc
-lua.c
-lua.o
-lua.obj
+*.pbc
+*.c
+*.o
+*.obj
+*.exe
 lua
-lua.exe
-installable_lua
-installable_lua.exe
-parrot-lua.exe
+luap
 
 *.tmp
 man
