@@ -1,0 +1,142 @@
+## $Id$
+
+# values from parrot_config
+VERSION_DIR   = @versiondir@
+INCLUDE_DIR   = @includedir@$(VERSION_DIR)
+LIB_DIR       = @libdir@$(VERSION_DIR)
+SRC_DIR       = @srcdir@$(VERSION_DIR)
+TOOLS_DIR     = @libdir@$(VERSION_DIR)/tools/lib
+#STAGING_DIR   = ../../dynext
+STAGING_DIR   = @build_dir@/runtime/parrot/dynext
+#INSTALL_DIR   = $(LIB_DIR)/languages/lua2/dynext
+INSTALL_DIR   = $(LIB_DIR)/dynext
+
+# Set up extensions
+LOAD_EXT      = @load_ext@
+O             = @o@
+
+# Setup some commands
+PERL          = @perl@
+RM_F          = @rm_f@
+CHMOD         = @chmod@
+CP            = @cp@
+CC            = @cc@ -c
+LD            = @ld@
+LDFLAGS       = @ldflags@ @ld_debug@
+LD_LOAD_FLAGS = @ld_load_flags@
+CFLAGS        = @ccflags@ @cc_shared@ @cc_debug@ @ccwarn@ @cc_hasjit@ @cg_flag@ @gc_flag@
+CC_OUT        = @cc_o_out@
+LD_OUT        = @ld_out@
+#IF(parrot_is_shared):LIBPARROT     = @libparrot_ldflags@
+#ELSE:LIBPARROT     =
+
+PMC2C_INCLUDES  = --include $(SRC_DIR) --include $(SRC_DIR)/pmc
+#PMC2C           = $(PERL) $(LIB_DIR)/tools/build/pmc2c.pl
+PMC2C           = $(PERL) @build_dir@/tools/build/pmc2c.pl
+PMC2CD          = $(PMC2C) --dump $(PMC2C_INCLUDES)
+PMC2CC          = $(PMC2C) --c $(PMC2C_INCLUDES)
+
+#INCLUDES        = -I$(INCLUDE_DIR) -I$(INCLUDE_DIR)/pmc
+INCLUDES        = -I$(INCLUDE_DIR) -I$(INCLUDE_DIR)/pmc -I@build_dir@/src/pmc
+LINKARGS        = $(LDFLAGS) $(LD_LOAD_FLAGS) $(LIBPARROT)
+
+PMC_SOURCES = \
+  lua.pmc \
+  luaany.pmc \
+  luaboolean.pmc \
+  luabytecode.pmc \
+  luafunction.pmc \
+  luanil.pmc \
+  luanumber.pmc \
+  luastring.pmc \
+  luatable.pmc \
+  luathread.pmc \
+  luauserdata.pmc
+
+LUA_GROUP = lua_group
+
+OBJS = \
+  lib-$(LUA_GROUP)$(O) \
+  lua$(O) \
+  luaany$(O) \
+  luaboolean$(O) \
+  luabytecode$(O) \
+  luafunction$(O) \
+  luanil$(O) \
+  luanumber$(O) \
+  luastring$(O) \
+  luatable$(O) \
+  luathread$(O) \
+  luauserdata$(O)
+
+
+all: staging
+
+generate: $(PMC_SOURCES)
+	$(PMC2CD) lua.pmc
+	$(PMC2CD) luaany.pmc
+	$(PMC2CD) luaboolean.pmc
+	$(PMC2CD) luabytecode.pmc
+	$(PMC2CD) luafunction.pmc
+	$(PMC2CD) luanil.pmc
+	$(PMC2CD) luanumber.pmc
+	$(PMC2CD) luastring.pmc
+	$(PMC2CD) luatable.pmc
+	$(PMC2CD) luathread.pmc
+	$(PMC2CD) luauserdata.pmc
+	$(PMC2CC) lua.pmc
+	$(PMC2CC) luaany.pmc
+	$(PMC2CC) luaboolean.pmc
+	$(PMC2CC) luabytecode.pmc
+	$(PMC2CC) luafunction.pmc
+	$(PMC2CC) luanil.pmc
+	$(PMC2CC) luanumber.pmc
+	$(PMC2CC) luastring.pmc
+	$(PMC2CC) luatable.pmc
+	$(PMC2CC) luathread.pmc
+	$(PMC2CC) luauserdata.pmc
+	$(PMC2C) --library $(LUA_GROUP) --c $(PMC_SOURCES)
+
+compile: generate
+	$(CC) $(CC_OUT) lua$(O) $(INCLUDES) $(CFLAGS) lua.c
+	$(CC) $(CC_OUT) luaany$(O) $(INCLUDES) $(CFLAGS) luaany.c
+	$(CC) $(CC_OUT) luaboolean$(O) $(INCLUDES) $(CFLAGS) luaboolean.c
+	$(CC) $(CC_OUT) luabytecode$(O) $(INCLUDES) $(CFLAGS) luabytecode.c
+	$(CC) $(CC_OUT) luafunction$(O) $(INCLUDES) $(CFLAGS) luafunction.c
+	$(CC) $(CC_OUT) luanil$(O) $(INCLUDES) $(CFLAGS) luanil.c
+	$(CC) $(CC_OUT) luanumber$(O) $(INCLUDES) $(CFLAGS) luanumber.c
+	$(CC) $(CC_OUT) luastring$(O) $(INCLUDES) $(CFLAGS) luastring.c
+	$(CC) $(CC_OUT) luatable$(O) $(INCLUDES) $(CFLAGS) luatable.c
+	$(CC) $(CC_OUT) luathread$(O) $(INCLUDES) $(CFLAGS) luathread.c
+	$(CC) $(CC_OUT) luauserdata$(O) $(INCLUDES) $(CFLAGS) luauserdata.c
+	$(CC) $(CC_OUT) lib-$(LUA_GROUP)$(O) $(INCLUDES) $(CFLAGS) $(LUA_GROUP).c
+
+linklibs: compile
+	$(LD) $(LD_OUT) $(LUA_GROUP)$(LOAD_EXT) $(OBJS) $(LINKARGS)
+
+staging: linklibs
+#IF(cygwin or hpux):	CHMOD 0775 "*$(LOAD_EXT)"
+	$(CP) "*$(LOAD_EXT)" $(STAGING_DIR)
+
+install:
+#IF(cygwin or hpux):	CHMOD 0775 "*$(LOAD_EXT)"
+	$(CP) "*$(LOAD_EXT)" $(INSTALL_DIR)
+
+uninstall:
+	$(RM_F) $(INSTALL_DIR)/$(LUA_GROUP)$(LOAD_EXT)
+
+Makefile: ../../config/makefiles/pmc.in
+	cd ../.. && $(PERL) Configure.pl
+
+clean:
+	$(RM_F) "*$(LOAD_EXT)" "*$(O)" "*.c" "pmc_*.h" lua_group.h "*.dump" \
+	    $(STAGING_DIR)/$(LUA_GROUP)$(LOAD_EXT)
+#IF(win32):	$(RM_F) "*.exp" "*.ilk" "*.manifext" "*.pdb" "*.lib"
+
+realclean: clean
+	$(RM_F) Makefile
+
+# Local variables:
+#   mode: makefile
+# End:
+# vim: ft=make:
