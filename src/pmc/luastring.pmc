@@ -37,6 +37,8 @@ pmclass LuaString
     hll      lua
     maps     String {
 
+    ATTR STRING * str_val;
+
 /*
 
 =item C<void init()>
@@ -47,8 +49,24 @@ Initializes the string.
 
 */
     VTABLE void init() {
-        PMC_str_val(SELF) = Parrot_str_new_noinit(INTERP, enum_stringrep_one, 0);
-        PObj_custom_mark_SET(SELF);
+        Parrot_LuaString_attributes *attrs =
+            mem_allocate_zeroed_typed(Parrot_LuaString_attributes);
+        attrs->str_val = Parrot_str_new_noinit(INTERP, enum_stringrep_one, 0);
+        PMC_data(SELF) = attrs;
+        PObj_custom_mark_destroy_SETALL(SELF);
+    }
+
+/*
+
+=item C<void destroy()>
+
+Destroys this String PMC.
+
+=cut
+
+*/
+    VTABLE void destroy() {
+        mem_sys_free(PMC_data(SELF));
     }
 
 /*
@@ -64,14 +82,13 @@ Allow :
 */
     VTABLE PMC* instantiate_str(STRING *rep, INTVAL flags) {
         PMC *res;
-        INTVAL type = PMC_type(SELF);
+        const INTVAL type = PMC_type(SELF);
         if (flags & PObj_constant_FLAG)
             res = constant_pmc_new(INTERP, type);
         else
             res = pmc_new(INTERP, type);
 
-        VTABLE_set_string_native(INTERP, res, Parrot_str_copy(INTERP, rep));
-        PObj_custom_mark_SET(res);
+        SET_ATTR_str_val(INTERP, res, rep);
         return res;
     }
 
@@ -85,8 +102,10 @@ Marks the string as live.
 
 */
     VTABLE void mark() {
-        if (PMC_str_val(SELF))
-            pobject_lives(INTERP, (PObj *)PMC_str_val(SELF));
+        STRING * str_val;
+        GET_ATTR_str_val(INTERP, SELF, str_val);
+        if (str_val)
+            pobject_lives(INTERP, (PObj *)str_val);
     }
 
 /*
@@ -99,7 +118,10 @@ Creates a copy of the string.
 
 */
     VTABLE PMC* clone() {
-        return VTABLE_instantiate_str(INTERP, SELF, PMC_str_val(SELF), 0);
+        PMC * const res = pmc_new(INTERP, PMC_type(SELF));
+        PObj_custom_mark_destroy_SETALL(res);
+        VTABLE_set_string_native(INTERP, res, Parrot_str_copy(INTERP, SELF.get_string()));
+        return res;
     }
 
 /*
@@ -112,7 +134,9 @@ Returns the string itself.
 
 */
     VTABLE STRING* get_string() {
-        return PMC_str_val(SELF);
+        STRING *str_val;
+        GET_ATTR_str_val(INTERP, SELF, str_val);
+        return Parrot_str_copy(INTERP, str_val);
     }
 
 /*
@@ -168,7 +192,7 @@ Sets the value of the string to that of the specified C<string>.
             value            = Parrot_str_new_constant(INTERP, copy);
         }
 
-        PMC_str_val(SELF) = value;
+        SET_ATTR_str_val(INTERP, SELF, value);
     }
 
 /*
@@ -182,7 +206,7 @@ the specified C<PMC>.
 
 */
     VTABLE void set_pmc(PMC *value) {
-        PMC_str_val(SELF) = VTABLE_get_string(INTERP, value);
+        SET_ATTR_str_val(INTERP, SELF, VTABLE_get_string(INTERP, value));
     }
 
 /*
