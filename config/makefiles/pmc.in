@@ -8,7 +8,7 @@ SRC_DIR       = @srcdir@$(VERSION_DIR)
 TOOLS_DIR     = @libdir@$(VERSION_DIR)/tools/lib
 #STAGING_DIR   = ../../dynext
 STAGING_DIR   = @build_dir@/runtime/parrot/dynext
-#INSTALL_DIR   = $(LIB_DIR)/languages/lua2/dynext
+#INSTALL_DIR   = $(LIB_DIR)/languages/lua/dynext
 INSTALL_DIR   = $(LIB_DIR)/dynext
 
 # Set up extensions
@@ -31,13 +31,11 @@ LD_OUT        = @ld_out@
 #ELSE:LIBPARROT     =
 
 PMC2C_INCLUDES  = --include $(SRC_DIR) --include $(SRC_DIR)/pmc
-#PMC2C           = $(PERL) $(LIB_DIR)/tools/build/pmc2c.pl
-PMC2C           = $(PERL) @build_dir@/tools/build/pmc2c.pl
+PMC2C           = $(PERL) $(LIB_DIR)/tools/build/pmc2c.pl
 PMC2CD          = $(PMC2C) --dump $(PMC2C_INCLUDES)
 PMC2CC          = $(PMC2C) --c $(PMC2C_INCLUDES)
 
-#INCLUDES        = -I$(INCLUDE_DIR) -I$(INCLUDE_DIR)/pmc
-INCLUDES        = -I$(INCLUDE_DIR) -I$(INCLUDE_DIR)/pmc -I@build_dir@/src/pmc
+INCLUDES        = -I$(INCLUDE_DIR) -I$(INCLUDE_DIR)/pmc
 LINKARGS        = $(LDFLAGS) $(LD_LOAD_FLAGS) $(LIBPARROT)
 
 PMC_SOURCES = \
