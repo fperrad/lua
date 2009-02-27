@@ -32,7 +32,8 @@ static PMC* curr_func(PARROT_INTERP) {
     Parrot_Context *sub_ctx = CONTEXT(interp)->caller_ctx;
     while (1) {
         PMC *cont;
-        if (sub_ctx->current_sub && PMC_metadata(sub_ctx->current_sub))
+        if (sub_ctx->current_sub
+         && _LuaFunction_get_environment(interp, sub_ctx->current_sub))
             return sub_ctx->current_sub;
         cont = sub_ctx->current_cont;
         if (!cont)
@@ -47,7 +48,7 @@ static PMC* curr_func(PARROT_INTERP) {
 static PMC* getcurrenv(PARROT_INTERP) {
     PMC * const sub = curr_func(interp);
     if (sub) {
-        return PMC_metadata(sub);
+        return _LuaFunction_get_environment(interp, sub);
     }
     return NULL;
 }

@@ -19,6 +19,13 @@ with the behaviour of the Lua C<Function> type.
 
 #include "lua_private.h"
 
+#define f_env(pmc) (PARROT_LUAFUNCTION(pmc))->env
+#define f_sub(pmc) (PARROT_LUAFUNCTION(pmc))->sub
+
+PMC *
+_LuaFunction_get_environment(PARROT_INTERP, PMC *obj) {
+    return f_env(obj);
+}
 
 pmclass LuaFunction
     extends  Sub
@@ -31,6 +38,28 @@ pmclass LuaFunction
     hll      lua
     maps     Sub {
 
+    ATTR PMC    *env;
+
+/*
+
+=item C<void init()>
+
+Initializes the function.
+
+=cut
+
+*/
+    VTABLE void init() {
+        Parrot_LuaFunction_attributes *attrs =
+            mem_allocate_zeroed_typed(Parrot_LuaFunction_attributes);
+
+        attrs->sub      = mem_allocate_zeroed_typed(Parrot_sub);
+        attrs->sub->seg = INTERP->code;
+        attrs->env      = NULL;
+        PMC_data(SELF)  = attrs;
+        PObj_custom_mark_destroy_SETALL(SELF);
+    }
+
 /*
 
 =item C<void init_pmc(PMC *sub)>
@@ -40,12 +69,15 @@ pmclass LuaFunction
 */
     VTABLE void init_pmc(PMC *sub) {
         if (VTABLE_isa(INTERP, sub, Parrot_str_new_constant(INTERP, "Sub"))) {
-            PMC_struct_val(SELF) = mem_allocate_zeroed_typed(Parrot_sub);
-            PMC_pmc_val(SELF)    = NULL;
-            PMC_metadata(SELF)   = NULL;
+            Parrot_LuaFunction_attributes *attrs =
+                mem_allocate_zeroed_typed(Parrot_LuaFunction_attributes);
+
+            attrs->sub     = mem_allocate_zeroed_typed(Parrot_sub);
+            attrs->env     = NULL;
+            PMC_data(SELF) = attrs;
             PObj_custom_mark_destroy_SETALL(SELF);
             /* copy the sub struct */
-            memcpy(PMC_sub(SELF), PMC_sub(sub), sizeof (Parrot_sub));
+            memcpy(attrs->sub, f_sub(sub), sizeof (Parrot_sub));
         }
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_INVALID_OPERATION,
@@ -63,8 +95,8 @@ Marks the function as live.
 */
     VTABLE void mark() {
         SUPER();
-        if (PMC_metadata(SELF))
-            pobject_lives(INTERP, (PObj *)PMC_metadata(SELF));
+        if (f_env(SELF))
+            pobject_lives(INTERP, (PObj *)f_env(SELF));
     }
 
 /*
@@ -89,7 +121,7 @@ Return the string "function".
 */
     VTABLE PMC* clone() {
         PMC* ret = SUPER();
-        PMC_metadata(ret) = PMC_metadata(SELF);
+        f_env(ret) = f_env(SELF);
         return ret;
     }
 
@@ -112,8 +144,8 @@ Return the string "function".
 
 */
     VTABLE void set_pmc(PMC *value) {
-        PMC_struct_val(SELF) = PMC_struct_val(value);
-        PMC_metadata(SELF)   = PMC_metadata(value);
+        SUPER(value);
+        f_env(SELF) = f_env(value);
     }
 
 /*
@@ -130,8 +162,10 @@ Return the string "function".
 
 */
     MULTI INTVAL is_equal(LuaFunction value) {
-        return (PMC_sub(SELF))->start_offs == (PMC_sub(value))->start_offs
-            && (PMC_sub(SELF))->seg        == (PMC_sub(value))->seg;
+        Parrot_sub * const my_sub = f_sub(SELF);
+        Parrot_sub * const value_sub = f_sub(value);
+        return my_sub->start_offs == value_sub->start_offs
+            && my_sub->seg        == value_sub->seg;
     }
 
     MULTI INTVAL is_equal(DEFAULT value) {
@@ -150,7 +184,7 @@ Return the string "function".
 
 */
     METHOD STRING *get_name() {
-        const Parrot_sub * const sub = PMC_sub(SELF);
+        Parrot_sub * const sub = f_sub(SELF);
         STRING * const retval = Parrot_str_copy(INTERP, sub->name);
         RETURN(STRING *retval);
     }
@@ -163,7 +197,7 @@ Return the string "function".
 
 */
     METHOD PMC* getfenv() {
-        PMC *retval = PMC_metadata(SELF);
+        PMC *retval = f_env(SELF);
 
         if (!retval)
             retval = pmc_new(INTERP, dynpmc_LuaNil);
@@ -179,11 +213,16 @@ Return the string "function".
 
 */
     METHOD PMC* rawequal(PMC *value) {
-        const INTVAL b = (PMC_type(SELF) == PMC_type(value)
-          && (PMC_sub(SELF))->start_offs == (PMC_sub(value))->start_offs
-                 && (PMC_sub(SELF))->seg == (PMC_sub(value))->seg)
-                         ? 1 : 0;
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        INTVAL b = 0;
+        PMC *retval;
+        if (PMC_type(SELF) == PMC_type(value)) {
+            Parrot_sub * const my_sub = f_sub(SELF);
+            Parrot_sub * const value_sub = f_sub(value);
+            b = (my_sub->start_offs == value_sub->start_offs
+                 && my_sub->seg     == value_sub->seg)
+              ? 1 : 0;
+        }
+        retval = pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_integer_native(INTERP, retval, b);
         RETURN(PMC *retval);
     }
@@ -196,7 +235,7 @@ Return the string "function".
 
 */
     METHOD void setfenv(PMC *env) {
-        PMC_metadata(SELF) = env;
+        f_env(SELF) = env;
     }
 
 }

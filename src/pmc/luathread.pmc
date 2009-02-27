@@ -32,7 +32,7 @@ static PMC* getcurrenv(PARROT_INTERP) {
     PMC *env = NULL;
     PMC * const sub = curr_func(interp);
     if (sub) {
-        env = PMC_metadata(sub);
+        env = _LuaFunction_get_environment(interp, sub);
     }
     return env;
 }
