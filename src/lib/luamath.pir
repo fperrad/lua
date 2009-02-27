@@ -109,6 +109,12 @@ LIST
     set $P1, 'huge'
     _math[$P1] = $P0
 
+    load_bytecode 'Math/rand.pir'
+    $P0 = get_hll_namespace ['Math'; 'Rand']
+    $P1 = get_namespace
+    $P2 = split ' ', 'rand srand RAND_MAX'
+    $P0.'export_to'($P1, $P2)
+
 .end
 
 
@@ -391,8 +397,10 @@ LIST
     .local pmc res
     .local int u
     .local int l
-    new $P0, 'Random'
-    $N0 = $P0
+    $I0 = rand()
+    $I1 = RAND_MAX()
+    inc $I1
+    $N0 = $I0 / $I1
     new res, 'LuaNumber'
     unless null arg1 goto L1
     set res, $N0
@@ -431,8 +439,7 @@ LIST
     .param pmc seed :optional
     .param pmc extra :slurpy
     $I1 = lua_checknumber(1, seed)
-    new $P0, 'Random'
-    set $P0, $I1
+    srand($I1)
 .end
 
 
