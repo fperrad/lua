@@ -1,44 +1,44 @@
 ## $Id$
 
 # values from parrot_config
-VERSION_DIR   = @versiondir@
-INCLUDE_DIR   = @includedir@$(VERSION_DIR)
-LIB_DIR       = @libdir@$(VERSION_DIR)
-SRC_DIR       = @srcdir@$(VERSION_DIR)
-TOOLS_DIR     = @libdir@$(VERSION_DIR)/tools/lib
-#STAGING_DIR   = ../../dynext
-STAGING_DIR   = @build_dir@/runtime/parrot/dynext
-#INSTALL_DIR   = $(LIB_DIR)/languages/lua/dynext
-INSTALL_DIR   = $(LIB_DIR)/dynext
+VERSION_DIR   := @versiondir@
+INCLUDE_DIR   := @includedir@$(VERSION_DIR)
+LIB_DIR       := @libdir@$(VERSION_DIR)
+SRC_DIR       := @srcdir@$(VERSION_DIR)
+TOOLS_DIR     := @libdir@$(VERSION_DIR)/tools/lib
+#STAGING_DIR   := ../../dynext
+STAGING_DIR   := @build_dir@/runtime/parrot/dynext
+#INSTALL_DIR   := $(LIB_DIR)/languages/lua/dynext
+INSTALL_DIR   := $(LIB_DIR)/dynext
 
 # Set up extensions
-LOAD_EXT      = @load_ext@
-O             = @o@
+LOAD_EXT      := @load_ext@
+O             := @o@
 
 # Setup some commands
-PERL          = @perl@
-RM_F          = @rm_f@
-CHMOD         = @chmod@
-CP            = @cp@
-CC            = @cc@ -c
-LD            = @ld@
-LDFLAGS       = @ldflags@ @ld_debug@
-LD_LOAD_FLAGS = @ld_load_flags@
-CFLAGS        = @ccflags@ @cc_shared@ @cc_debug@ @ccwarn@ @cc_hasjit@ @cg_flag@ @gc_flag@
-CC_OUT        = @cc_o_out@
-LD_OUT        = @ld_out@
-#IF(parrot_is_shared):LIBPARROT     = @libparrot_ldflags@
-#ELSE:LIBPARROT     =
+PERL          := @perl@
+RM_F          := @rm_f@
+CHMOD         := @chmod@
+CP            := @cp@
+CC            := @cc@ -c
+LD            := @ld@
+LDFLAGS       := @ldflags@ @ld_debug@
+LD_LOAD_FLAGS := @ld_load_flags@
+CFLAGS        := @ccflags@ @cc_shared@ @cc_debug@ @ccwarn@ @cc_hasjit@ @cg_flag@ @gc_flag@
+CC_OUT        := @cc_o_out@
+LD_OUT        := @ld_out@
+#IF(parrot_is_shared):LIBPARROT     := @libparrot_ldflags@
+#ELSE:LIBPARROT     :=
 
-PMC2C_INCLUDES  = --include $(SRC_DIR) --include $(SRC_DIR)/pmc
-PMC2C           = $(PERL) $(LIB_DIR)/tools/build/pmc2c.pl
-PMC2CD          = $(PMC2C) --dump $(PMC2C_INCLUDES)
-PMC2CC          = $(PMC2C) --c $(PMC2C_INCLUDES)
+PMC2C_INCLUDES  := --include $(SRC_DIR) --include $(SRC_DIR)/pmc
+PMC2C           := $(PERL) $(LIB_DIR)/tools/build/pmc2c.pl
+PMC2CD          := $(PMC2C) --dump $(PMC2C_INCLUDES)
+PMC2CC          := $(PMC2C) --c $(PMC2C_INCLUDES)
 
-INCLUDES        = -I$(INCLUDE_DIR) -I$(INCLUDE_DIR)/pmc
-LINKARGS        = $(LDFLAGS) $(LD_LOAD_FLAGS) $(LIBPARROT)
+INCLUDES        := -I$(INCLUDE_DIR) -I$(INCLUDE_DIR)/pmc
+LINKARGS        := $(LDFLAGS) $(LD_LOAD_FLAGS) $(LIBPARROT)
 
-PMC_SOURCES = \
+PMC_SOURCES := \
   lua.pmc \
   luaany.pmc \
   luaboolean.pmc \
@@ -51,9 +51,10 @@ PMC_SOURCES = \
   luathread.pmc \
   luauserdata.pmc
 
-LUA_GROUP = lua_group
 
-OBJS = \
+LUA_GROUP := lua_group
+
+OBJS := \
   lib-$(LUA_GROUP)$(O) \
   lua$(O) \
   luaany$(O) \
@@ -66,6 +67,19 @@ OBJS = \
   luatable$(O) \
   luathread$(O) \
   luauserdata$(O)
+
+CLEANUPS := \
+  "*$(LOAD_EXT)" \
+  "*$(O)" \
+  "*.c" \
+  "*.h" \
+  "*.dump" \
+#IF(win32):  "*.exp" \
+#IF(win32):  "*.ilk" \
+#IF(win32):  "*.manifext" \
+#IF(win32):  "*.pdb" \
+#IF(win32):  "*.lib" \
+  $(STAGING_DIR)/$(LUA_GROUP)$(LOAD_EXT)
 
 
 all: staging
@@ -110,7 +124,7 @@ compile: generate
 	$(CC) $(CC_OUT) lib-$(LUA_GROUP)$(O) $(INCLUDES) $(CFLAGS) $(LUA_GROUP).c
 
 linklibs: compile
-	$(LD) $(LD_OUT) $(LUA_GROUP)$(LOAD_EXT) $(OBJS) $(LINKARGS)
+	$(LD) $(LD_OUT)$(LUA_GROUP)$(LOAD_EXT) $(OBJS) $(LINKARGS)
 
 staging: linklibs
 #IF(cygwin or hpux):	CHMOD 0775 "*$(LOAD_EXT)"
@@ -127,14 +141,13 @@ Makefile: ../../config/makefiles/pmc.in
 	cd ../.. && $(PERL) Configure.pl
 
 clean:
-	$(RM_F) "*$(LOAD_EXT)" "*$(O)" "*.c" "pmc_*.h" lua_group.h "*.dump" \
-	    $(STAGING_DIR)/$(LUA_GROUP)$(LOAD_EXT)
-#IF(win32):	$(RM_F) "*.exp" "*.ilk" "*.manifext" "*.pdb" "*.lib"
+	$(RM_F) $(CLEANUPS)
 
-realclean: clean
-	$(RM_F) Makefile
+realclean:
+	$(RM_F) $(CLEANUPS) Makefile
 
 # Local variables:
 #   mode: makefile
 # End:
 # vim: ft=make:
+

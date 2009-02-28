@@ -2,42 +2,42 @@
 # $Id$
 
 ## arguments we want to run parrot with
-PARROT_ARGS   =
+PARROT_ARGS   :=
 
 ## configuration settings
-VERSION       = @versiondir@
-BIN_DIR       = @bin_dir@
-LIB_DIR       = @lib_dir@$(VERSION)
-DOC_DIR       = @doc_dir@$(VERSION)
-MANDIR        = @mandir@$(VERSION)
+VERSION       := @versiondir@
+BIN_DIR       := @bin_dir@
+LIB_DIR       := @lib_dir@$(VERSION)
+DOC_DIR       := @doc_dir@$(VERSION)
+MANDIR        := @mandir@$(VERSION)
 
 # Set up extensions
-LOAD_EXT      = @load_ext@
-O             = @o@
+LOAD_EXT      := @load_ext@
+O             := @o@
 
 # Various paths
-PMC_DIR       = src/pmc
-LIBPATH       = src/lib
+PMC_DIR       := src/pmc
+LIBPATH       := src/lib
 
 ## Setup some commands
-MAKE          = @make_c@
-PERL          = @perl@
-CAT           = @cat@
-CHMOD         = @chmod@
-CP            = @cp@
-MKPATH        = @mkpath@
-RM_F          = @rm_f@
-RM_RF         = @rm_rf@
+MAKE          := @make_c@
+PERL          := @perl@
+CAT           := @cat@
+CHMOD         := @chmod@
+CP            := @cp@
+MKPATH        := @mkpath@
+RM_F          := @rm_f@
+RM_RF         := @rm_rf@
 #IF(parrot_is_shared and not(cygwin or win32)):export LD_RUN_PATH := @blib_dir@:$(LD_RUN_PATH)
-PARROT        = ../../parrot@exe@
-PGE           = $(PARROT) ../../runtime/parrot/library/PGE/Perl6Grammar.pir
-TGE           = $(PARROT) ../../compilers/tge/tgc.pir
-PBC_TO_EXE    = ../../pbc_to_exe@exe@
+PARROT        := ../../parrot@exe@
+PGE           := $(PARROT) ../../runtime/parrot/library/PGE/Perl6Grammar.pir
+TGE           := $(PARROT) ../../compilers/tge/tgc.pir
+PBC_TO_EXE    := ../../pbc_to_exe@exe@
 #IF(darwin):
 #IF(darwin):# MACOSX_DEPLOYMENT_TARGET must be defined for OS X compilation/linking
 #IF(darwin):export MACOSX_DEPLOYMENT_TARGET := @osx_version@
 
-LIB_SRCS = \
+LIB_SRCS := \
  $(LIBPATH)/luaaux.pir \
  $(LIBPATH)/luabasic.pir \
  $(LIBPATH)/luacoroutine.pir \
@@ -52,7 +52,7 @@ LIB_SRCS = \
  $(LIBPATH)/luadebug.pir \
  $(LIBPATH)/luabytecode.pir
 
-LIB_PBCS = \
+LIB_PBCS := \
  $(LIBPATH)/luaaux.pbc \
  $(LIBPATH)/luabasic.pbc \
  $(LIBPATH)/luacoroutine.pbc \
@@ -67,7 +67,7 @@ LIB_PBCS = \
  $(LIBPATH)/luadebug.pbc \
  $(LIBPATH)/luabytecode.pbc
 
-GEN_PIR = \
+GEN_PIR := \
  src/lua51_testlex_gen.pir \
  src/dumplex_gen.pir \
  src/lua51_gen.pir \
@@ -77,13 +77,13 @@ GEN_PIR = \
 #IF(has_opengl): $(LIBPATH)/gl.pir \
  $(LIBPATH)/sha1.pir
 
-GEN_PBC = \
+GEN_PBC := \
  lua.pbc \
  luap.pbc
 
-LUA_GROUP = $(PMC_DIR)/lua_group$(LOAD_EXT)
+LUA_GROUP := $(PMC_DIR)/lua_group$(LOAD_EXT)
 
-PMC_DEPS = \
+PMC_DEPS := \
  config/makefiles/pmc.in \
  $(PMC_DIR)/lua.pmc \
  $(PMC_DIR)/luaany.pmc \
@@ -97,7 +97,7 @@ PMC_DEPS = \
  $(PMC_DIR)/luathread.pmc \
  $(PMC_DIR)/luauserdata.pmc
 
-DOCS = README
+DOCS := README
 
 build: \
  $(LUA_GROUP) \
@@ -408,10 +408,10 @@ win32-inno-installer: installable
 	pod2html --infile luap.pir --outfile man/html/parrot-luap.html
 	$(CP) installable_lua@exe@ parrot-lua@exe@
 	$(CP) installable_luap@exe@ parrot-luap@exe@
-	cd @build_dir@ && $(PERL) tools/dev/mk_inno_language.pl lua
-	cd @build_dir@ && iscc parrot-lua.iss
+	$(PERL) @build_dir@/tools/dev/mk_inno_language.pl lua
+	iscc parrot-lua.iss
 
-TEST_CLEANERS = \
+TEST_CLEANERS := \
  "t/pmc/*.pir" \
  "t/*.pir" \
  "t/*.lua" \
@@ -422,7 +422,7 @@ TEST_CLEANERS = \
 testclean:
 	$(RM_F) $(TEST_CLEANERS)
 
-BUILD_CLEANERS = \
+BUILD_CLEANERS := \
   lua.pbc \
   "library/*.pbc" \
   "$(LIBPATH)/*.pbc" \
@@ -431,11 +431,14 @@ BUILD_CLEANERS = \
   "*$(O)" \
   lua@exe@ \
 #IF(win32):  parrot-lua.exe \
+#IF(win32):  parrot-lua.iss \
+#IF(win32):  "setup-parrot-*.exe" \
   installable_lua@exe@
 
 clean:
 	$(MAKE) $(PMC_DIR) clean
 	$(RM_F) $(BUILD_CLEANERS) $(TEST_CLEANERS)
+	$(RM_RF) man
 
 realclean: clean
 	$(MAKE) $(PMC_DIR) realclean
