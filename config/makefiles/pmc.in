@@ -72,7 +72,8 @@ CLEANUPS := \
   "*$(LOAD_EXT)" \
   "*$(O)" \
   "*.c" \
-  "*.h" \
+  "pmc_*.h" \
+  lua_group.h \
   "*.dump" \
 #IF(win32):  "*.exp" \
 #IF(win32):  "*.ilk" \
