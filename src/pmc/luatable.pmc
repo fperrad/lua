@@ -21,14 +21,17 @@ This implementation is based on the Lua 4.0 one.
 
 #include "lua_private.h"
 
+#define t_val(pmc) (PARROT_LUATABLE(pmc))->val
+#define t_mt(pmc)  (PARROT_LUATABLE(pmc))->mt
+
 PMC *
 _LuaTable_get_metatable(PARROT_INTERP, PMC *obj) {
-    return PMC_metadata(obj);
+    return t_mt(obj);
 }
 
 #define LUA_ASSERT(c, s)         assert(((void)(s), (c)))
 
-#define PMC_hash(s) (LuaHash *)PMC_struct_val((s))
+#define PMC_hash(s)  t_val(s)
 
 #define MAX_INT (INT_MAX-2)     /* maximum value of an int (-2 for safety) */
 
@@ -84,7 +87,7 @@ static int lua_equalObj(PARROT_INTERP, PMC * const t1, PMC * const t2)
         return 0 == Parrot_str_compare(interp, VTABLE_get_string(interp, t1),
                                                VTABLE_get_string(interp, t2));
 
-    return PMC_struct_val(t1) == PMC_struct_val(t2);
+    return PMC_data(t1) == PMC_data(t2);
 }
 
 /*
@@ -108,7 +111,7 @@ static Node *mainposition(PARROT_INTERP, const LuaHash *t, PMC *key)
         h = Parrot_str_to_hashval(interp, VTABLE_get_string(interp, key));
     }
     else {
-        h = (unsigned long)PMC_struct_val(key);
+        h = (unsigned long)PMC_data(key);
         h >>= 3;
     }
 
@@ -326,7 +329,7 @@ static void rehash(PARROT_INTERP, LuaHash *t)
 static void lua_new_table(PARROT_INTERP, PMC *container)
 {
     LuaHash * const t         = mem_allocate_zeroed_typed(LuaHash);
-    PMC_struct_val(container) = t;
+    t_val(container)          = t;
     t->container              = container;
 
     setnodevector(interp, t, MINPOWER2);
@@ -334,8 +337,10 @@ static void lua_new_table(PARROT_INTERP, PMC *container)
 
 static void lua_destroy_table(PARROT_INTERP, LuaHash *t)
 {
-    mem_sys_free(t->node);
-    mem_sys_free(t);
+    if (t) {
+        mem_sys_free(t->node);
+        mem_sys_free(t);
+    }
 }
 
 static void lua_mark_table(PARROT_INTERP, LuaHash *t, STRING *mode)
@@ -372,6 +377,9 @@ pmclass LuaTable
     group    lua_group
     hll      Lua {
 
+    ATTR struct LuaHash *val;
+    ATTR PMC     *mt;
+
 /*
 
 =item C<void init()>
@@ -382,8 +390,8 @@ Initializes the instance.
 
 */
     VTABLE void init() {
-        PMC_struct_val(SELF) = NULL;
-        PMC_metadata(SELF)   = NULL;
+        Parrot_LuaTable_attributes *t = mem_allocate_zeroed_typed(Parrot_LuaTable_attributes);
+        PMC_data(SELF) = t;
         PObj_custom_mark_destroy_SETALL(SELF);
         lua_new_table(INTERP, SELF);
     }
@@ -399,7 +407,7 @@ Marks the hash as live.
 */
     VTABLE void mark() {
         STRING *mode = NULL;
-        PMC * const meta = PMC_metadata(SELF);
+        PMC * const meta = t_mt(SELF);
 
         if (meta) {
             PMC **m;
@@ -416,8 +424,8 @@ Marks the hash as live.
                 mode = VTABLE_get_string(INTERP, *m);
         }
 
-        if (PMC_struct_val(SELF))
-            lua_mark_table(INTERP, PMC_hash(SELF), mode);
+        if (t_val(SELF))
+            lua_mark_table(INTERP, t_val(SELF), mode);
 
         if (meta)
             pobject_lives(INTERP, (PObj *)meta);
@@ -433,9 +441,11 @@ Free hash structure.
 
 */
     VTABLE void destroy() {
-        if (PMC_struct_val(SELF)) {
-            lua_destroy_table(INTERP, PMC_hash(SELF));
-            PMC_struct_val(SELF) = NULL;
+        Parrot_LuaTable_attributes *t = PARROT_LUATABLE(SELF);
+        if (t) {
+            lua_destroy_table(INTERP, t->val);
+            mem_sys_free(t);
+            PMC_data(SELF) = NULL;
         }
     }
 
@@ -491,8 +501,8 @@ therefore only clone the reference to themselves, not make a deep copy.
 
 */
     VTABLE void set_pmc(PMC *other) {
-        PMC_struct_val(SELF) = PMC_struct_val(other);
-        PMC_metadata(SELF)   = PMC_metadata(other);
+        t_val(SELF) = t_val(other);
+        t_mt(SELF)  = t_mt(other);
     }
 
 /*
@@ -824,9 +834,9 @@ The C<==> operation. Compares reference (not in depth).
 */
     METHOD void set_metatable(PMC *meta) {
         if (dynpmc_LuaNil == PMC_type(meta))
-            PMC_metadata(SELF) = NULL;
+            t_mt(SELF) = NULL;
         else
-            PMC_metadata(SELF) = meta;
+            t_mt(SELF) = meta;
     }
 
 }
