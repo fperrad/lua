@@ -369,7 +369,7 @@ codetest-pod:
 	- $(PERL) @build_dir@/t/doc/pod.t $(T_POD)
 
 # run the test suite, create a TAP archive and send it off to smolder
-smoke : all
+smoke : build
 	-$(PERL) t/harness --archive --send-to-smolder
 
 test-installable: installable
