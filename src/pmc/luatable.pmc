@@ -664,24 +664,16 @@ The C<==> operation. Compares reference (not in depth).
                 if (_le) {
                     retval = Parrot_runops_fromc_args(INTERP, _le, "PPP",
                                                       SELF, value);
-                    r = retval ?
-                        VTABLE_get_bool(INTERP, retval) : (INTVAL)0;
+                    r = retval ? VTABLE_get_bool(INTERP, retval) : (INTVAL)0;
 
-                    if (r)
-                        return (INTVAL)0;
-                    else
-                        return (INTVAL)1;
+                    return (r) ? (INTVAL)0 : (INTVAL)1;
                 }
                 else {
                     retval = Parrot_runops_fromc_args(INTERP, _lt, "PPP",
                                                       value, SELF);
-                    r      = retval
-                        ? VTABLE_get_bool(INTERP, retval) : (INTVAL)0;
+                    r = retval ? VTABLE_get_bool(INTERP, retval) : (INTVAL)0;
 
-                    if (r)
-                        return (INTVAL)1;
-                    else
-                        return (INTVAL)0;
+                    return (r) ? (INTVAL)1 : (INTVAL)0;
                 }
             }
         }
