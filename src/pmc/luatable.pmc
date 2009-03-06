@@ -31,8 +31,6 @@ _LuaTable_get_metatable(PARROT_INTERP, PMC *obj) {
 
 #define LUA_ASSERT(c, s)         assert(((void)(s), (c)))
 
-#define PMC_hash(s)  t_val(s)
-
 #define MAX_INT (INT_MAX-2)     /* maximum value of an int (-2 for safety) */
 
 #define MINPOWER2       4       /* minimum size for "growing" vectors */
@@ -265,8 +263,6 @@ static PMC** lua_set(PARROT_INTERP, LuaHash *t, PMC *key)
 
 static void setnodevector(PARROT_INTERP, LuaHash *t, int size)
 {
-    int i;
-
     if (size > MAX_INT)
         Parrot_ex_throw_from_c_args(interp, NULL, 1, "table overflow");
 
@@ -328,9 +324,9 @@ static void rehash(PARROT_INTERP, LuaHash *t)
 
 static void lua_new_table(PARROT_INTERP, PMC *container)
 {
-    LuaHash * const t         = mem_allocate_zeroed_typed(LuaHash);
-    t_val(container)          = t;
-    t->container              = container;
+    LuaHash * const t = mem_allocate_zeroed_typed(LuaHash);
+    t_val(container)  = t;
+    t->container      = container;
 
     setnodevector(interp, t, MINPOWER2);
 }
@@ -415,9 +411,9 @@ Marks the hash as live.
             PMC * const key = pmc_new(INTERP, dynpmc_LuaString);
             VTABLE_set_string_native(INTERP, key,
                     Parrot_str_new_constant(INTERP, "__mode"));
-            m = lua_get(INTERP, PMC_hash(meta), key);
+            m = lua_get(INTERP, t_val(meta), key);
 #else
-            m = lua_getstr(INTERP, PMC_hash(meta),
+            m = lua_getstr(INTERP, t_val(meta),
                     Parrot_str_new_constant(INTERP, "__mode"));
 #endif
             if (m && *m)
@@ -516,7 +512,7 @@ C<table> accessor.
 */
     VTABLE PMC* get_pmc_keyed(PMC *key) {
         PMC  *value  = NULL;
-        PMC **pvalue = lua_get(INTERP, PMC_hash(SELF), key);
+        PMC **pvalue = lua_get(INTERP, t_val(SELF), key);
 
         if (pvalue)
             value = *pvalue;
@@ -548,7 +544,7 @@ C<table> mutator.
 
 */
     VTABLE void set_pmc_keyed(PMC *key, PMC *value) {
-        if (! lua_get(INTERP, PMC_hash(SELF), key)) {
+        if (! lua_get(INTERP, t_val(SELF), key)) {
             PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__newindex");
             if (meth) {
                 if (dynpmc_LuaFunction == PMC_type(meth)) {
@@ -570,7 +566,7 @@ C<table> mutator.
             key   = VTABLE_clone(interp, key);
         }
 
-        *lua_set(INTERP, PMC_hash(SELF), key) = value;
+        *lua_set(INTERP, t_val(SELF), key) = value;
     }
 
 /*
@@ -586,7 +582,7 @@ Need by NameSpace.export_to().
         PMC * const pmc_key = pmc_new(INTERP, dynpmc_LuaString);
         VTABLE_set_string_native(INTERP, pmc_key, Parrot_str_copy(INTERP, key));
         value = VTABLE_clone(interp, value);
-        *lua_set(INTERP, PMC_hash(SELF), pmc_key) = value;
+        *lua_set(INTERP, t_val(SELF), pmc_key) = value;
     }
 
 /*
@@ -599,7 +595,7 @@ Returns the number of elements in the table.
 
 */
     VTABLE INTVAL elements() {
-        return numuse(PMC_hash(SELF));
+        return numuse(t_val(SELF));
     }
 
 /*
@@ -736,12 +732,12 @@ The C<==> operation. Compares reference (not in depth).
 
         VTABLE_set_integer_native(INTERP, key, idx);
 
-        pvalue = lua_get(INTERP, PMC_hash(SELF), key);
+        pvalue = lua_get(INTERP, t_val(SELF), key);
 
         while (pvalue && *pvalue) {
             idx++;
             VTABLE_set_integer_native(INTERP, key, idx);
-            pvalue = lua_get(INTERP, PMC_hash(SELF), key);
+            pvalue = lua_get(INTERP, t_val(SELF), key);
         }
 
         VTABLE_set_integer_native(INTERP, key, idx - 1);
@@ -756,7 +752,7 @@ The C<==> operation. Compares reference (not in depth).
 
 */
     METHOD PMC* next(PMC* index) {
-        Node * const n = lua_next(INTERP, PMC_hash(SELF), index);
+        Node * const n = lua_next(INTERP, t_val(SELF), index);
 
         if (n) {
             PMC * const retval = pmc_new(INTERP, enum_class_Array);
@@ -794,7 +790,7 @@ The C<==> operation. Compares reference (not in depth).
 
 */
     METHOD PMC* rawget(PMC *key) {
-        PMC **pvalue = lua_get(INTERP, PMC_hash(SELF), key);
+        PMC **pvalue = lua_get(INTERP, t_val(SELF), key);
         PMC *retval;
 
         if (! pvalue || ! *pvalue)
@@ -822,7 +818,7 @@ The C<==> operation. Compares reference (not in depth).
             key   = VTABLE_clone(interp, key);
         }
 
-        *lua_set(INTERP, PMC_hash(SELF), key) = value;
+        *lua_set(INTERP, t_val(SELF), key) = value;
     }
 
 /*
