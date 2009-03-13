@@ -29,10 +29,10 @@ MKPATH        := @mkpath@
 RM_F          := @rm_f@
 RM_RF         := @rm_rf@
 #IF(parrot_is_shared and not(cygwin or win32)):export LD_RUN_PATH := @blib_dir@:$(LD_RUN_PATH)
-PARROT        := ../../parrot@exe@
-PGE           := $(PARROT) ../../runtime/parrot/library/PGE/Perl6Grammar.pir
-TGE           := $(PARROT) ../../compilers/tge/tgc.pir
-PBC_TO_EXE    := ../../pbc_to_exe@exe@
+PARROT        := @build_dir@/parrot@exe@
+PGE           := $(PARROT) $(LIB_DIR)/library/PGE/Perl6Grammar.pir
+TGE           := $(PARROT) $(LIB_DIR)/languages/tge/tgc.pir
+PBC_TO_EXE    := $(BIN_DIR)/pbc_to_exe@exe@
 #IF(darwin):
 #IF(darwin):# MACOSX_DEPLOYMENT_TARGET must be defined for OS X compilation/linking
 #IF(darwin):export MACOSX_DEPLOYMENT_TARGET := @osx_version@
@@ -97,7 +97,38 @@ PMC_DEPS := \
  $(PMC_DIR)/luathread.pmc \
  $(PMC_DIR)/luauserdata.pmc
 
+SOURCES := \
+  lua.pir \
+  src/lua51.pir \
+  src/grammar51.pir \
+  src/lua51_gen.pir \
+  src/PASTGrammar_gen.pir \
+  src/POSTGrammar_gen.pir \
+  $(LIB_SRCS)
+
 DOCS := README
+
+BUILD_CLEANUPS := \
+  man \
+  lua.pbc \
+  "library/*.pbc" \
+  "$(LIBPATH)/*.pbc" \
+  $(GEN_PIR) \
+  "*.c" \
+  "*$(O)" \
+  lua@exe@ \
+#IF(win32):  parrot-lua.exe \
+#IF(win32):  parrot-lua.iss \
+#IF(win32):  "setup-parrot-*.exe" \
+  installable_lua@exe@
+
+TEST_CLEANUPS := \
+  "t/pmc/*.pir" \
+  "t/*.pir" \
+  "t/*.lua" \
+  "t/*.luac" \
+  "t/*.orig_out" \
+  "t/*.parrot_out"
 
 build: \
  $(LUA_GROUP) \
@@ -143,9 +174,8 @@ src/PASTGrammar_gen.pir: src/PASTGrammar.tg
 src/POSTGrammar_gen.pir: src/POSTGrammar.tg
 	$(TGE) --output=src/POSTGrammar_gen.pir src/POSTGrammar.tg
 
-lua.pbc: lua.pir src/lua51.pir src/grammar51.pir src/lua51_gen.pir \
-src/PASTGrammar_gen.pir src/POSTGrammar_gen.pir $(LIB_SRCS)
-	$(PARROT) -o lua.pbc --output-pbc lua.pir
+lua.pbc: $(SOURCES)
+	$(PARROT) $(PARROT_ARGS) -o lua.pbc lua.pir
 
 lua@exe@: lua.pbc
 	$(PBC_TO_EXE) lua.pbc
@@ -277,7 +307,6 @@ installable_lua@exe@: lua.pbc
 installable_luap@exe@: luap.pbc
 	$(PBC_TO_EXE) luap.pbc --install
 
-# regenerate the Makefile
 Makefile: config/makefiles/root.in
 	$(PERL) Configure.pl
 
@@ -287,6 +316,7 @@ help:
 	@echo ""
 	@echo "  build:             lua.pbc"
 	@echo "                     This is the default."
+	@echo "  lua@exe@            Self-hosting binary not to be installed."
 	@echo "  all:               lua.pbc lua@exe@ installable"
 	@echo "  installable:       Create libs and self-hosting binaries to be installed."
 	@echo "  install:           Install the installable targets and docs."
@@ -309,7 +339,10 @@ help:
 	@echo ""
 
 test: build
-	$(PERL) t/harness
+	$(PERL) -I$(LIB_DIR)/tools/lib t/harness
+
+smoke : build
+	-$(PERL) -I$(LIB_DIR)/tools/lib t/harness --archive --send-to-smolder
 
 codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
 
@@ -368,10 +401,6 @@ codetest-pod:
 	- $(PERL) @build_dir@/t/codingstd/trailing_space.t $(T_POD)
 	- $(PERL) @build_dir@/t/doc/pod.t $(T_POD)
 
-# run the test suite, create a TAP archive and send it off to smolder
-smoke : build
-	-$(PERL) t/harness --archive --send-to-smolder
-
 test-installable: installable
 	./installable_lua@exe@ -e "print 'ok'"
 
@@ -408,41 +437,19 @@ win32-inno-installer: installable
 	pod2html --infile luap.pir --outfile man/html/parrot-luap.html
 	$(CP) installable_lua@exe@ parrot-lua@exe@
 	$(CP) installable_luap@exe@ parrot-luap@exe@
-	$(PERL) @build_dir@/tools/dev/mk_inno_language.pl lua
+	$(PERL) -I$(LIB_DIR)/tools/lib $(LIB_DIR)/tools/dev/mk_inno_language.pl lua
 	iscc parrot-lua.iss
 
-TEST_CLEANERS := \
- "t/pmc/*.pir" \
- "t/*.pir" \
- "t/*.lua" \
- "t/*.luac" \
- "t/*.orig_out" \
- "t/*.parrot_out"
-
 testclean:
-	$(RM_F) $(TEST_CLEANERS)
-
-BUILD_CLEANERS := \
-  lua.pbc \
-  "library/*.pbc" \
-  "$(LIBPATH)/*.pbc" \
-  $(GEN_PIR) \
-  "*.c" \
-  "*$(O)" \
-  lua@exe@ \
-#IF(win32):  parrot-lua.exe \
-#IF(win32):  parrot-lua.iss \
-#IF(win32):  "setup-parrot-*.exe" \
-  installable_lua@exe@
+	$(RM_F) $(TEST_CLEANUPS)
 
 clean:
 	$(MAKE) $(PMC_DIR) clean
-	$(RM_F) $(BUILD_CLEANERS) $(TEST_CLEANERS)
-	$(RM_RF) man
+	$(RM_RF) $(TEST_CLEANUPS) $(BUILD_CLEANUPS)
 
-realclean: clean
+realclean:
 	$(MAKE) $(PMC_DIR) realclean
-	$(RM_F) Makefile
+	$(RM_RF) $(TEST_CLEANUPS) $(BUILD_CLEANUPS) Makefile
 
 distclean: realclean
 

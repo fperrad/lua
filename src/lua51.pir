@@ -268,10 +268,10 @@ used in F<languages/lua/src/POSTGrammar.tg>
     $P0 = shift self
 .end
 
-.include 'languages/lua/src/grammar51.pir'
-.include 'languages/lua/src/lua51_gen.pir'
-.include 'languages/lua/src/PASTGrammar_gen.pir'
-.include 'languages/lua/src/POSTGrammar_gen.pir'
+.include 'src/grammar51.pir'
+.include 'src/lua51_gen.pir'
+.include 'src/PASTGrammar_gen.pir'
+.include 'src/POSTGrammar_gen.pir'
 
 =back
 

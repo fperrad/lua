@@ -88,8 +88,8 @@ show version information.
     sweepoff  # stop collector during initialization
 .end
 
-.include 'languages/lua/src/lua51.pir'
-.include 'languages/lua/src/lib/luaregex.pir'
+.include 'src/lua51.pir'
+.include 'src/lib/luaregex.pir'
 
 
 .HLL 'lua'
@@ -495,18 +495,18 @@ USAGE
 .end
 
 
-.include 'languages/lua/src/lib/luaaux.pir'
-.include 'languages/lua/src/lib/luastring.pir'
-.include 'languages/lua/src/lib/luabasic.pir'
-.include 'languages/lua/src/lib/luacoroutine.pir'
-.include 'languages/lua/src/lib/luapackage.pir'
-.include 'languages/lua/src/lib/luatable.pir'
-.include 'languages/lua/src/lib/luamath.pir'
-.include 'languages/lua/src/lib/luaio.pir'
-.include 'languages/lua/src/lib/luafile.pir'
-.include 'languages/lua/src/lib/luaos.pir'
-.include 'languages/lua/src/lib/luadebug.pir'
-.include 'languages/lua/src/lib/luabytecode.pir'
+.include 'src/lib/luaaux.pir'
+.include 'src/lib/luastring.pir'
+.include 'src/lib/luabasic.pir'
+.include 'src/lib/luacoroutine.pir'
+.include 'src/lib/luapackage.pir'
+.include 'src/lib/luatable.pir'
+.include 'src/lib/luamath.pir'
+.include 'src/lib/luaio.pir'
+.include 'src/lib/luafile.pir'
+.include 'src/lib/luaos.pir'
+.include 'src/lib/luadebug.pir'
+.include 'src/lib/luabytecode.pir'
 
 
 =head2 See Also
