@@ -79,6 +79,7 @@ GEN_PIR := \
 
 GEN_PBC := \
  lua.pbc \
+ luad.pbc \
  luap.pbc
 
 LUA_GROUP := $(PMC_DIR)/lua_group$(LOAD_EXT)
@@ -110,7 +111,7 @@ DOCS := README
 
 BUILD_CLEANUPS := \
   man \
-  lua.pbc \
+  "*.pbc" \
   "library/*.pbc" \
   "$(LIBPATH)/*.pbc" \
   $(GEN_PIR) \
@@ -181,6 +182,9 @@ lua.pbc: $(SOURCES)
 
 lua@exe@: lua.pbc
 	$(PBC_TO_EXE) lua.pbc
+
+luad.pbc: luad.pir
+	$(PARROT) -o luad.pbc --output-pbc luad.pir
 
 luap.pbc: luap.pir
 	$(PARROT) -o luap.pbc --output-pbc luap.pir

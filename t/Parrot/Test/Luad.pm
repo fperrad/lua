@@ -51,7 +51,7 @@ foreach my $func ( keys %language_test_map ) {
         my $lua_out_fn = File::Spec->rel2abs( Parrot::Test::per_test( '.parrot_out', $count ) );
         my @test_prog = (
             "luac -o ${luac_fn} ${lang_fn}",
-            "$self->{parrot} languages/lua/luad.pir ${luac_fn}",
+            "$self->{parrot} languages/lua/luad.pbc ${luac_fn}",
         );
 
         # This does not create byte code, but lua code

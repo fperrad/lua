@@ -73,7 +73,7 @@ L<http://luaforge.net/projects/chunkspy/>
     .return ('')
 .end
 
-.include 'languages/lua/src/lib/luabytecode.pir'
+.include 'src/lib/luabytecode.pir'
 
 
 # Local Variables:
