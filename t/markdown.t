@@ -28,6 +28,9 @@ my $test_prog = Parrot::Test::Lua::get_test_prog();
 if ( $test_prog eq 'lua' ) {
     plan skip_all => "parrot only";
 }
+elsif (! -f "$FindBin::Bin/../../../languages/markdown/markdown.pbc") {
+    plan skip_all => "markdown.pbc not available";
+}
 else {
     plan tests => 2;
 }
