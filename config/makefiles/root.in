@@ -119,7 +119,7 @@ BUILD_CLEANUPS := \
   "*$(O)" \
   lua@exe@ \
   luap@exe@ \
-#IF(win32):  parrot-lua.exe \
+#IF(win32):  "parrot-*.exe" \
 #IF(win32):  parrot-lua.iss \
 #IF(win32):  "setup-parrot-*.exe" \
   installable_lua@exe@ \
