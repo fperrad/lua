@@ -503,7 +503,7 @@ PIRCODE
 .end
 
 
-.include 'languages/lua/src/lib/luabytecode_gen.pir'
+.include 'src/lib/luabytecode_gen.pir'
 
 # Local Variables:
 #   mode: pir

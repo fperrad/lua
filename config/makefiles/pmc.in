@@ -83,7 +83,7 @@ CLEANUPS := \
   $(STAGING_DIR)/$(LUA_GROUP)$(LOAD_EXT)
 
 
-all: staging
+all: staging install
 
 generate: $(PMC_SOURCES)
 	$(PMC2CD) lua.pmc
