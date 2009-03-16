@@ -418,8 +418,10 @@ install: installable
 	$(CHMOD) 0755 $(BIN_DIR)/parrot-luap@exe@
 	-$(MKPATH) $(LIB_DIR)/languages/lua
 	$(CP) lua.pbc $(LIB_DIR)/languages/lua/lua.pbc
-	-$(MKPATH) $(LIB_DIR)/languages/lua/library
-	$(CP) library/*.pbc $(LIB_DIR)/languages/lua/library
+#	-$(MKPATH) $(LIB_DIR)/languages/lua/library
+#	$(CP) library/*.pbc $(LIB_DIR)/languages/lua/library
+	-$(MKPATH) $(LIB_DIR)/library/lua
+	$(CP) library/*.pbc $(LIB_DIR)/library/lua
 	-$(MKPATH) $(MANDIR)/man1
 	pod2man lua.pir > $(MANDIR)/man1/parrot-lua.1
 	pod2man luap.pir > $(MANDIR)/man1/parrot-luap.1
