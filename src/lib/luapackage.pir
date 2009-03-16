@@ -108,6 +108,8 @@ LIST
     package[$P1] = $P0
 .end
 
+.include 'stat.pasm'
+
 .sub 'findfile' :anon
     .param string name
     .param string pname
@@ -133,7 +135,7 @@ LIST
     if tmpl == '' goto L3
     .local string filename
     filename = lua_gsub(tmpl, '?', name)
-    $I0 = stat filename, 0
+    $I0 = stat filename, .STAT_EXISTS
     unless $I0 goto L4
     .return (filename)
   L4:
@@ -224,8 +226,8 @@ LIST
     new $P0, 'LuaString'
     .return ($P0)
   L1:
-    $S0 = substr name, 0, $I0
-    (filename, $P0) = findfile($S1, 'pbcpath')
+    $S0 = substr $S1, 0, $I0
+    (filename, $P0) = findfile($S0, 'pbcpath')
     unless filename == '' goto L2
     # root not found
     .return ($P0)
