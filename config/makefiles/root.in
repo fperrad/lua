@@ -73,9 +73,9 @@ GEN_PIR := \
  src/lua51_gen.pir \
  src/PASTGrammar_gen.pir \
  src/POSTGrammar_gen.pir \
- $(LIBPATH)/luabytecode_gen.pir \
 #IF(has_opengl): $(LIBPATH)/gl.pir \
- $(LIBPATH)/sha1.pir
+#IF(has_crypto): $(LIBPATH)/sha1.pir \
+ $(LIBPATH)/luabytecode_gen.pir
 
 GEN_PBC := \
  lua.pbc \
