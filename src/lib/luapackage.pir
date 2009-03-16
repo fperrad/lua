@@ -65,7 +65,7 @@ LIST
     _loaders[$P2] = loader_PBCroot
 
     setpath(_package, 'path', 'LUA_PATH', './?.lua;languages/lua/src/lib/?.lua')
-    setpath(_package, 'pbcpath', 'LUA_PBCPATH', './?.pbc;./?.pir;languages/lua/library/?.pbc')
+    setpath(_package, 'pbcpath', 'LUA_PBCPATH', 'languages/lua/library/?.pbc;./?.pbc;./?.pir')
 
     .local pmc _lua__REGISTRY
     _lua__REGISTRY = get_hll_global '_REGISTRY'
@@ -132,7 +132,10 @@ LIST
     set msg, ''
   L2:
     (path, tmpl) = nexttemplate(path)
-    if tmpl == '' goto L3
+    unless tmpl == '' goto L3
+    # not found
+    .return ('', msg)
+  L3:
     .local string filename
     filename = lua_gsub(tmpl, '?', name)
     $I0 = stat filename, .STAT_EXISTS
@@ -145,9 +148,46 @@ LIST
     $S0 .= "'"
     set msg, $S0
     goto L2
-  L3:
+.end
+
+.sub 'findfile_pbc' :anon
+    .param string name
+    name = lua_gsub(name, '.', '/')
+    $P0 = get_hll_global '_G'
+    new $P1, 'LuaString'
+    set $P1, 'package'
+    $P0 = $P0[$P1]
+    set $P1, 'pbcpath'
+    $P0 = $P0[$P1]
+    $I0 = isa $P0, 'LuaString'
+    if $I0 goto L1
+    lua_error("'package.pbcpath' must be a string")
+  L1:
+    .local string path
+    .local string tmpl
+    path = $P0
+    .local pmc msg      # error accumulator
+    new msg, 'LuaString'
+    set msg, ''
+  L2:
+    (path, tmpl) = nexttemplate(path)
+    unless tmpl == '' goto L3
     # not found
     .return ('', msg)
+  L3:
+    .local string filename
+    filename = lua_gsub(tmpl, '?', name)
+    push_eh _handler
+    load_bytecode filename
+    pop_eh
+    .return (filename)
+  _handler:
+    $S0 = msg
+    $S0 .= "\n\tno file '"
+    $S0 .= filename
+    $S0 .= "'"
+    set msg, $S0
+    goto L2
 .end
 
 .sub 'nexttemplate' :anon
@@ -202,7 +242,7 @@ LIST
     .local string funcname
     .local string filename
     $S1 = lua_checkstring(1, name)
-    (filename, $P0) = findfile($S1, 'pbcpath')
+    (filename, $P0) = findfile_pbc($S1)
     unless filename == '' goto L1
     # library not found in this path
     .return ($P0)
@@ -227,7 +267,7 @@ LIST
     .return ($P0)
   L1:
     $S0 = substr $S1, 0, $I0
-    (filename, $P0) = findfile($S0, 'pbcpath')
+    (filename, $P0) = findfile_pbc($S0)
     unless filename == '' goto L2
     # root not found
     .return ($P0)
@@ -250,7 +290,6 @@ LIST
 .sub 'loadfunc' :anon
     .param string path
     .param string sym
-    load_bytecode path
     $P0 = get_hll_global sym
     if null $P0 goto L1
     .return ($P0)
