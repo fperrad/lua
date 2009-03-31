@@ -58,7 +58,6 @@ CODE
 
 <p>Some text.</p>
 
-
 OUTPUT
 
 # Local Variables:
