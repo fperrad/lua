@@ -379,7 +379,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
     $I0 = pos - litstart
     $S0 = substr target, litstart, $I0
     $S0 = concat initchar, $S0
-    mob.'result_object'($S0)
+    mob.'!make'($S0)
     goto end
   end:
     mob.'to'(pos)
@@ -476,7 +476,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
     charlist .= '-'
   end:
     mob.'to'(pos)
-    mob.'result_object'(charlist)
+    mob.'!make'(charlist)
     .return (mob)
 
   err_close:
@@ -512,7 +512,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
     mob['isnegated'] = 1
   end:
     mob.'to'(pos)
-    mob.'result_object'(charlist)
+    mob.'!make'(charlist)
     .return (mob)
 .end
 
@@ -528,7 +528,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
     xy = substr target, pos, 2
     pos += 2
     mob.'to'(pos)
-    mob.'result_object'(xy)
+    mob.'!make'(xy)
     .return (mob)
 
   err:

@@ -62,7 +62,7 @@ transform past (Lua::TestLex::token) :language('PIR') {
 =cut
 
 transform past (Lua::TestLex::keyword) :language('PIR') {
-    $S0 = node.'result_object'()
+    $S0 = node.'ast'()
     $S1 = concat "keyword:\t", $S0
     $P0 = get_hll_global ['PAST'], 'Val'
     .tailcall $P0.'new'('node'=>node, 'value'=>$S1)
@@ -74,7 +74,7 @@ transform past (Lua::TestLex::keyword) :language('PIR') {
 =cut
 
 transform past (Lua::TestLex::punctuator) :language('PIR') {
-    $S0 = node.'result_object'()
+    $S0 = node.'ast'()
     $S1 = concat "punct:\t", $S0
     $P0 = get_hll_global ['PAST'], 'Val'
     .tailcall $P0.'new'('node'=>node, 'value'=>$S1)
@@ -86,7 +86,7 @@ transform past (Lua::TestLex::punctuator) :language('PIR') {
 =cut
 
 transform past (Lua::TestLex::Name) :language('PIR') {
-    $S0 = node.'result_object'()
+    $S0 = node.'ast'()
     $S1 = concat "Name:\t", $S0
     $P0 = get_hll_global ['PAST'], 'Val'
     .tailcall $P0.'new'('node'=>node, 'value'=>$S1)
@@ -101,14 +101,14 @@ transform past (Lua::TestLex::String) :language('PIR') {
     $I0 = defined node['quoted_literal']
     unless $I0 goto L1
     $P0 = node['quoted_literal']
-    $S0 = $P0.'result_object'()
+    $S0 = $P0.'ast'()
     $S1 = concat "String:\t", $S0
     goto L9
   L1:
     $I0 = defined node['long_string']
     unless $I0 goto L2
     $P0 = node['long_string']
-    $S0 = $P0.'result_object'()
+    $S0 = $P0.'ast'()
     $S1 = concat "LongString:\t", $S0
     goto L9
   L2:
@@ -124,7 +124,7 @@ transform past (Lua::TestLex::String) :language('PIR') {
 =cut
 
 transform past (Lua::TestLex::Number) :language('PIR') {
-    $S0 = node.'result_object'()
+    $S0 = node.'ast'()
     $S1 = concat "Number:\t", $S0
     $P0 = get_hll_global ['PAST'], 'Val'
     .tailcall $P0.'new'('node'=>node, 'value'=>$S1)

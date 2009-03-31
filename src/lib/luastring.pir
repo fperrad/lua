@@ -325,14 +325,14 @@ are also returned, after the two indices.
   L2:
     unless $I0 < $I1 goto L3
     $P0 = capts[$I0]
-    $I10 = can $P0, 'text'
+    $I10 = can $P0, 'Str'
     if $I10 goto L4
     $I10 = $P0
     new $P1, 'LuaNumber'
     set $P1, $I10
     goto L5
   L4:
-    $S0 = $P0.'text'()
+    $S0 = $P0.'Str'()
     $I2 = index $S0, "\0"
     if $I2 < 0 goto L6
     # sorry, strictly compatible
@@ -349,7 +349,7 @@ are also returned, after the two indices.
   L1:
     unless whole == 1 goto L7
     set res, 1
-    $S0 = match.'text'()
+    $S0 = match.'Str'()
     $I2 = index $S0, "\0"
     if $I2 < 0 goto L8
     # sorry, strictly compatible
@@ -783,7 +783,7 @@ is replaced.
     $I0 = index digits, $S0
     if $I0 < 0 goto L3
     unless $S0 == '0' goto L4
-    $S0 = match.'text'()
+    $S0 = match.'Str'()
     goto L3
   L4:
     dec $I0
@@ -803,14 +803,14 @@ is replaced.
     $I0 = exists $P0[i]
     unless $I0 goto L1
     $P1 = $P0[i]
-    $I0 = can $P1, 'text'
+    $I0 = can $P1, 'Str'
     if $I0 goto L2
     $I0 = $P1
     new $P0, 'LuaNumber'
     set $P0, $I0
     .return ($P0)
   L2:
-    $S0 = $P1.'text'()
+    $S0 = $P1.'Str'()
     $I0 = index $S0, "\0"
     if $I0 < 0 goto L3
     # sorry, strictly compatible

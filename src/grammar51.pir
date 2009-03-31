@@ -50,7 +50,7 @@ L<http://www.lua.org/manual/5.1/manual.html#2.1>.
     $S0 .= $S1
     $S0 .= ': '
     $S0 .= message
-    $S1 = mob.'text'()
+    $S1 = mob.'Str'()
     if $S1 == '' goto L1
     $S0 .= " near '"
     $S0 .= $S1
@@ -166,7 +166,7 @@ by prefixing them with C<0x>. Examples of valid numerical constants are
     .local string target
     .local int pos, lastpos
 
-    target = mob.'text'()
+    target = mob.'Str'()
     lastpos = length target
   L_alt1:     #   0 [Xx] <xdigit>+
     pos = 0
@@ -316,7 +316,7 @@ no problem with them.)
   L1:
     $S0 = substr target, pos, 1
     if $S0 != delim goto L2
-    mob.'result_object'(literal)
+    mob.'!make'(literal)
     mob.'to'(pos)
     .return (mob)
   L2:
@@ -453,7 +453,7 @@ and C<'1'> is coded as 49), the five literals below denote the same string:
     ($I0, $I1) = _skip_sep(target, pos, ']')
     if $I1 != sep goto L7
     pos = $I0 + 1
-    mob.'result_object'(literal)
+    mob.'!make'(literal)
     mob.'to'(pos)
     goto END
   L7:
@@ -535,7 +535,7 @@ long bracket. Long comments are frequently used to disable code temporarily.
     ($I0, $I1) = _skip_sep(target, pos, ']')
     if $I1 != sep goto L7
     pos = $I0 + 1
-#    mob.'result_object'(literal)
+#    mob.'!make'(literal)
     mob.'to'(pos)
     goto END
   L7:

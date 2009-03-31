@@ -201,7 +201,7 @@ transform past (Lua::Grammar::fornum) :language('PIR') {
     symbtab = get_hll_global ['Lua';'PAST'], '$symbtab'
     symbtab.'push_scope'()
     $P0 = node['Name']
-    $S0 = $P0.'result_object'()
+    $S0 = $P0.'ast'()
     .local pmc name
     $S1 = symbtab.'insert'($S0)
     $P0 = get_hll_global ['PAST'], 'Var'
@@ -242,7 +242,7 @@ transform past (Lua::Grammar::forlist) :language('PIR') {
   L1:
     unless iter goto L2
     $P0 = shift iter
-    $S0 = $P0.'result_object'()
+    $S0 = $P0.'ast'()
     $S1 = symbtab.'insert'($S0)
     $P0 = get_hll_global ['PAST'], 'Var'
     cpast = $P0.'new'('node'=>node, 'name'=>$S1, 'scope'=>'lexical', 'isdecl'=>1, 'lvalue'=>1)
@@ -285,7 +285,7 @@ transform past (Lua::Grammar::local_declaration) :language('PIR') {
   L3:
     unless iter goto L4
     $P0 = shift iter
-    $S0 = $P0.'result_object'()
+    $S0 = $P0.'ast'()
     $S1 = symbtab.'insert'($S0)
     $P0 = get_hll_global ['PAST'], 'Var'
     cpast = $P0.'new'('node'=>node, 'name'=>$S1, 'scope'=>'lexical', 'isdecl'=>1, 'lvalue'=>1)
@@ -302,7 +302,7 @@ transform past (Lua::Grammar::local_function) :language('PIR') {
     symbtab = get_hll_global ['Lua';'PAST'], '$symbtab'
     .local pmc var
     $P0 = node['Name']
-    $S0 = $P0.'result_object'()
+    $S0 = $P0.'ast'()
     $S1 = symbtab.'insert'($S0)
     $P1 = get_hll_global ['PAST'], 'Var'
     var = $P1.'new'('node'=>$P0, 'name'=>$S1, 'scope'=>'lexical', 'isdecl'=>1, 'lvalue'=>1)
@@ -420,7 +420,7 @@ transform past (Lua::Grammar::function_stat) :language('PIR') {
     .local pmc past, var
     $P0 = node['functionname']
     var = tree.'get'('past', $P0, 'Lua::Grammar::functionname')
-    $S0 = $P0.'result_object'()
+    $S0 = $P0.'ast'()
     $I0 = index $S0, ':'
     if $I0 < 0 goto L1
     $P1 = get_hll_global ['PAST'], 'Var'
@@ -449,7 +449,7 @@ transform Name (Lua::Grammar::functionname) :language('PIR') {
     name = concat '.'
   L3:
     $P0 = shift iter
-    $S0 = $P0.'result_object'()
+    $S0 = $P0.'ast'()
     name = concat $S0
     goto L2
   L1:
@@ -464,7 +464,7 @@ transform past (Lua::Grammar::functionname) :language('PIR') {
     $P0 = node['Name']
     new iter, 'Iterator', $P0
     $P0 = shift iter
-    $S0 = $P0.'result_object'()
+    $S0 = $P0.'ast'()
     .local pmc past
     $P0 = get_hll_global ['PAST'], 'Var'
     ($I0, $S1) = symbtab.'lookup'($S0)
@@ -476,7 +476,7 @@ transform past (Lua::Grammar::functionname) :language('PIR') {
   L2:
     unless iter goto L3
     $P0 = shift iter
-    $S0 = $P0.'result_object'()
+    $S0 = $P0.'ast'()
     .local pmc key
     $P1 = get_hll_global ['PAST'], 'Val'
     key = $P1.'new'('node'=>$P0, 'name'=>'key', 'value'=>$S0)
@@ -512,7 +512,7 @@ transform past (Lua::Grammar::function_body) :language('PIR') {
   L4:
     unless iter goto L3
     $P1 = shift iter
-    $S0 = $P1.'result_object'()
+    $S0 = $P1.'ast'()
     $S1 = symbtab.'insert'($S0)
     $P2 = get_hll_global ['PAST'], 'Var'
     var = $P2.'new'('node'=>$P1, 'name'=>$S1, 'scope'=>'parameter')
@@ -600,7 +600,7 @@ transform record (Lua::Grammar::record_field) :language('PIR') {
 
 
 transform key (Lua::Grammar::Name) :language('PIR') {
-    $S0 = node.'result_object'()
+    $S0 = node.'ast'()
     $P0 = get_hll_global ['PAST'], 'Val'
     .tailcall $P0.'new'('node'=>node, 'name'=>'key', 'value'=>$S0)
 }
@@ -750,7 +750,7 @@ transform past (Lua::Grammar::Name) :language('PIR') {
     .local pmc symbtab
     symbtab = get_hll_global ['Lua';'PAST'], '$symbtab'
     $P0 = get_hll_global ['PAST'], 'Var'
-    $S0 = node.'result_object'()
+    $S0 = node.'ast'()
     ($I0, $S1) = symbtab.'lookup'($S0)
     unless $I0 goto L1
     .tailcall $P0.'new'('node'=>node, 'name'=>$S1, 'scope'=>'lexical')
@@ -789,7 +789,7 @@ transform past (Lua::Grammar::false) :language('PIR') {
 
 
 transform past (Lua::Grammar::number) :language('PIR') {
-    $S0 = node.'result_object'()
+    $S0 = node.'ast'()
     $P0 = get_hll_global ['PAST'], 'Val'
     .tailcall $P0.'new'('node'=>node, 'name'=>'LuaNumber', 'value'=>$S0)
 }
@@ -798,7 +798,7 @@ transform past (Lua::Grammar::number) :language('PIR') {
 transform past (Lua::Grammar::string) :language('PIR') {
     $S0 = node.'find_key'()
     $P0 = node[$S0]
-    $S0 = $P0.'result_object'()
+    $S0 = $P0.'ast'()
     $P0 = get_hll_global ['PAST'], 'Val'
     .tailcall $P0.'new'('node'=>node, 'name'=>'LuaString', 'value'=>$S0)
 }
