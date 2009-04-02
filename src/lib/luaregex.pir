@@ -727,7 +727,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
     .param string next
 
     .local string begin, end
-    $S0 = self
+    $S0 = self.'ast'()
     begin = substr $S0, 0, 1
     begin = code.'escape'(begin)
     end = substr $S0, 1, 1
