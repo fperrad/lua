@@ -87,9 +87,9 @@ PIRCODE
     .local pmc start
     $P0 = get_hll_global ['Lua'; 'POST'], 'Sub'
     start = $P0.'new'('name'=>'&start', 'pirflags'=>':anon :main')
+    start.'add_param'('args', 'optional'=>1)
     $S0 = post.'subid'()
     start.'push_pirop'('inline', $S0, 'inline'=><<'PIRCODE')
-    .param pmc args :optional
 #    print "start\n"
     load_bytecode "languages/lua/lua.pbc"
     lua_openlibs()

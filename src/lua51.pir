@@ -198,22 +198,13 @@ used in F<languages/lua/src/POSTGrammar.tg>
 
 .sub 'pir' :method :multi(_, ['Lua';'POST';'Chunk'])
     .param pmc node
-    .local pmc subcode
-    subcode = get_global '@!subcode'
-    $P0 = new 'CodeString'
-    push subcode, $P0
-    .local pmc code
-    code = self.'pir_children'(node)
     $S0 = node.'prologue'()
     if $S0 == '' goto L1
-    new code, 'CodeString'
+    .local pmc code
+    code = find_caller_lex '$CODE'
     code.'emit'($S0)
-    $P0 = pop subcode
-    code .= $P0
-    $P0 = subcode[-1]
-    $P0 .= code
   L1:
-    .return (code)
+    .tailcall self.'pir_children'(node)
 .end
 
 
