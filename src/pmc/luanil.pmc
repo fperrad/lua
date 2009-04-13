@@ -79,9 +79,7 @@ Creates and returns a clone of the scalar.
 
 */
     VTABLE PMC* clone() {
-        PMC * const dest = pmc_new(INTERP, PMC_type(SELF));
-        STRUCT_COPY(&PMC_union(dest), &PMC_union(SELF));
-        return dest;
+        return pmc_new(INTERP, PMC_type(SELF));
     }
 
 /*
