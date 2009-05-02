@@ -89,7 +89,8 @@
 
 PIRCODE
     $P0 = getattribute self, 'top'
-    $S0 = $P0.'translate'('&function_0', '&start')
+    $P1 = getattribute $P0, 'source'
+    $S0 = $P0.'translate'('&function_0', '&start', $P1)
     pir .= $S0
     .return (pir)
 .end
@@ -150,6 +151,7 @@ PIRCODE
 .sub 'translate' :method
     .param string funcname
     .param string outer
+    .param string source
     .local string pir
     pir = ".sub '" . funcname
     pir .= "' :anon :lex :outer('"
@@ -171,6 +173,7 @@ PIRCODE
     inc i
     goto L1
   L2:
+
     .local int is_vararg
     $P0 = getattribute self, 'is_vararg'
     is_vararg = $P0
@@ -180,6 +183,9 @@ PIRCODE
   L3:
     pir .= "    .param pmc extra :slurpy\n"
   L4:
+    pir .= ".annotate 'file', '"
+    pir .= source
+    pir .= "'\n"
     i = 0
   L5:
     unless i < numparams goto L6
@@ -225,7 +231,7 @@ PIRCODE
     pir .= $S0
     pir .= ".end\n\n"
     $P0 = getattribute self, 'p'
-    $S0 = $P0.'translate'(funcname)
+    $S0 = $P0.'translate'(funcname, source)
     pir .= $S0
     .return (pir)
 .end
@@ -390,6 +396,7 @@ PIRCODE
 
 .sub 'translate' :method
     .param string outer
+    .param string source
     .local string pir
     .local int i, n
     pir = ''
@@ -402,7 +409,7 @@ PIRCODE
     $S0 = i
     funcname .= $S0
     $P0 = self[i]
-    $S0 = $P0.'translate'(funcname, outer)
+    $S0 = $P0.'translate'(funcname, outer, source)
     pir .= $S0
     inc i
     goto L1
