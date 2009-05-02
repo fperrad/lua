@@ -220,7 +220,8 @@ PIRCODE
     pir .= "    .local pmc subr, env\n"
     pir .= "    subr = interpinfo .INTERPINFO_CURRENT_SUB\n"
     $P0 = getattribute self, 'code'
-    $S0 = $P0.'translate'(self, funcname)
+    $P1 = getattribute self, 'lineinfo'
+    $S0 = $P0.'translate'(self, funcname, $P1)
     pir .= $S0
     pir .= ".end\n\n"
     $P0 = getattribute self, 'p'

@@ -167,6 +167,7 @@ sub generate_initial_code {
 .sub 'translate' :method
     .param pmc func
     .param string funcname
+    .param pmc lineinfo
     .local string gen_pir
     .local int pc, next_pc, bc_length, cur_ic, cur_op
     .local int arg_a
@@ -175,6 +176,7 @@ sub generate_initial_code {
     .local int stack
     .local int nups
     .local int upval
+    .local int line
     .local pmc closure
     .local pmc lex
 
@@ -183,6 +185,7 @@ sub generate_initial_code {
     stack = 0
     nups = 0
     upval = 0
+    line = 0
     new lex, 'Hash'
 
 PIRCODE
@@ -201,6 +204,15 @@ PIRCODE
 
     # Emit label generation code.
     $pir .= <<'PIRCODE';
+    $I0 = lineinfo[pc]
+    unless line < $I0 goto SAME_LINE
+    line = $I0
+    gen_pir = concat ".annotate 'line', "
+    $S0 = line
+    gen_pir = concat $S0
+    gen_pir = concat "\n"
+  SAME_LINE:
+
     $S0 = pc
     gen_pir = concat "PC"
     gen_pir = concat $S0
