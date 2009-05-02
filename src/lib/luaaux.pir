@@ -1007,7 +1007,7 @@ This function never returns.
   L1:
     .local pmc bt
     bt = ex.'backtrace'()
-    $S0 = where()
+    $S0 = where(bt)
     $S1 = ex
     $S0 .= $S1
     $S0 .= "\n"
@@ -1019,7 +1019,34 @@ This function never returns.
 .end
 
 .sub 'where' :anon
-    # dummy implementation
+    .param pmc bt
+    .local pmc iter, frame, sub, outer, annos
+    new iter, 'Iterator', bt
+    .local string ret
+    ret = ""
+  L1:
+    unless iter goto L2
+    frame = shift iter
+    sub = frame['sub']
+    if null sub goto L2
+    outer = sub.'get_outer'()
+    if null outer goto L1
+    annos = frame['annotations']
+    .local string file, line
+    file = annos['file']
+    if file goto L3
+    file = "_._"
+  L3:
+    line = annos['line']
+    if line goto L4
+    line = "0"
+  L4:
+    ret .= file
+    ret .= ':'
+    ret .= line
+    ret .= ': '
+    .return (ret)
+  L2:
     .return ("_._:0: ")
 .end
 
