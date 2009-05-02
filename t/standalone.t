@@ -20,7 +20,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../lib", "$FindBin::Bin";
 
-use Parrot::Test tests => 22;
+use Parrot::Test tests => 23;
 use Test::More;
 use Parrot::Test::Lua;
 
@@ -70,6 +70,25 @@ Hello World
 OUTPUT
 
 unlink("$FindBin::Bin/../../../hello.luac") if ( -f "$FindBin::Bin/../../../hello.luac" );
+
+unlink("$FindBin::Bin/../../../bt.lua") if ( -f "$FindBin::Bin/../../../bt.lua" );
+open my $X, '>', "$FindBin::Bin/../../../bt.lua";
+print {$X} << 'CODE';
+function f ()
+    error "TRACK"
+end
+
+f()
+CODE
+close $X;
+
+system("luac -o $FindBin::Bin/../../../bt.luac $FindBin::Bin/../../../bt.lua");
+
+language_output_like( 'lua', undef, << 'OUTPUT', 'bytecode translation & traceback', params => "bt.luac"  );
+/bt\.lua:2: TRACK\nstack traceback:\n/
+OUTPUT
+
+unlink("$FindBin::Bin/../../../bt.luac") if ( -f "$FindBin::Bin/../../../bt.luac" );
 }
 
 language_output_is( 'lua', undef, << 'OUTPUT', 'redirect', params => "< hello.lua"  );
