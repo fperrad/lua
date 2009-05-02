@@ -207,7 +207,7 @@ PIRCODE
     $I0 = lineinfo[pc]
     unless line < $I0 goto SAME_LINE
     line = $I0
-    gen_pir = concat ".annotate 'line', "
+    gen_pir = concat "  .annotate 'line', "
     $S0 = line
     gen_pir = concat $S0
     gen_pir = concat "\n"

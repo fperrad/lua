@@ -183,7 +183,7 @@ PIRCODE
   L3:
     pir .= "    .param pmc extra :slurpy\n"
   L4:
-    pir .= ".annotate 'file', '"
+    pir .= "    .annotate 'file', '"
     pir .= source
     pir .= "'\n"
     i = 0
