@@ -1025,14 +1025,14 @@ This function never returns.
 
 .sub 'str_traceback'
     .param pmc bt
-    .local pmc iter, sub, outer, annos
+    .local pmc iter, frame, sub, outer, annos
     new iter, 'Iterator', bt
     .local string ret
     ret = "stack traceback:"
   L1:
     unless iter goto L2
-    $P0 = shift iter
-    sub = $P0['sub']
+    frame = shift iter
+    sub = frame['sub']
     if null sub goto L2
     $I0 = isa sub, 'LuaFunction'
     unless $I0 goto L5
@@ -1047,12 +1047,24 @@ This function never returns.
     ret .= "[PIR]:"
     goto L4
   L3:
-    ret .= "_._:0:"
+    annos = frame['annotations']
+    .local string file, line
+    file = annos['file']
+    if file goto L7
+    file = "_._"
+  L7:
+    line = annos['line']
+    if line goto L8
+    line = "0"
+  L8:
+    ret .= file
+    ret .= ':'
+    ret .= line
+    ret .= ':'
   L4:
     ret .= " in function '"
     ret .= $S0
     ret .= "'"
-    annos = $P0['annotations']
     goto L1
   L2:
     .return (ret)
