@@ -221,8 +221,12 @@ the specified C<PMC>.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return LuaNumber.n.neg(dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            const FLOATVAL v = - VTABLE_get_number(INTERP, n);
+            dest = pmc_new(INTERP, dynpmc_LuaNumber);
+            VTABLE_set_number_native(INTERP, dest, v);
+            return dest;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -240,8 +244,10 @@ the specified C<PMC>.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            LuaNumber.n.i_neg();
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            const FLOATVAL v = - VTABLE_get_number(INTERP, n);
+            VTABLE_set_number_native(INTERP, n, v);
+        }
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -309,8 +315,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_add_LuaNumber_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "add", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -321,8 +331,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_add_LuaString_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "add", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -356,7 +370,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_add_LuaNumber(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_add", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
@@ -369,7 +384,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_add_LuaString(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_add", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
@@ -403,8 +419,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_subtract_LuaNumber_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "subtract", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -415,8 +435,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_subtract_LuaString_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "subtract", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -450,7 +474,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_subtract_LuaNumber(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_subtract", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
@@ -463,7 +488,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_subtract_LuaString(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_subtract", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
@@ -498,8 +524,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_multiply_LuaNumber_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "multiply", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -510,8 +540,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_multiply_LuaString_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "multiply", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -545,7 +579,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_multiply_LuaNumber(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_multiply", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
@@ -558,7 +593,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_multiply_LuaString(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_multiply", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
@@ -592,8 +628,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_divide_LuaNumber_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "divide", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -604,8 +644,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_divide_LuaString_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "divide", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -640,7 +684,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_divide_LuaNumber(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_divide", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
@@ -653,7 +698,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_divide_LuaString(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_divide", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
@@ -687,8 +733,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_modulus_LuaNumber_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "modulus", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -699,8 +749,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_modulus_LuaString_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "modulus", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -735,7 +789,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_modulus_LuaNumber(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_modulus", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
@@ -748,7 +803,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_modulus_LuaString(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_modulus", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
@@ -782,8 +838,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_pow_LuaNumber_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "pow", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -794,8 +854,12 @@ Used to unarchive the string.
         Parrot_PCCINVOKE(interp, SELF, Parrot_str_new_constant(interp, "tonumber"),
             "->P", &n);
 
-        if (PMC_type(n) == dynpmc_LuaNumber)
-            return Parrot_LuaNumber_multi_pow_LuaString_PMC(INTERP, n, value, dest);
+        if (PMC_type(n) == dynpmc_LuaNumber) {
+            PMC *result = PMCNULL;
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "pow", "PPP->P", n, value, dest, &result);
+            return result;
+        }
 
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
             "attempt to perform arithmetic on a %Ss value", SELF.name());
@@ -830,7 +894,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_pow_LuaNumber(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_pow", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
@@ -843,7 +908,8 @@ Used to unarchive the string.
             "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
-            Parrot_LuaNumber_multi_i_pow_LuaString(INTERP, n, value);
+            Parrot_mmd_multi_dispatch_from_c_args(INTERP,
+                "i_pow", "PP", n, value);
         else
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value",
