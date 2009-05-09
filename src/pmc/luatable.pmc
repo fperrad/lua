@@ -562,8 +562,8 @@ C<table> mutator.
             value = NULL;
         }
         else {
-            value = VTABLE_clone(interp, value);
-            key   = VTABLE_clone(interp, key);
+            value = VTABLE_clone(INTERP, value);
+            key   = VTABLE_clone(INTERP, key);
         }
 
         *lua_set(INTERP, t_val(SELF), key) = value;
@@ -581,7 +581,7 @@ Need by NameSpace.export_to().
     VTABLE void set_pmc_keyed_str(STRING *key, PMC *value) {
         PMC * const pmc_key = pmc_new(INTERP, dynpmc_LuaString);
         VTABLE_set_string_native(INTERP, pmc_key, Parrot_str_copy(INTERP, key));
-        value = VTABLE_clone(interp, value);
+        value = VTABLE_clone(INTERP, value);
         *lua_set(INTERP, t_val(SELF), pmc_key) = value;
     }
 
@@ -806,8 +806,8 @@ The C<==> operation. Compares reference (not in depth).
             value = NULL;
         }
         else {
-            value = VTABLE_clone(interp, value);
-            key   = VTABLE_clone(interp, key);
+            value = VTABLE_clone(INTERP, value);
+            key   = VTABLE_clone(INTERP, key);
         }
 
         *lua_set(INTERP, t_val(SELF), key) = value;

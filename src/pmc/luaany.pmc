@@ -534,7 +534,7 @@ Without shortcut like in Default PMC.
 */
     VTABLE INTVAL cmp(PMC *value) {
         INTVAL retval;
-        Parrot_mmd_multi_dispatch_from_c_args(interp,
+        Parrot_mmd_multi_dispatch_from_c_args(INTERP,
                 "cmp", "PP->I", SELF, value, &retval);
         return retval;
     }
