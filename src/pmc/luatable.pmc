@@ -357,9 +357,9 @@ static void lua_mark_table(PARROT_INTERP, LuaHash *t, STRING *mode)
     for (i = 0; i < t->size; i++) {
         if (v[i].val) {
             if (mark_key)
-                pobject_lives(interp, (PObj *)v[i].key);
+                Parrot_gc_mark_PObj_alive(interp, (PObj *)v[i].key);
             if (mark_val)
-                pobject_lives(interp, (PObj *)v[i].val);
+                Parrot_gc_mark_PObj_alive(interp, (PObj *)v[i].val);
         }
     }
 }
@@ -424,7 +424,7 @@ Marks the hash as live.
             lua_mark_table(INTERP, t_val(SELF), mode);
 
         if (meta)
-            pobject_lives(INTERP, (PObj *)meta);
+            Parrot_gc_mark_PObj_alive(INTERP, (PObj *)meta);
     }
 
 /*

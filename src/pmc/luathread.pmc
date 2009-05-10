@@ -100,9 +100,9 @@ Marks the Parrot::Coroutine as live.
 */
     VTABLE void mark() {
         if (t_val(SELF))
-            pobject_lives(INTERP, (PObj *)t_val(SELF));
+            Parrot_gc_mark_PObj_alive(INTERP, (PObj *)t_val(SELF));
         if (t_env(SELF))
-            pobject_lives(INTERP, (PObj *)t_env(SELF));
+            Parrot_gc_mark_PObj_alive(INTERP, (PObj *)t_env(SELF));
     }
 
 /*

@@ -93,11 +93,11 @@ Marks the userdata as live.
 */
     VTABLE void mark() {
         if (u_val(SELF))
-            pobject_lives(INTERP, (PObj *)u_val(SELF));
+            Parrot_gc_mark_PObj_alive(INTERP, (PObj *)u_val(SELF));
         if (u_env(SELF))
-            pobject_lives(INTERP, (PObj *)u_env(SELF));
+            Parrot_gc_mark_PObj_alive(INTERP, (PObj *)u_env(SELF));
         if (u_mt(SELF))
-            pobject_lives(INTERP, (PObj *)u_mt(SELF));
+            Parrot_gc_mark_PObj_alive(INTERP, (PObj *)u_mt(SELF));
     }
 
 /*

@@ -105,7 +105,7 @@ Marks the string as live.
         STRING * str_val;
         GET_ATTR_str_val(INTERP, SELF, str_val);
         if (str_val)
-            pobject_lives(INTERP, (PObj *)str_val);
+            Parrot_gc_mark_PObj_alive(INTERP, (PObj *)str_val);
     }
 
 /*
