@@ -16,8 +16,6 @@ This singleton PMC holds a factory.
 
 */
 
-#include "parrot/embed.h"
-
 /*** from lua.h ***/
 
 /* type of numbers in Lua */
