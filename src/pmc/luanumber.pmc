@@ -18,7 +18,6 @@ the Lua C<Number> type.
 */
 
 #include "lua_private.h"
-#include "pmc_luastring.h"
 
 #define LUA_NUMBER_FMT          "%.14g"
 

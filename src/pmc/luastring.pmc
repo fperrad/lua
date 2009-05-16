@@ -18,7 +18,6 @@ the Lua C<String> type.
 */
 
 #include "lua_private.h"
-#include "pmc_luanumber.h"
 
 PMC *
 _LuaString_get_metatable(PARROT_INTERP) {

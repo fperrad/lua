@@ -6,8 +6,6 @@
 #ifndef PARROT_LUA_PRIVATE_H_GUARD
 #define PARROT_LUA_PRIVATE_H_GUARD
 
-#include "parrot/parrot.h"
-
 extern INTVAL dynpmc_LuaBoolean;
 extern INTVAL dynpmc_LuaFunction;
 extern INTVAL dynpmc_LuaNil;
