@@ -90,8 +90,8 @@ PIRCODE
     start.'add_param'('args', 'optional'=>1)
     $P0 = find_caller_lex '$?FILES'
     if null $P0 goto L6
-    $S0 = $P0
-    start.'push_pirop'('inline', $S0, 'inline'=>'    .annotate "file", "%0"')
+    $S0 = start.'escape'($P0)
+    start.'push_pirop'('inline', $S0, 'inline'=>'    .annotate "file", %0')
   L6:
     $S0 = post.'subid'()
     start.'push_pirop'('inline', $S0, 'inline'=><<'PIRCODE')
