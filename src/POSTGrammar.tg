@@ -96,7 +96,13 @@ PIRCODE
     $S0 = post.'subid'()
     start.'push_pirop'('inline', $S0, 'inline'=><<'PIRCODE')
 #    print "start\n"
-    load_bytecode "languages/lua/lua.pbc"
+    $I0 = stat 'lua.pbc', .STAT_EXISTS
+    unless $I0 goto L1
+    load_bytecode 'lua.pbc'
+    goto L2
+  L1:
+    load_bytecode 'languages/lua/lua.pbc'
+  L2:
     lua_openlibs()
     .local pmc env
     env = get_hll_global "_G"
@@ -105,16 +111,17 @@ PIRCODE
     .const "Sub" main = "%0"
     main."setfenv"(env)
     ($I0, $P0) = docall(main, vararg :flat)
-    unless $I0 goto L1
+    unless $I0 goto L3
     printerr "luap: "
     printerr $P0
-  L1:
+  L3:
 PIRCODE
     post.'outer'(start)
     start.'push'(post)
     $P0 = get_hll_global ['Lua'; 'POST'], 'Chunk'
     .tailcall $P0.'new'(start, 'node'=>node, 'prologue'=><<'PIRCODE')
 .include "interpinfo.pasm"
+.include 'stat.pasm'
 .HLL "lua"
 .loadlib "lua_group"
 PIRCODE
