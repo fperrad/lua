@@ -602,6 +602,8 @@ messages and in debug information.
 .sub 'parser' :anon
     .param string data
     .param string chunkname
+    $P0 = box chunkname
+    .lex '$?FILES', $P0
     .local pmc lua_comp
     lua_comp = compreg 'lua'
     push_eh _handler
