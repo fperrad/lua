@@ -1091,8 +1091,8 @@ This function never returns.
     ret .= line
     ret .= ':'
   L4:
-    $I0 = index $S0, '&'
-    if $I0 == 0 goto L9
+    $S1 = substr $S0, 0, 5
+    if $S1 == '&main' goto L9
     ret .= " in function '"
     ret .= $S0
     ret .= "'"
