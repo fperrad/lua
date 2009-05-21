@@ -43,7 +43,7 @@ language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'struct.size"s"' );
 require "struct"
 print(struct.size("s"))
 CODE
-/^[^:]+: [^:]+:\d+: options `c0' - `s' have undefined sizes\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: options `c0' - `s' have undefined sizes\nstack traceback:\n/
 OUTPUT
 
 

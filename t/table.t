@@ -57,14 +57,14 @@ language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'function concat (out of ra
 t = {"a","b","c","d","e"}
 print(table.concat(t,",",2,7))
 CODE
-/^[^:]+: [^:]+:\d+: invalid value \(nil\) at index 6 in table for 'concat'\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: invalid value \(nil\) at index 6 in table for 'concat'\nstack traceback:\n/
 OUTPUT
 
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'function concat (non-string)' );
 t = {"a","b",true,"d","e"}
 print(table.concat(t,","))
 CODE
-/^[^:]+: [^:]+:\d+: invalid value \(boolean\) at index 3 in table for 'concat'\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: invalid value \(boolean\) at index 3 in table for 'concat'\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'function foreach (array)' );
@@ -182,7 +182,7 @@ language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'function setn' );
 a = {}
 table.setn(a, 10000)
 CODE
-/^[^:]+: [^:]+:\d+: 'setn' is obsolete\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: 'setn' is obsolete\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'function sort' );
@@ -317,7 +317,7 @@ language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'function sort (bad func)' 
 local t = { 1 }
 table.sort( { t, t, t, t, }, function (a, b) return a[1] == b[1] end )
 CODE
-/^[^:]+: [^:]+:\d+: invalid order function for sorting\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: invalid order function for sorting\nstack traceback:\n/
 OUTPUT
 
 # Local Variables:

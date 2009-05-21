@@ -98,7 +98,7 @@ language_output_like( 'lua', <<'CODE', <<'OUT', 'debug.setfenv (forbidden)' );
 t = {}
 debug.setfenv(t, t)
 CODE
-/^[^:]+: [^:]+:\d+: 'setfenv' cannot change environment of given object\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: 'setfenv' cannot change environment of given object\nstack traceback:\n/
 OUT
 
 language_output_is( 'lua', <<'CODE', <<'OUT', 'debug.setmetatable' );

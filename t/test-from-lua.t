@@ -165,7 +165,7 @@ OUTPUT
 
 $code = Parrot::Test::slurp_file( "$FindBin::Bin/test/readonly.lua" );
 language_output_like( 'lua', $code, << 'OUTPUT', 'readonly' );
-/^[^:]+: [^:]+:\d+: cannot redefine global variable `y'\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: cannot redefine global variable `y'\nstack traceback:\n/
 OUTPUT
 
 #

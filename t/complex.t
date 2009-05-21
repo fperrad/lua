@@ -73,14 +73,14 @@ language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'complex bad cast' );
 require 'complex'
 print(complex.real({}))
 CODE
-/^[^:]+: [^:]+:\d+: bad argument #1 to 'real' \(complex number expected, got table\)\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: bad argument #1 to 'real' \(complex number expected, got table\)\nstack traceback:\n/
 OUTPUT
 
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'complex bad cast' );
 require 'complex'
 print(complex.real('str'))
 CODE
-/^[^:]+: [^:]+:\d+: bad argument #1 to 'real' \(number expected, got string\)\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: bad argument #1 to 'real' \(number expected, got string\)\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'complex __unm' );

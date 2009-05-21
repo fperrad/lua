@@ -101,7 +101,7 @@ language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'lpeg.P(nil)' );
 require "lpeg"
 local a = lpeg.P(nil)
 CODE
-/^[^:]+: [^:]+:\d+: bad argument #1 to 'P' \(pattern expected, got nil\)\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: bad argument #1 to 'P' \(pattern expected, got nil\)\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'lpeg.S"A"' );
@@ -124,14 +124,14 @@ language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'lpeg.V()' );
 require "lpeg"
 local a = lpeg.V()
 CODE
-/^[^:]+: [^:]+:\d+: bad argument #1 to 'V' \(non-nil value expected\)\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: bad argument #1 to 'V' \(non-nil value expected\)\nstack traceback:\n/
 OUTPUT
 
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'lpeg.V(nil)' );
 require "lpeg"
 local a = lpeg.V(nil)
 CODE
-/^[^:]+: [^:]+:\d+: bad argument #1 to 'V' \(non-nil value expected\)\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: bad argument #1 to 'V' \(non-nil value expected\)\nstack traceback:\n/
 OUTPUT
 
 

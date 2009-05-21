@@ -164,7 +164,7 @@ for i = first(), limit(), step() do
     print(i)
 end
 CODE
-/^[^:]+: [^:]+:\d+: 'for' limit must be a number\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: 'for' limit must be a number\nstack traceback:\n/
 OUT
 
 TODO: {

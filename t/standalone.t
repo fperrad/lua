@@ -48,7 +48,7 @@ language_output_like( 'lua', <<'CODE', <<'OUT', 'shebang misplaced' );
 #!/usr/bin/env lua
 print("Hello World")
 CODE
-/^lua[^:]*: [^:]+:\d+: /
+/^lua[^:]*: (\w:)?[^:]+:\d+: /
 OUT
 
 unlink("$FindBin::Bin/../../../hello.lua") if ( -f "$FindBin::Bin/../../../hello.lua" );
@@ -114,7 +114,7 @@ $ENV{LUA_INIT} = 'error "init"';
 language_output_like( 'lua', <<'CODE', <<'OUT', 'LUA_INIT error' );
 print("Hello World")
 CODE
-/^lua[^:]*: [^:]+:\d+: init\nstack traceback:\n/
+/^lua[^:]*: (\w:)?[^:]+:\d+: init\nstack traceback:\n/
 OUT
 delete $ENV{LUA_INIT};
 
@@ -122,7 +122,7 @@ $ENV{LUA_INIT} = '?syntax error?';
 language_output_like( 'lua', <<'CODE', <<'OUT', 'LUA_INIT bad string' );
 print("Hello World")
 CODE
-/^lua[^:]*: [^:]+:\d+: /
+/^lua[^:]*: (\w:)?[^:]+:\d+: /
 OUT
 delete $ENV{LUA_INIT};
 
@@ -148,7 +148,7 @@ $ENV{LUA_INIT} = '@boot.lua';
 language_output_like( 'lua', <<'CODE', <<'OUT', 'LUA_INIT bad file' );
 print("Hello World")
 CODE
-/^lua[^:]*: [^:]+:\d+: /
+/^lua[^:]*: (\w:)?[^:]+:\d+: /
 OUT
 
 unlink("$FindBin::Bin/../../../boot.lua");
@@ -179,7 +179,7 @@ $ENV{TEST_PROG_ARGS} = '-e "?syntax error?"';
 language_output_like( 'lua', <<'CODE', <<'OUT', '-e bad' );
 print "hello"
 CODE
-/^lua[^:]*: [^:]+:\d+: /
+/^lua[^:]*: (\w:)?[^:]+:\d+: /
 OUT
 
 $ENV{TEST_PROG_ARGS} = '-v';
@@ -233,7 +233,7 @@ $ENV{TEST_PROG_ARGS} = '-l no_lib';
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', '-l no_lib' );
 print "hello"
 CODE
-/^lua[^:]*: [^:]+:\d+: module 'no_lib' not found:\n/
+/^lua[^:]*: (\w:)?[^:]+:\d+: module 'no_lib' not found:\n/
 OUTPUT
 
 }

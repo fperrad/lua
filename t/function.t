@@ -201,7 +201,7 @@ function f ()
 end
 f()
 CODE
-/^([^:]+: )?[^:]+:\d+: cannot use '...' outside a vararg function/
+/^([^:]+: )?(\w:)?[^:]+:\d+: cannot use '...' outside a vararg function/
 OUT
 }
 
@@ -215,7 +215,7 @@ function f()
     print "after"
 end
 CODE
-/^([^:]+: )?[^:]+:\d+: no loop to break/
+/^([^:]+: )?(\w:)?[^:]+:\d+: no loop to break/
 OUT
 
 language_output_is( 'lua', <<'CODE', <<'OUT', 'tail call' );

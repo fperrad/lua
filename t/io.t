@@ -105,7 +105,7 @@ f = io.open("file.txt")
 io.close(f)
 io.close(f)
 CODE
-/^[^:]+: [^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
 OUTPUT
 
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'io.flush (closed)' );
@@ -113,7 +113,7 @@ f = io.open("file.txt")
 io.close(f)
 f:flush()   -- io.flush(f)
 CODE
-/^[^:]+: [^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'io.type' );
@@ -251,7 +251,7 @@ f = io.open("file.txt")
 f:close()
 f:flush()
 CODE
-/^[^:]+: [^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
 OUTPUT
 
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'file:read closed' );
@@ -259,7 +259,7 @@ f = io.open("file.txt")
 f:close()
 print(f:read())
 CODE
-/^[^:]+: [^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'file:read' );
@@ -278,7 +278,7 @@ language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'file:read invalid' );
 f = io.open("file.txt")
 f:read("*z")
 CODE
-/^[^:]+: [^:]+:\d+: bad argument #1 to 'read' \(invalid (format|option)\)\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: bad argument #1 to 'read' \(invalid (format|option)\)\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'file:read *l' );
@@ -342,7 +342,7 @@ f = io.open("file.txt")
 f:close()
 print(f:seek("end", 0))
 CODE
-/^[^:]+: [^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
 OUTPUT
 
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'file:seek invalid' );
@@ -350,7 +350,7 @@ f = io.open("file.txt")
 print(f:seek("bad", 0))
 f:close()
 CODE
-/^[^:]+: [^:]+:\d+: bad argument #1 to 'seek' \(invalid option 'bad'\)\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: bad argument #1 to 'seek' \(invalid option 'bad'\)\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'file:seek' );
@@ -393,7 +393,7 @@ f = io.open("file.out", "w")
 f:close()
 f:write("end")
 CODE
-/^[^:]+: [^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to use a closed file\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'file:write' );

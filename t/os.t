@@ -168,7 +168,7 @@ OUTPUT
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'function os.setlocale (bad category)' );
 print(os.setlocale('C', 'bad_cat'))
 CODE
-/^[^:]+: [^:]+:\d+: bad argument #2 to 'setlocale' \(invalid option 'bad_cat'\)\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: bad argument #2 to 'setlocale' \(invalid option 'bad_cat'\)\nstack traceback:\n/
 OUTPUT
 
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'function os.time' );
@@ -221,7 +221,7 @@ OUTPUT
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'function os.time (missing field)' );
 print(os.time({}))
 CODE
-/^[^:]+: [^:]+:\d+: field 'day' missing in date table\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: field 'day' missing in date table\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'function os.tmpname' );

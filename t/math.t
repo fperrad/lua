@@ -148,7 +148,7 @@ OUTPUT
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'function max 0' );
 print(math.max())
 CODE
-/^[^:]+: [^:]+:\d+: bad argument #1 to 'max' \(number expected, got no value\)\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: bad argument #1 to 'max' \(number expected, got no value\)\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'function max' );
@@ -164,7 +164,7 @@ OUTPUT
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'function min 0' );
 print(math.min())
 CODE
-/^[^:]+: [^:]+:\d+: bad argument #1 to 'min' \(number expected, got no value\)\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: bad argument #1 to 'min' \(number expected, got no value\)\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'function min' );
@@ -216,7 +216,7 @@ OUTPUT
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'function random too many arg' );
 print(math.random(1, 2, 3))
 CODE
-/^[^:]+: [^:]+:\d+: wrong number of arguments\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: wrong number of arguments\nstack traceback:\n/
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'function randomseed' );

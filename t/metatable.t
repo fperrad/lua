@@ -43,7 +43,7 @@ setmetatable(t, mt)
 assert(getmetatable(t) == "not your business")
 setmetatable(t, {})
 CODE
-/^[^:]+: [^:]+:\d+: cannot change a protected metatable\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: cannot change a protected metatable\nstack traceback:\n/
 OUT
 
 language_output_is( 'lua', <<'CODE', <<'OUT', 'metatable for string' );
@@ -102,7 +102,7 @@ setmetatable(t, t.mt)
 t.mt.__tostring = "not a function"
 print(tostring(t))
 CODE
-/^[^:]+:( [^:]+:\d+:)? attempt to call a string value\nstack traceback:\n/
+/^[^:]+:( (\w:)?[^:]+:\d+:)? attempt to call a string value\nstack traceback:\n/
 OUT
 
 language_output_is( 'lua', <<'CODE', <<'OUT', 'cplx __add' );
@@ -778,7 +778,7 @@ days = readOnly{"Sunday", "Monday", "Tuesday", "Wednesday",
 
 days[2] = "Noday"
 CODE
-/^[^:]+: [^:]+:\d+: attempt to update a read-only table\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to update a read-only table\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', 'declaring global variables' );
@@ -793,7 +793,7 @@ setmetatable(_G, {
 
 a = 1
 CODE
-/^[^:]+: [^:]+:\d+: attempt to write to undeclared variable a\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to write to undeclared variable a\nstack traceback:\n/
 OUT
 
 language_output_is( 'lua', <<'CODE', <<'OUT', 'declaring global variables' );

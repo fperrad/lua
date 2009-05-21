@@ -29,7 +29,7 @@ OUT
 language_output_like( 'lua', <<'CODE', <<'OUT', '# 1' );
 print(# 1)
 CODE
-/^[^:]+: [^:]+:-?\d+: attempt to get length of a number value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:-?\d+: attempt to get length of a number value\nstack traceback:\n/
 OUT
 
 language_output_is( 'lua', <<'CODE', <<'OUT', 'not 1' );
@@ -89,73 +89,73 @@ OUT
 language_output_like( 'lua', <<'CODE', <<'OUT', '10 + true' );
 print(10 + true)
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a boolean value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a boolean value\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '2 - nil' );
 print(2 - nil)
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a nil value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a nil value\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '3.14 * false' );
 print(3.14 * false)
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a boolean value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a boolean value\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '-7 / {}' );
 print(-7 / {})
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a table value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a table value\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '3 ^ true' );
 print(3 ^ true)
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a boolean value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a boolean value\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '-25 % false' );
 print(-25 % false)
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a boolean value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a boolean value\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '10 + "text"' );
 print(10 + "text")
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '2 - "text"' );
 print(2 - "text")
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '3.14 * "text"' );
 print(3.14 * "text")
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '-7 / "text"' );
 print(-7 / "text")
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '25 % "text"' );
 print(25 % "text")
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '3 ^ "text"' );
 print(3 ^ "text")
 CODE
-/^[^:]+: [^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to perform arithmetic on a string value\nstack traceback:\n/
 OUT
 
 language_output_is( 'lua', <<'CODE', <<'OUT', '10 + "2"' );
@@ -209,7 +209,7 @@ OUT
 language_output_like( 'lua', <<'CODE', <<'OUT', '1 .. true' );
 print(1 .. true)
 CODE
-/^[^:]+: [^:]+:\d+: attempt to concatenate a \w+ value\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to concatenate a \w+ value\nstack traceback:\n/
 OUT
 
 language_output_is( 'lua', <<'CODE', <<'OUT', '1.0 == 1' );
@@ -275,49 +275,49 @@ OUT
 language_output_like( 'lua', <<'CODE', <<'OUT', '1 < false' );
 print(1 < false)
 CODE
-/^[^:]+: [^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '1 <= nil' );
 print(1 <= nil)
 CODE
-/^[^:]+: [^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '1 > true' );
 print(1 > true)
 CODE
-/^[^:]+: [^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '1 >= {}' );
 print(1 >= {})
 CODE
-/^[^:]+: [^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '1 < "0"' );
 print(1 < "0")
 CODE
-/^[^:]+: [^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '1 <= "0"' );
 print(1 <= "0")
 CODE
-/^[^:]+: [^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '1 > "0"' );
 print(1 > "0")
 CODE
-/^[^:]+: [^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', '1 >= "0"' );
 print(1 >= "0")
 CODE
-/^[^:]+: [^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to compare \w+ with \w+\nstack traceback:\n/
 OUT
 
 language_output_is( 'lua', <<'CODE', <<'OUT', '1e9' );
@@ -334,14 +334,14 @@ language_output_like( 'lua', <<'CODE', <<'OUT', 'get_pmc_keyed' );
 a = 3.14
 print(a[1])
 CODE
-/^[^:]+: [^:]+:\d+: attempt to index/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to index/
 OUT
 
 language_output_like( 'lua', <<'CODE', <<'OUT', 'set_pmc_keyed' );
 a = 3.14
 a[1] = 1
 CODE
-/^[^:]+: [^:]+:\d+: attempt to index/
+/^[^:]+: (\w:)?[^:]+:\d+: attempt to index/
 OUT
 
 # Local Variables:

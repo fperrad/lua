@@ -99,7 +99,7 @@ unlink("$FindBin::Bin/../../../complex.lua") if ( -f "$FindBin::Bin/../../../com
 language_output_like( 'lua', << 'CODE', << 'OUTPUT', 'function require (no module)' );
 require "no_module"
 CODE
-/^[^:]+: [^:]+:\d+: module 'no_module' not found:\n(\t.*\n)+stack traceback:\n/
+/^[^:]+: (\w:)?[^:]+:\d+: module 'no_module' not found:\n(\t.*\n)+stack traceback:\n/
 OUTPUT
 
 unlink("$FindBin::Bin/../../../foo.lua") if ( -f "$FindBin::Bin/../../../foo.lua" );
