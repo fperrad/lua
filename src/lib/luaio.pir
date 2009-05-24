@@ -181,7 +181,12 @@ LIST
     new res, 'LuaNil'
     goto L2
   L1:
-    chopn $S0, 1
+    $I0 = length $S0
+    dec $I0
+    $S1 = substr $S0, $I0
+    unless $S1 == "\n" goto L3
+    $S0 = substr $S0, 0, $I0
+  L3:
     new res, 'LuaString'
     set res, $S0
   L2:
@@ -554,8 +559,6 @@ or to write data to this program (if C<mode> is C<"w">).
 
 This function is system dependent and is not available on all platforms.
 
-NOT YET IMPLEMENTED.
-
 =cut
 
 .sub 'popen'
@@ -566,9 +569,11 @@ NOT YET IMPLEMENTED.
     .local pmc res
     $S1 = lua_checkstring(1, prog)
     $S2 = lua_optstring(2, mode, 'r')
-    not_implemented()
-#    f = open $S1, $S0
-#    unless f goto L1
+    $S2 .= 'p'
+    f = new 'FileHandle'
+    push_eh _handler
+    f.'open'($S1, $S2)
+    pop_eh
     res = newfile(f)
     .return (res)
   _handler:

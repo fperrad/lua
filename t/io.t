@@ -149,9 +149,6 @@ CODE
 OUTPUT
 unlink("$FindBin::Bin/../../../output.new") if ( -f "$FindBin::Bin/../../../output.new" );
 
-TODO: {
-    local $TODO = 'pipe not yet implemented';
-
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'io.popen' );
 f = io.popen("perl -e \"print 'standard output'\"")
 print(io.type(f))
@@ -161,7 +158,6 @@ CODE
 file
 standard output
 OUTPUT
-}
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'io.read *l', params => '< file.txt' );
 print(io.read("*l"))
