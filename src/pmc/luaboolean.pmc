@@ -45,7 +45,7 @@ Initializes the Boolean with a default value of C<false>.
 */
     VTABLE void init() {
         Parrot_LuaBoolean_attributes* attrs =
-            mem_allocate_zeroed_typed(Parrot_LuaBoolean_attributes);
+            mem_allocate_typed(Parrot_LuaBoolean_attributes);
         attrs->iv = 0;
         PMC_data(SELF) = attrs;
         PObj_active_destroy_SET(SELF);

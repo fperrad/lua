@@ -51,7 +51,7 @@ Initializes the function.
 */
     VTABLE void init() {
         Parrot_LuaFunction_attributes *attrs =
-            mem_allocate_zeroed_typed(Parrot_LuaFunction_attributes);
+            mem_allocate_typed(Parrot_LuaFunction_attributes);
 
         attrs->sub      = mem_allocate_zeroed_typed(Parrot_sub);
         attrs->sub->seg = INTERP->code;

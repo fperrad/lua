@@ -49,7 +49,7 @@ Initializes the string.
 */
     VTABLE void init() {
         Parrot_LuaString_attributes *attrs =
-            mem_allocate_zeroed_typed(Parrot_LuaString_attributes);
+            mem_allocate_typed(Parrot_LuaString_attributes);
         attrs->str_val = Parrot_str_new_noinit(INTERP, enum_stringrep_one, 0);
         PMC_data(SELF) = attrs;
         PObj_custom_mark_destroy_SETALL(SELF);
