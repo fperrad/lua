@@ -25,7 +25,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../lib", "$FindBin::Bin";
 
-use Parrot::Test tests => 41;
+use Parrot::Test tests => 42;
 use Test::More;
 use Parrot::Test::Lua;
 
@@ -149,7 +149,7 @@ CODE
 OUTPUT
 unlink("$FindBin::Bin/../../../output.new") if ( -f "$FindBin::Bin/../../../output.new" );
 
-language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'io.popen' );
+language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'io.popen (read)' );
 f = io.popen("perl -e \"print 'standard output'\"")
 print(io.type(f))
 print(f:read())
@@ -157,6 +157,16 @@ io.close(f)
 CODE
 file
 standard output
+OUTPUT
+
+language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'io.popen (write)' );
+f = io.popen("perl -pe \"s/e/a/\"", "w")
+print(io.type(f))
+f:write("hello\n")
+f:close()
+CODE
+file
+hallo
 OUTPUT
 
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'io.read *l', params => '< file.txt' );
