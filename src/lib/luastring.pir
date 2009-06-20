@@ -134,17 +134,17 @@ Note that numerical codes are not necessarily portable across platforms.
     .local pmc res
     new res, 'FixedPMCArray'
     set res, n
-    .local int i
-    i = 0
+    .local int idx
+    idx = 0
   L4:
-    unless i < n goto L5
-    $I0 = posi + i
+    unless idx < n goto L5
+    $I0 = posi + idx
     dec $I0
     $I1 = ord $S1, $I0
     new $P0, 'LuaNumber'
     set $P0, $I1
-    res[i] = $P0
-    inc i
+    res[idx] = $P0
+    inc idx
     goto L4
   L5:
     .return (res :flat)
