@@ -22,7 +22,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../lib", "$FindBin::Bin";
 
-use Parrot::Test tests => 16;
+use Parrot::Test tests => 17;
 use Test::More;
 use Parrot::Test::Lua;
 
@@ -279,6 +279,13 @@ print(f())
 CODE
 1
 2
+OUT
+
+language_output_like( 'lua', <<'CODE', <<'OUT', 'ambiguous' , todo => 'ambigous function call');
+a = f
+(g).x(a)
+CODE
+/^([^:]+: )?(\w:)?[^:]+:\d+: ambiguous syntax \(function call x new statement\)/
 OUT
 
 # Local Variables:
