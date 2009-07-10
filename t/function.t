@@ -281,7 +281,7 @@ CODE
 2
 OUT
 
-language_output_like( 'lua', <<'CODE', <<'OUT', 'ambiguous' , todo => 'ambigous function call');
+language_output_like( 'lua', <<'CODE', <<'OUT', 'ambiguous' );
 a = f
 (g).x(a)
 CODE
