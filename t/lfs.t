@@ -23,6 +23,7 @@ use lib "$FindBin::Bin/../../../lib", "$FindBin::Bin";
 use Parrot::Test tests => 18;
 use Test::More;
 use File::Spec;
+use Cwd qw(realpath);
 use Parrot::Test::Lua;
 
 my $test_prog = Parrot::Test::Lua::get_test_prog();
@@ -36,7 +37,7 @@ table
 LuaFileSystem 1.4.0
 OUT
 
-my $cwd = File::Spec->canonpath( "$FindBin::Bin/../../../" );
+my $cwd = File::Spec->canonpath( realpath( "$FindBin::Bin/../../../" ) );
 language_output_is( 'lua', << 'CODE', << "OUT", 'function lfs.currentdir' );
 require "lfs"
 print(lfs.currentdir())
