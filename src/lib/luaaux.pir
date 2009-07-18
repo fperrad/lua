@@ -940,14 +940,14 @@ This function never returns.
   L1:
     if null args goto L3
     # not interactive mode
-    .local pmc iter, i
-    new iter, 'Iterator', res
+    .local pmc it, i
+    it = iter res
     new i, 'LuaNumber'
     set i, 0
     new $P0, 'LuaTable'
   L4:
-    unless iter goto L5
-    $P1 = shift iter
+    unless it goto L5
+    $P1 = shift it
     $P0[i] = $P1
     inc i
     goto L4
@@ -1022,13 +1022,13 @@ This function never returns.
 
 .sub 'where' :anon
     .param pmc bt
-    .local pmc iter, frame, sub, outer, annos
-    new iter, 'Iterator', bt
+    .local pmc it, frame, sub, outer, annos
+    it = iter bt
     .local string ret
     ret = ""
   L1:
-    unless iter goto L2
-    frame = shift iter
+    unless it goto L2
+    frame = shift it
     sub = frame['sub']
     if null sub goto L2
     outer = sub.'get_outer'()
@@ -1054,13 +1054,13 @@ This function never returns.
 
 .sub 'str_traceback'
     .param pmc bt
-    .local pmc iter, frame, sub, outer, annos
-    new iter, 'Iterator', bt
+    .local pmc it, frame, sub, outer, annos
+    it = iter bt
     .local string ret
     ret = "stack traceback:"
   L1:
-    unless iter goto L2
-    frame = shift iter
+    unless it goto L2
+    frame = shift it
     sub = frame['sub']
     if null sub goto L2
     $I0 = isa sub, 'LuaFunction'
