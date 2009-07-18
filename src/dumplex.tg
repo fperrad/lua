@@ -28,11 +28,11 @@ transform past (ROOT) :language('PIR') {
     past = $P0.'new'('node'=>node)
     $P0 = node['token']
     if null $P0 goto L1
-    .local pmc iter
-    new iter, 'Iterator', $P0
+    .local pmc it
+    it = iter $P0
   L2:
-    unless iter goto L1
-    $P0 = shift iter
+    unless it goto L1
+    $P0 = shift it
     $P1 = tree.'get'('past', $P0, 'Lua::TestLex::token')
     past.'push'($P1)
     goto L2

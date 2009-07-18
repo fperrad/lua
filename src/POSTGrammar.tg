@@ -45,11 +45,11 @@ transform post (PAST;Block) :language('PIR') {
     post.'push'($P1)
     post.'ops_subr'($P1)
     set_hll_global ['Lua';'POST'], '$?SUB', post
-    .local pmc iter, cpost
-    iter = node.'iterator'()
+    .local pmc it, cpost
+    it = node.'iterator'()
   L2:
-    unless iter goto L3
-    $P0 = shift iter
+    unless it goto L3
+    $P0 = shift it
     cpost = tree.'get'('post', $P0)
     post.'push'(cpost)
     goto L2
@@ -132,11 +132,11 @@ transform post (PAST;Stmts) :language('PIR') {
     .local pmc ops
     $P0 = get_hll_global ['POST'], 'Ops'
     ops = $P0.'new'('node'=>node)
-    .local pmc iter
-    iter = node.'iterator'()
+    .local pmc it
+    it = node.'iterator'()
   L1:
-    unless iter goto L2
-    $P0 = shift iter
+    unless it goto L2
+    $P0 = shift it
     $P1 = tree.'get'('void', $P0)
     ops.'push'($P1)
     goto L1
@@ -203,13 +203,13 @@ transform pirop (PAST;Op) :language('PIR') {
     .local pmc ops
     $P0 = get_hll_global ['POST'], 'Ops'
     ops = $P0.'new'('node'=>node)
-    .local pmc arglist, iter
+    .local pmc arglist, it
     new arglist, 'ResizableStringArray'
-    iter = node.'iterator'()
+    it = node.'iterator'()
   L2:
-    unless iter goto L3
+    unless it goto L3
     .local pmc cpost
-    $P0 = shift iter
+    $P0 = shift it
     cpost = tree.'get'('post', $P0)
     ops.'push'(cpost)
     $S1 = cpost.'result'()
@@ -248,19 +248,19 @@ transform call (PAST;Op) :language('PIR') {
     .local pmc ops
     $P0 = get_hll_global ['POST'], 'Ops'
     ops = $P0.'new'('node'=>node)
-    .local pmc arglist, iter, cpost
+    .local pmc arglist, it, cpost
     new arglist, 'ResizableStringArray'
-    iter = node.'iterator'()
+    it = node.'iterator'()
     .local int first
     first = 1
   L1:
-    unless iter goto L2
-    $P0 = shift iter
+    unless it goto L2
+    $P0 = shift it
     cpost = tree.'get'('post', $P0)
     ops.'push'(cpost)
     $S0 = cpost.'result'()
     if first goto L3
-    if iter goto L3
+    if it goto L3
     ($I0, $P0) = cpost.'has_call_in_last_op'()
     unless $I0 goto L3
     $S1 = '(' . $S0
@@ -525,13 +525,13 @@ transform forlist (PAST;Op) :language('PIR') {
     .local pmc explist, rpost
     explist = node[1]
     .local string func, state, var
-    .local pmc iter
-    new iter, 'Iterator', explist
-    $P0 = shift iter
+    .local pmc it
+    it = iter explist
+    $P0 = shift it
     rpost = tree.'get'('post', $P0)
     ops.'push'(rpost)
     func = rpost.'result'()
-    if iter goto L1
+    if it goto L1
     $I0 = rpost.'has_call_in_last_op'()
     unless $I0 goto L1
     $P0 = rpost.'pop'()
@@ -548,12 +548,12 @@ transform forlist (PAST;Op) :language('PIR') {
     $P0.'result'($S0)
     rpost.'push'($P0)
   L1:
-    unless iter goto L4
-    $P0 = shift iter
+    unless it goto L4
+    $P0 = shift it
     rpost = tree.'get'('post', $P0)
     ops.'push'(rpost)
     state = rpost.'result'()
-    if iter goto L2
+    if it goto L2
     $I0 = rpost.'has_call_in_last_op'()
     unless $I0 goto L2
     $P0 = rpost.'pop'()
@@ -566,14 +566,14 @@ transform forlist (PAST;Op) :language('PIR') {
     $P0.'result'($S0)
     rpost.'push'($P0)
   L2:
-    unless iter goto L4
-    $P0 = shift iter
+    unless it goto L4
+    $P0 = shift it
     rpost = tree.'get'('post', $P0)
     ops.'push'(rpost)
     var = rpost.'result'()
   L3:
-    unless iter goto L4
-    $P0 = shift iter
+    unless it goto L4
+    $P0 = shift it
     rpost = tree.'get'('post', $P0)
     ops.'push'(rpost)
     goto L3
@@ -588,11 +588,11 @@ transform forlist (PAST;Op) :language('PIR') {
   L6:
     .local pmc namelist, lpost, tmp
     namelist = node[0]
-    new iter, 'Iterator', namelist
+    it = iter namelist
     new tmp, 'ResizableStringArray'
   L7:
-    unless iter goto L8
-    $P0 = shift iter
+    unless it goto L8
+    $P0 = shift it
     lpost = tree.'get'('post', $P0)
     lpost.'pop'()
     ops.'push'(lpost)
@@ -609,11 +609,11 @@ transform forlist (PAST;Op) :language('PIR') {
     $P1 = get_hll_global ['POST'], 'Label'
     $P0 = $P1.'new'('result'=>looplabel)
     ops.'push'($P0)
-    new iter, 'Iterator', tmp
+    it = iter tmp
     $S0 = '('
   L9:
-    unless iter goto L10
-    $S1 = shift iter
+    unless it goto L10
+    $S1 = shift it
     ops.'push_pirop'('new', $S1, '"LuaNil"')
     if $S0 == '(' goto L11
     $S0 .= ', '
@@ -646,15 +646,15 @@ transform return (PAST;Op) :language('PIR') {
     ops = $P0.'new'('node'=>node)
     .local pmc arglist
     new arglist, 'ResizableStringArray'
-    .local pmc iter, cpost
-    iter = node.'iterator'()
+    .local pmc it, cpost
+    it = node.'iterator'()
   L1:
-    unless iter goto L2
-    $P0 = shift iter
+    unless it goto L2
+    $P0 = shift it
     cpost = tree.'get'('post', $P0)
     ops.'push'(cpost)
     $S0 = cpost.'result'()
-    if iter goto L3
+    if it goto L3
     ($I0, $P0) = cpost.'has_call_in_last_op'()
     unless $I0 goto L3
     if arglist goto L4
@@ -716,19 +716,19 @@ transform assignlist (PAST;Op) :language('PIR') {
     .local pmc namelist, explist
     namelist = node[0]
     explist = node[1]
-    .local pmc iter, tmp, rpost
+    .local pmc it, tmp, rpost
     new tmp, 'ResizableStringArray'
-    new iter, 'Iterator', explist
+    it = iter explist
   L1:
-    unless iter goto L2
-    $P0 = shift iter
+    unless it goto L2
+    $P0 = shift it
     rpost = tree.'get'('post', $P0)
     ops.'push'(rpost)
     $S1 = rpost.'result'()
     $S2 = ops.'unique'('$P')
     ops.'push_pirop'('clone', $S2, $S1)
     push tmp, $S2
-    if iter goto L1
+    if it goto L1
     $I0 = rpost.'has_call_in_last_op'()
     unless $I0 goto L1
     $I1 = namelist
@@ -754,10 +754,10 @@ transform assignlist (PAST;Op) :language('PIR') {
     .local pmc ass, lpost
     $P0 = get_hll_global ['POST'], 'Ops'
     ass = $P0.'new'('node'=>node)
-    new iter, 'Iterator', namelist
+    it = iter namelist
   L5:
-    unless iter goto L6
-    $P0 = shift iter
+    unless it goto L6
+    $P0 = shift it
     unless tmp goto L7
     $S1 = shift tmp
     goto L8
@@ -855,14 +855,14 @@ transform constructor (PAST;Val) :language('PIR') {
     table = ops.'unique'('$P')
     ops.'push_pirop'('new', table, '"LuaTable"')
     ops.'result'(table)
-    .local pmc iter, kpost, vpost
+    .local pmc it, kpost, vpost
     .local string key, result
     .local int i
     i = 1
-    iter = node.'iterator'()
+    it = node.'iterator'()
   L1:
-    unless iter goto L2
-    $P0 = shift iter
+    unless it goto L2
+    $P0 = shift it
     $I0 = does $P0, 'array'
     if $I0 goto L3
     $P2 = get_hll_global ['POST'], 'Ops'
@@ -874,7 +874,7 @@ transform constructor (PAST;Val) :language('PIR') {
     kpost.'push_pirop'('set', result, $S0)
     kpost.'result'(result)
     vpost = tree.'get'('post', $P0)
-    if iter goto L4
+    if it goto L4
     $I0 = vpost.'has_call_in_last_op'()
     unless $I0 goto L4
     ops.'push'(kpost)

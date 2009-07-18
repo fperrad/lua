@@ -235,11 +235,11 @@ used in F<languages/lua/src/POSTGrammar.tg>
 
 .sub 'lookup' :method
     .param string name
-    .local pmc iter
-    new iter, 'Iterator', self
+    .local pmc it
+    it = iter self
   L1:
-    unless iter goto L2
-    $P0 = shift iter
+    unless it goto L2
+    $P0 = shift it
     $I0 = exists $P0[name]
     unless $I0 goto L1
     $S0 = $P0[name]

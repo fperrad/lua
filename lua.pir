@@ -315,15 +315,15 @@ show version information.
     argc = elements args
     narg = argc - n
     dec narg
-    .local pmc iter, t, i
-    new iter, 'Iterator', args
+    .local pmc it, t, i
+    it = iter args
     new t, 'LuaTable'
     new i, 'LuaNumber'
     $I0 = neg n
     set i, $I0
   L1:
-    unless iter goto L2
-    $S0 = shift iter
+    unless it goto L2
+    $S0 = shift it
     new $P0, 'LuaString'
     set $P0, $S0
     t[i] = $P0
