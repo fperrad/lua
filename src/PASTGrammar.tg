@@ -182,7 +182,7 @@ transform past (Lua::Grammar::for_stat) :language('PIR') {
     looplevel = get_hll_global ['Lua';'PAST'], '$looplevel'
     inc looplevel
     .local pmc past
-    $S0 = node.'find_key'()
+    $S0 = node.'find_key'( 'fornum', 'forlist' )
     $P0 = node[$S0]
     $S1 = concat 'Lua::Grammar::', $S0
     past = tree.'get'('past', $P0, $S1)
@@ -587,7 +587,7 @@ transform record (Lua::Grammar::record_field) :language('PIR') {
     .local pmc record
     new record, 'FixedPMCArray'
     set record, 2
-    $S0 = node.'find_key'()
+    $S0 = node.'find_key'( 'Name', 'index' )
     $P0 = node[$S0]
     $S0 = concat 'Lua::Grammar::', $S0
     $P1 = tree.'get'('key', $P0, $S0)
