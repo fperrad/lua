@@ -214,12 +214,12 @@ optimal file system I/O blocksize; (Unix only)
   L1:
     new res, 'LuaTable'
   L4:
-    .local pmc iter
-    new iter, 'Iterator', members
+    .local pmc it
+    it = split ' ', 'mode dev ino nlink uid gid rdev access modification change size blocks blksize'
     new $P2, 'LuaString'
   L5:
-    unless iter goto L6
-    $S2 = shift iter
+    unless it goto L6
+    $S2 = shift it
     set $P2, $S2
     $P3 = members[$S2]
     $P4 = $P3($P1)
