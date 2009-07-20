@@ -30,7 +30,7 @@ This implementation is based on F<runtime/parrot/library/MIME/Base64.pir>.
 .sub 'luaopen_base64'
 
 #    print "luaopen_base64\n"
-    load_bytecode 'MIME/Base64.pir'
+    load_bytecode 'MIME/Base64.pbc'
 
     .local pmc _lua__GLOBAL
     _lua__GLOBAL = get_hll_global '_G'
@@ -63,7 +63,7 @@ LIST
 #    set $P1, "_VERSION"
 #    _base64[$P1] = $P2
 
-    $P0 = get_hll_namespace ['MIME'; 'Base64']
+    $P0 = get_root_namespace ['parrot'; 'MIME'; 'Base64']
     $P1 = get_namespace
     $P2 = split ' ', 'decode_base64 encode_base64'
     $P0.'export_to'($P1, $P2)

@@ -28,7 +28,7 @@ This implementation is based on F<runtime/parrot/library/uuid.pir>.
 .sub 'luaopen_uuid'
 
 #    print "luaopen_uuid\n"
-    load_bytecode 'uuid.pir'
+    load_bytecode 'uuid.pbc'
 
     .local pmc _lua__GLOBAL
     _lua__GLOBAL = get_hll_global '_G'
@@ -68,7 +68,7 @@ LIST
 #    set $P1, "_VERSION"
 #    _uuid[$P1] = $P2
 
-    $P0 = get_hll_namespace ['uuid']
+    $P0 = get_root_namespace ['parrot'; 'uuid']
     $P1 = get_namespace
     $P2 = split ' ', 'generate generate_random generate_time parse'
     $P0.'export_to'($P1, $P2)

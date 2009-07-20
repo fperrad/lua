@@ -109,8 +109,8 @@ LIST
     set $P1, 'huge'
     _math[$P1] = $P0
 
-    load_bytecode 'Math/Rand.pir'
-    $P0 = get_hll_namespace ['Math'; 'Rand']
+    load_bytecode 'Math/Rand.pbc'
+    $P0 = get_root_namespace ['parrot'; 'Math'; 'Rand']
     $P1 = get_namespace
     $P2 = split ' ', 'rand srand RAND_MAX'
     $P0.'export_to'($P1, $P2)

@@ -26,7 +26,7 @@ see F<runtime/parrot/library/OpenGL.pir>.
 
 .sub 'luaopen_gl_binding'
 #    print 'luaopen_gl_binding\n'
-    load_bytecode 'OpenGL.pir'
+    load_bytecode 'OpenGL.pbc'
 
     .local pmc _lua__GLOBAL
     _lua__GLOBAL = get_hll_global '_G'
@@ -51,7 +51,7 @@ LIST
     set_hll_global ['gl_binding'], 'gl_str', $P0
 
     # Import all OpenGL/GLU/GLUT functions
-    $P0 = get_hll_global ['OpenGL'], '_export_all_functions'
+    $P0 = get_root_global ['parrot';'OpenGL'], '_export_all_functions'
     $P0(_gl_binding)
 
     .return (_gl_binding)

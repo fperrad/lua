@@ -30,11 +30,11 @@ see F<runtime/parrot/library/OpenGL.pir>.
 
 .sub 'luaopen_glut'
 #    print "luaopen_glut\n"
-    load_bytecode 'OpenGL.pir'
-    load_bytecode 'NCI/call_toolkit_init.pir'
+    load_bytecode 'OpenGL.pbc'
+    load_bytecode 'NCI/call_toolkit_init.pbc'
 
     # Import all OpenGL/GLU/GLUT functions
-    $P0 = get_hll_global ['OpenGL'], '_export_all_functions'
+    $P0 = get_root_global ['parrot';'OpenGL'], '_export_all_functions'
     $P0()
 
     .local pmc _lua__GLOBAL
