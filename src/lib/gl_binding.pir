@@ -85,7 +85,7 @@ LIST
     .param int enum
     .local pmc gl_str
     gl_str = get_hll_global ['gl_binding'], 'gl_str'
-    new $P0, 'Iterator', gl_str
+    $P0 = iter gl_str
   L1:
     unless $P0 goto L2
     $S0 = shift $P0

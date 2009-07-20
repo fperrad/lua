@@ -1059,7 +1059,7 @@ NOT YET IMPLEMENTED.
 
 .sub 'get_string' :vtable :method
     $S0 = "[]\n"
-    new $P0, 'Iterator', self
+    $P0 = iter self
     $I0 = 0
     new $P1, 'FixedIntegerArray'
     set $P1, 1
