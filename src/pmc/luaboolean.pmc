@@ -46,8 +46,8 @@ Initializes the Boolean with a default value of C<false>.
     VTABLE void init() {
         Parrot_LuaBoolean_attributes* attrs =
             mem_allocate_typed(Parrot_LuaBoolean_attributes);
-        attrs->iv = 0;
         PMC_data(SELF) = attrs;
+        SET_ATTR_iv(INTERP, SELF, 0);
         PObj_active_destroy_SET(SELF);
     }
 
@@ -62,6 +62,7 @@ Destroy this PMC.
 */
     VTABLE void destroy() {
         mem_sys_free(PMC_data(SELF));
+        PMC_data(SELF) = NULL;
     }
 
 /*

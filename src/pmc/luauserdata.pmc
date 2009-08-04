@@ -110,7 +110,6 @@ Call finalizer and free the userdata.
 
 */
     VTABLE void destroy() {
-        Parrot_LuaUserdata_attributes *u = PARROT_LUAUSERDATA(SELF);
 #if 0
         PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__gc");
 
@@ -118,10 +117,8 @@ Call finalizer and free the userdata.
             (void)Parrot_runops_fromc_args(INTERP, meth, "vP", SELF);
 #endif
 
-        if (u) {
-            mem_sys_free(u);
-            PMC_data(SELF) = NULL;
-        }
+        mem_sys_free(PMC_data(SELF));
+        PMC_data(SELF) = NULL;
     }
 
 /*

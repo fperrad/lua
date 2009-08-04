@@ -50,8 +50,9 @@ Initializes the string.
     VTABLE void init() {
         Parrot_LuaString_attributes *attrs =
             mem_allocate_typed(Parrot_LuaString_attributes);
-        attrs->str_val = Parrot_str_new_noinit(INTERP, enum_stringrep_one, 0);
+        STRING *_str = Parrot_str_new_noinit(INTERP, enum_stringrep_one, 0); 
         PMC_data(SELF) = attrs;
+        SET_ATTR_str_val(INTERP, SELF, _str);
         PObj_custom_mark_destroy_SETALL(SELF);
     }
 
@@ -66,6 +67,7 @@ Destroys this String PMC.
 */
     VTABLE void destroy() {
         mem_sys_free(PMC_data(SELF));
+        PMC_data(SELF) = NULL;
     }
 
 /*

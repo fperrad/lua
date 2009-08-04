@@ -388,8 +388,8 @@ Initializes the instance.
     VTABLE void init() {
         Parrot_LuaTable_attributes *t = mem_allocate_zeroed_typed(Parrot_LuaTable_attributes);
         PMC_data(SELF) = t;
-        PObj_custom_mark_destroy_SETALL(SELF);
         lua_new_table(INTERP, SELF);
+        PObj_custom_mark_destroy_SETALL(SELF);
     }
 
 /*

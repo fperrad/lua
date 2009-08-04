@@ -115,11 +115,8 @@ Call finalizer and free the thread.
 
 */
     VTABLE void destroy() {
-        Parrot_LuaThread_attributes *u = PARROT_LUATHREAD(SELF);
-        if (u) {
-            mem_sys_free(u);
-            PMC_data(SELF) = NULL;
-        }
+        mem_sys_free(PMC_data(SELF));
+        PMC_data(SELF) = NULL;
     }
 
 /*
