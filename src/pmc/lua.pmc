@@ -41,22 +41,20 @@ pmclass Lua
     void class_init() {
         Lua_PMC = NULL;
 
-        if (pass) {
-            dynpmc_LuaBoolean = pmc_type(INTERP,
-              Parrot_str_new_constant(INTERP, "LuaBoolean"));
-            dynpmc_LuaFunction = pmc_type(INTERP,
-              Parrot_str_new_constant(INTERP, "LuaFunction"));
-            dynpmc_LuaNil = pmc_type(INTERP,
-              Parrot_str_new_constant(INTERP, "LuaNil"));
-            dynpmc_LuaNumber = pmc_type(INTERP,
-              Parrot_str_new_constant(INTERP, "LuaNumber"));
-            dynpmc_LuaString = pmc_type(INTERP,
-              Parrot_str_new_constant(INTERP, "LuaString"));
-            dynpmc_LuaTable = pmc_type(INTERP,
-              Parrot_str_new_constant(INTERP, "LuaTable"));
-            dynpmc_LuaUserdata = pmc_type(INTERP,
-              Parrot_str_new_constant(INTERP, "LuaUserdata"));
-        }
+        dynpmc_LuaBoolean = pmc_type(INTERP,
+            Parrot_str_new_constant(INTERP, "LuaBoolean"));
+        dynpmc_LuaFunction = pmc_type(INTERP,
+            Parrot_str_new_constant(INTERP, "LuaFunction"));
+        dynpmc_LuaNil = pmc_type(INTERP,
+            Parrot_str_new_constant(INTERP, "LuaNil"));
+        dynpmc_LuaNumber = pmc_type(INTERP,
+            Parrot_str_new_constant(INTERP, "LuaNumber"));
+        dynpmc_LuaString = pmc_type(INTERP,
+            Parrot_str_new_constant(INTERP, "LuaString"));
+        dynpmc_LuaTable = pmc_type(INTERP,
+            Parrot_str_new_constant(INTERP, "LuaTable"));
+        dynpmc_LuaUserdata = pmc_type(INTERP,
+            Parrot_str_new_constant(INTERP, "LuaUserdata"));
     }
 
 /*
