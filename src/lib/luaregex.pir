@@ -641,7 +641,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
           set captob, pos
           inc captob
           %1
-          bsr %S
+          local_branch cstack, %S
           %2
           captscope = pop ustack
           goto fail\n
