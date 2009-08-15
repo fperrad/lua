@@ -31,7 +31,7 @@ see F<runtime/parrot/library/OpenGL.pir>.
 .sub 'luaopen_glut'
 #    print "luaopen_glut\n"
     load_bytecode 'OpenGL.pbc'
-    load_bytecode 'NCI/call_toolkit_init.pbc'
+    load_bytecode 'NCI/Utils.pbc'
 
     # Import all OpenGL/GLU/GLUT functions
     $P0 = get_root_global ['parrot';'OpenGL'], '_export_all_functions'
@@ -199,7 +199,7 @@ not LuaGL
     .local pmc argv
     new argv, 'ResizableStringArray'
     .const 'Sub' glutInit = 'glutInit'
-    $P0 = get_hll_global ['NCI'], 'call_toolkit_init'
+    $P0 = get_root_global ['parrot';'NCI'; 'Utils'], 'call_toolkit_init'
     $P0(glutInit, argv)
 .end
 
