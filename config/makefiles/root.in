@@ -157,6 +157,7 @@ build: \
 #IF(has_crypto): library/sha1.pbc \
  library/struct.pbc \
  library/uuid.pbc \
+ library/zlib.pbc \
  $(GEN_PIR) \
  $(GEN_PBC) \
  src/yapp/Lua/parser.pm
@@ -298,6 +299,9 @@ library/struct.pbc: $(LIBPATH)/struct.pir
 
 library/uuid.pbc: $(LIBPATH)/uuid.pir
 	-$(PARROT) --output=library/uuid.pbc $(LIBPATH)/uuid.pir
+
+library/zlib.pbc: $(LIBPATH)/zlib.pir
+	-$(PARROT) --output=library/zlib.pbc $(LIBPATH)/zlib.pir
 
 $(LIBPATH)/luabytecode_gen.pir: $(LIBPATH)/luabytecode.rules src/build/translator.pl
 	$(PERL) src/build/translator.pl $(LIBPATH)/luabytecode.rules \
