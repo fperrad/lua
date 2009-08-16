@@ -1,0 +1,8 @@
+
+Lua on Parrot
+=============
+
+It is the port of the language Lua 5.1 (http://www.lua.org)
+on the Parrot VM (http://www.parrot.org).
+
+Many external libraries are already included.
