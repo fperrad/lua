@@ -20,7 +20,6 @@ with the behaviour of the Lua C<Function> type.
 #include "lua_private.h"
 
 #define f_env(pmc) (PARROT_LUAFUNCTION(pmc))->env
-#define f_sub(pmc) (PARROT_LUAFUNCTION(pmc))->sub
 
 PMC *
 _LuaFunction_get_environment(PARROT_INTERP, PMC *obj) {
@@ -51,13 +50,9 @@ Initializes the function.
 */
     VTABLE void init() {
         Parrot_LuaFunction_attributes *attrs =
-            mem_allocate_typed(Parrot_LuaFunction_attributes);
-        struct Parrot_sub * _sub =
-            mem_allocate_zeroed_typed(Parrot_sub);
-        _sub->seg = INTERP->code;
+            mem_allocate_zeroed_typed(Parrot_LuaFunction_attributes);
+        attrs->seg = INTERP->code;
         PMC_data(SELF)  = attrs;
-        f_sub(SELF)     = _sub;
-        f_env(SELF)     = NULL;
         PObj_custom_mark_destroy_SETALL(SELF);
     }
 
@@ -71,13 +66,10 @@ Initializes the function.
     VTABLE void init_pmc(PMC *sub) {
         if (VTABLE_isa(INTERP, sub, Parrot_str_new_constant(INTERP, "Sub"))) {
             Parrot_LuaFunction_attributes *attrs =
-                mem_allocate_zeroed_typed(Parrot_LuaFunction_attributes);
-            struct Parrot_sub * _sub =
-                mem_allocate_typed(Parrot_sub);
+                mem_allocate_typed(Parrot_LuaFunction_attributes);
             /* copy the sub struct */
-            memcpy(_sub, f_sub(sub), sizeof (Parrot_sub));
+            memcpy(attrs, PMC_data(sub), sizeof (Parrot_Sub_attributes));
             PMC_data(SELF) = attrs;
-            f_sub(SELF)     = _sub;
             f_env(SELF)     = NULL;
             PObj_custom_mark_destroy_SETALL(SELF);
         }
@@ -164,8 +156,8 @@ Return the string "function".
 
 */
     MULTI INTVAL is_equal(LuaFunction value) {
-        Parrot_sub * const my_sub = f_sub(SELF);
-        Parrot_sub * const value_sub = f_sub(value);
+        Parrot_LuaFunction_attributes * const my_sub = PARROT_LUAFUNCTION(SELF);
+        Parrot_LuaFunction_attributes * const value_sub = PARROT_LUAFUNCTION(value);
         return my_sub->start_offs == value_sub->start_offs
             && my_sub->seg        == value_sub->seg;
     }
@@ -186,9 +178,9 @@ Return the string "function".
 
 */
     METHOD STRING *get_name() {
-        Parrot_sub * const sub = f_sub(SELF);
-        STRING * const retval = Parrot_str_copy(INTERP, sub->name);
-        RETURN(STRING *retval);
+        STRING *name;
+        GET_ATTR_name(INTERP, SELF, name);
+        RETURN(STRING *name);
     }
 
 /*
@@ -218,8 +210,8 @@ Return the string "function".
         INTVAL b = 0;
         PMC *retval;
         if (PMC_type(SELF) == PMC_type(value)) {
-            Parrot_sub * const my_sub = f_sub(SELF);
-            Parrot_sub * const value_sub = f_sub(value);
+            Parrot_LuaFunction_attributes * const my_sub = PARROT_LUAFUNCTION(SELF);
+            Parrot_LuaFunction_attributes * const value_sub = PARROT_LUAFUNCTION(value);
             b = (my_sub->start_offs == value_sub->start_offs
                  && my_sub->seg     == value_sub->seg)
               ? 1 : 0;
