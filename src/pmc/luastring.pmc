@@ -51,19 +51,7 @@ Initializes the string.
     VTABLE void init() {
         STRING *_str = Parrot_str_new_noinit(INTERP, enum_stringrep_one, 0);
         SET_ATTR_str_val(INTERP, SELF, _str);
-        PObj_custom_mark_destroy_SETALL(SELF);
-    }
-
-/*
-
-=item C<void destroy()>
-
-Destroys this String PMC.
-
-=cut
-
-*/
-    VTABLE void destroy() {
+        PObj_custom_mark_SET(SELF);
     }
 
 /*

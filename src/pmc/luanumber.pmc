@@ -46,19 +46,6 @@ Initializes the number to zero.
 */
     VTABLE void init() {
         SET_ATTR_fv(INTERP, SELF, 0.0);
-        PObj_active_destroy_SET(SELF);
-    }
-
-/*
-
-=item C<void destroy()>
-
-Destroy this PMC.
-
-=cut
-
-*/
-    VTABLE void destroy() {
     }
 
 /*

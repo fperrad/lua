@@ -84,7 +84,7 @@ Raises an exception. Use C<init_pmc()>.
                                  Parrot_str_new_constant(INTERP, "initial_sub"), sub);
         t_val(SELF) = VTABLE_instantiate(INTERP, classobj, init_args);
         t_env(SELF) = getcurrenv(INTERP);
-        PObj_custom_mark_destroy_SETALL(SELF);
+        PObj_custom_mark_SET(SELF);
     }
 
 /*
@@ -101,18 +101,6 @@ Marks the Parrot::Coroutine as live.
             Parrot_gc_mark_PObj_alive(INTERP, (PObj *)t_val(SELF));
         if (t_env(SELF))
             Parrot_gc_mark_PObj_alive(INTERP, (PObj *)t_env(SELF));
-    }
-
-/*
-
-=item C<void destroy()>
-
-Call finalizer and free the thread.
-
-=cut
-
-*/
-    VTABLE void destroy() {
     }
 
 /*

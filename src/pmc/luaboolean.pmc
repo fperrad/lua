@@ -46,19 +46,6 @@ Initializes the Boolean with a default value of C<false>.
 */
     VTABLE void init() {
         SET_ATTR_iv(INTERP, SELF, 0);
-        PObj_active_destroy_SET(SELF);
-    }
-
-/*
-
-=item C<void destroy()>
-
-Destroy this PMC.
-
-=cut
-
-*/
-    VTABLE void destroy() {
     }
 
 /*
