@@ -31,6 +31,7 @@ pmclass LuaString
     extends  LuaAny
     provides scalar
     provides string
+    auto_attrs
     dynpmc
     group    lua_group
     hll      lua
@@ -48,10 +49,7 @@ Initializes the string.
 
 */
     VTABLE void init() {
-        Parrot_LuaString_attributes *attrs =
-            mem_allocate_typed(Parrot_LuaString_attributes);
-        STRING *_str = Parrot_str_new_noinit(INTERP, enum_stringrep_one, 0); 
-        PMC_data(SELF) = attrs;
+        STRING *_str = Parrot_str_new_noinit(INTERP, enum_stringrep_one, 0);
         SET_ATTR_str_val(INTERP, SELF, _str);
         PObj_custom_mark_destroy_SETALL(SELF);
     }
@@ -66,8 +64,6 @@ Destroys this String PMC.
 
 */
     VTABLE void destroy() {
-        mem_sys_free(PMC_data(SELF));
-        PMC_data(SELF) = NULL;
     }
 
 /*

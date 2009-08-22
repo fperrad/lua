@@ -57,6 +57,7 @@ static PMC* getcurrenv(PARROT_INTERP) {
 pmclass LuaUserdata
     extends  LuaAny
     provides scalar
+    auto_attrs
     dynpmc
     need_ext
     group    lua_group
@@ -76,8 +77,6 @@ Initializes the userdata.
 
 */
     VTABLE void init() {
-        Parrot_LuaUserdata_attributes *u = mem_allocate_zeroed_typed(Parrot_LuaUserdata_attributes);
-        PMC_data(SELF) = u;
         u_env(SELF) = getcurrenv(INTERP);
         PObj_custom_mark_destroy_SETALL(SELF);
     }
@@ -116,9 +115,6 @@ Call finalizer and free the userdata.
         if (meth)
             (void)Parrot_runops_fromc_args(INTERP, meth, "vP", SELF);
 #endif
-
-        mem_sys_free(PMC_data(SELF));
-        PMC_data(SELF) = NULL;
     }
 
 /*
