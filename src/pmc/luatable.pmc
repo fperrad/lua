@@ -370,7 +370,6 @@ pmclass LuaTable
     provides hash
     auto_attrs
     dynpmc
-    need_ext
     group    lua_group
     hll      Lua {
 

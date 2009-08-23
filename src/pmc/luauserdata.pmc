@@ -59,7 +59,6 @@ pmclass LuaUserdata
     provides scalar
     auto_attrs
     dynpmc
-    need_ext
     group    lua_group
     hll      lua {
 

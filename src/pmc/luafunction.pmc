@@ -32,7 +32,6 @@ pmclass LuaFunction
     provides scalar
     provides sub
     dynpmc
-    need_ext
     group    lua_group
     hll      lua
     maps     Sub {

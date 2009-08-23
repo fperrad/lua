@@ -42,7 +42,6 @@ pmclass LuaThread
     extends LuaAny
     auto_attrs
     dynpmc
-    need_ext
     group lua_group
     hll lua {
 
