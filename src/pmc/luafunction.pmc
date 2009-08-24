@@ -31,6 +31,7 @@ pmclass LuaFunction
     extends  LuaAny
     provides scalar
     provides sub
+    auto_attrs
     dynpmc
     group    lua_group
     hll      lua
@@ -48,10 +49,8 @@ Initializes the function.
 
 */
     VTABLE void init() {
-        Parrot_LuaFunction_attributes *attrs =
-            mem_allocate_zeroed_typed(Parrot_LuaFunction_attributes);
+        Parrot_LuaFunction_attributes *attrs = PARROT_LUAFUNCTION(SELF);
         attrs->seg = INTERP->code;
-        PMC_data(SELF)  = attrs;
         PObj_custom_mark_destroy_SETALL(SELF);
     }
 
@@ -64,12 +63,10 @@ Initializes the function.
 */
     VTABLE void init_pmc(PMC *sub) {
         if (VTABLE_isa(INTERP, sub, Parrot_str_new_constant(INTERP, "Sub"))) {
-            Parrot_LuaFunction_attributes *attrs =
-                mem_allocate_typed(Parrot_LuaFunction_attributes);
+            Parrot_LuaFunction_attributes *attrs = PARROT_LUAFUNCTION(SELF);
             /* copy the sub struct */
             memcpy(attrs, PMC_data(sub), sizeof (Parrot_Sub_attributes));
-            PMC_data(SELF) = attrs;
-            f_env(SELF)     = NULL;
+            attrs->env = PMCNULL;
             PObj_custom_mark_destroy_SETALL(SELF);
         }
         else
