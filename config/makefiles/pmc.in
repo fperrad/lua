@@ -7,8 +7,7 @@ INCLUDE_DIR   := @includedir@$(VERSION_DIR)
 LIB_DIR       := @libdir@$(VERSION_DIR)
 SRC_DIR       := @srcdir@$(VERSION_DIR)
 TOOLS_DIR     := @libdir@$(VERSION_DIR)/tools/lib
-#STAGING_DIR   := ../../dynext
-STAGING_DIR   := @build_dir@/runtime/parrot/dynext
+STAGING_DIR   := ../../dynext
 #INSTALL_DIR   := $(LIB_DIR)/languages/lua/dynext
 INSTALL_DIR   := $(LIB_DIR)/dynext
 
