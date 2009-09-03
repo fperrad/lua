@@ -23,14 +23,9 @@ This implementation is based on C<Parrot::Coroutine>.
 #define t_val(pmc) (PARROT_LUATHREAD(pmc))->val
 #define t_env(pmc) (PARROT_LUATHREAD(pmc))->env
 
-static PMC* curr_func(PARROT_INTERP) {
-    Parrot_Context * const ctx = CONTEXT(interp);
-    return ctx->current_sub;
-}
-
 static PMC* getcurrenv(PARROT_INTERP) {
     PMC *env = NULL;
-    PMC * const sub = curr_func(interp);
+    PMC * const sub = Parrot_pcc_get_sub(interp, CURRENT_CONTEXT(interp));
     if (sub) {
         env = _LuaFunction_get_environment(interp, sub);
     }
