@@ -8,6 +8,8 @@ Makefile
 *.iss
 lua
 luap
+installable_lua
+installable_luap
 
 *.tmp
 *.sto
