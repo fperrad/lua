@@ -1,12 +1,12 @@
-#! perl
-# Copyright (C) 2005-2009, Parrot Foundation.
+#! ../../parrot
+# Copyright (C) 2009, Parrot Foundation.
 # $Id$
 
 =head1 LuaTable
 
 =head2 Synopsis
 
-    % perl t/pmc/table.t
+    % parrot t/pmc/table.t
 
 =head2 Description
 
@@ -15,369 +15,133 @@ Tests C<table> type
 
 =cut
 
-use strict;
-use warnings;
-use FindBin;
-use lib "$FindBin::Bin/../../../../lib";
-
-use Parrot::Test tests => 14;
-use Test::More;
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check inheritance' );
-.sub _main
+.sub 'main' :main
     loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    .local int bool1
-    bool1 = isa pmc1, 'scalar'
-    print bool1
-    print "\n"
-    bool1 = isa pmc1, 'LuaAny'
-    print bool1
-    print "\n"
-    bool1 = isa pmc1, 'LuaTable'
-    print bool1
-    print "\n"
-    end
+
+    .include 'test_more.pir'
+
+    plan(17)
+
+    check_inheritance()
+    check_interface()
+    check_name()
+    check_get_string()
+    check_get_bool()
+    check_logical_not()
+    check_key_PMC()
+    check_deletion()
 .end
-CODE
-0
-1
-1
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check interface' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    .local int bool1
-    bool1 = does pmc1, 'scalar'
-    print bool1
-    print "\n"
-    bool1 = does pmc1, 'no_interface'
-    print bool1
-    print "\n"
-    end
+.sub 'check_inheritance'
+    $P0 = new 'LuaTable'
+    $I0 = isa $P0, 'scalar'
+    is($I0, 0)
+    $I0 = isa $P0, 'LuaAny'
+    is($I0, 1)
+    $I0 = isa $P0, 'LuaTable'
+    is($I0, 1)
 .end
-CODE
-0
-0
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check name' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    .local string str1
-    str1 = typeof pmc1
-    print str1
-    print "\n"
-    end
+.sub 'check_interface'
+    $P0 = new 'LuaTable'
+    $I0 = does $P0, 'scalar'
+    is($I0, 0)
+    $I0 = does $P0, 'no_interface'
+    is($I0, 0)
 .end
-CODE
-table
-OUTPUT
 
-pir_output_like( << 'CODE', << 'OUTPUT', 'check get_string' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    print pmc1
-    print "\n"
-    end
+.sub 'check_name'
+    $P0 = new 'LuaTable'
+    $S0 = typeof $P0
+    is($S0, 'table')
 .end
-CODE
-/^table: [0-9A-Fa-f]{8}/
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check get_bool' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    .local int bool1
-    bool1 = istrue pmc1
-    print bool1
-    print "\n"
-    bool1 = istrue pmc1
-    print bool1
-    print "\n"
-    end
+.sub 'check_get_string'
+    $P0 = new 'LuaTable'
+    $S0 = $P0
+    like($S0, '^table: <[0..9A..Fa..f]>*')
 .end
-CODE
-1
-1
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check logical_not' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    .local pmc pmc2
-    pmc2 = new 'LuaBoolean'
-    pmc2 = not pmc1
-    print pmc2
-    print "\n"
-    .local string str1
-    str1 = typeof pmc2
-    print str1
-    print "\n"
-    end
+.sub 'check_get_bool'
+    $P0 = new 'LuaTable'
+    $I0 = istrue $P0
+    is($I0, 1)
 .end
-CODE
-false
-boolean
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check key PMC' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
+.sub 'check_logical_not'
+    $P0 = new 'LuaTable'
+    $P1 = not $P0
+    $S0 = $P1
+    is($S0, 'false')
+    $S0 = typeof $P1
+    is($S0, 'boolean')
+.end
+
+.sub 'check_key_PMC'
+    $P0 = new 'LuaTable'
     .local pmc val1
     val1 = new 'LuaString'
     val1 = "value1"
     .local pmc val2
     val2 = new 'LuaString'
     val2 = "value2"
-    pmc1[val1] = val1
-    pmc1[val2] = val2
-    .local pmc ret
-    ret = pmc1[val1]
-    print ret
-    print "\n"
-    ret = pmc1[val2]
-    print ret
-    print "\n"
-    ret = pmc1[pmc1]
-    print ret
-    print "\n"
-    end
-.end
-CODE
-value1
-value2
-nil
-OUTPUT
+    $P0[val1] = val1
+    $P0[val2] = val2
+    $P1 = $P0[val1]
+    $S0 = $P1
+    is($S0, "value1")
+    $P1 = $P0[val2]
+    $S0 = $P1
+    is($S0, "value2")
+    $P1 = $P0[$P0]
+    $S0 = $P1
+    is($S0, 'nil')
+ .end
 
-pir_error_output_like( << 'CODE', << 'OUTPUT', 'check key nil' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    .local pmc val1
-    val1 = new 'LuaString'
-    val1 = "value1"
-    .local pmc nil
-    nil = new 'LuaNil'
-    pmc1[nil] = val1
-    end
-.end
-CODE
-/^table index is nil/
-OUTPUT
+#~ pir_error_output_like( << 'CODE', << 'OUTPUT', 'check key nil' );
+#~ .sub _main
+    #~ loadlib $P0, 'lua_group'
+    #~ .local pmc pmc1
+    #~ pmc1 = new 'LuaTable'
+    #~ .local pmc val1
+    #~ val1 = new 'LuaString'
+    #~ val1 = "value1"
+    #~ .local pmc nil
+    #~ nil = new 'LuaNil'
+    #~ pmc1[nil] = val1
+    #~ end
+#~ .end
+#~ CODE
+#~ /^table index is nil/
+#~ OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check deletion by assignment of nil' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
+.sub 'check_deletion' # by assignment of nil
+    $P0 = new 'LuaTable'
     .local pmc val1
     val1 = new 'LuaString'
     val1 = "value1"
     .local pmc val2
     val2 = new 'LuaString'
     val2 = "value2"
-    .local int nb1
-    nb1 = elements pmc1
-    print nb1
-    print "\n"
-    pmc1[val1] = val1
-    nb1 = elements pmc1
-    print nb1
-    print "\n"
-    pmc1[val2] = val2
-    nb1 = elements pmc1
-    print nb1
-    print "\n"
+    $I0 = elements $P0
+    is($I0, 0)
+    $P0[val1] = val1
+    $I0 = elements $P0
+    is($I0, 1)
+    $P0[val2] = val2
+    $I0 = elements $P0
+    is($I0, 2)
     .local pmc nil
     nil = new 'LuaNil'
-    pmc1[val1] = nil
-    nb1 = elements pmc1
-    print nb1
-    print "\n"
-    end
+    $P0[val1] = nil
+    $I0 = elements $P0
+    is($I0, 1)
 .end
-CODE
-0
-1
-2
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check HLL' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    .local int bool1
-    bool1 = isa pmc1, 'LuaTable'
-    print bool1
-    print "\n"
-    end
-.end
-CODE
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check len' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    .local pmc key1
-    key1 = new 'LuaNumber'
-    set key1, 1
-    .local pmc val1
-    val1 = new 'LuaString'
-    set val1, "value1"
-    pmc1[key1] = val1
-    inc key1
-    .local pmc val2
-    val2 = new 'LuaString'
-    set val2, "value2"
-    pmc1[key1] = val2
-    inc key1
-    .local pmc val3
-    val3 = new 'LuaString'
-    set val3, "value3"
-    pmc1[key1] = val3
-    inc key1
-    .local pmc val4
-    val4 = new 'LuaString'
-    set val4, "value4"
-    pmc1[key1] = val4
-    .local pmc len
-    len = pmc1.'len'()
-    print len
-    print "\n"
-    val3 = new 'LuaNil'
-    dec key1
-    pmc1[key1] = val3
-    len = pmc1.'len'()
-    print len
-    print "\n"
-    end
-.end
-CODE
-4
-2
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check next' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    .local pmc key1
-    key1 = new 'LuaNumber'
-    set key1, 1
-    .local pmc val1
-    val1 = new 'LuaString'
-    set val1, "value1"
-    pmc1[key1] = val1
-    inc key1
-    .local pmc val2
-    val2 = new 'LuaString'
-    set val2, "value2"
-    pmc1[key1] = val2
-    inc key1
-    .local pmc val3
-    val3 = new 'LuaString'
-    set val3, "value3"
-    pmc1[key1] = val3
-    .local pmc nil
-    nil = new 'LuaNil'
-    .local pmc pmc2, key
-    $P0 = pmc1.'next'(nil)
-    key = $P0[0]
-    pmc2 = $P0[1]
-    print pmc2
-    print "\n"
-    $P0 = pmc1.'next'(key)
-    key = $P0[0]
-    pmc2 = $P0[1]
-    print pmc2
-    print "\n"
-    $P0 = pmc1.'next'(key)
-    key = $P0[0]
-    pmc2 = $P0[1]
-    print pmc2
-    print "\n"
-    $P0 = pmc1.'next'(key)
-    print $P0
-    print "\n"
-    end
-.end
-CODE
-value1
-value2
-value3
-nil
-OUTPUT
-
-pir_output_like( << 'CODE', << 'OUTPUT', 'check tostring' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    print pmc1
-    print "\n"
-    $P0 = pmc1.'tostring'()
-    print $P0
-    print "\n"
-    $S0 = typeof $P0
-    print $S0
-    print "\n"
-.end
-CODE
-/^
-table:\s[0-9A-Fa-f]{8}\n
-table:\s[0-9A-Fa-f]{8}\n
-string\n
-/x
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check tonumber' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaTable'
-    $P0 = pmc1.'tonumber'()
-    print $P0
-    print "\n"
-    $S0 = typeof $P0
-    print $S0
-    print "\n"
-.end
-CODE
-nil
-nil
-OUTPUT
 
 # Local Variables:
-#   mode: cperl
+#   mode: pir
 #   cperl-indent-level: 4
 #   fill-column: 100
 # End:
-# vim: expandtab shiftwidth=4:
+# vim: expandtab shiftwidth=4 ft=pir:
 

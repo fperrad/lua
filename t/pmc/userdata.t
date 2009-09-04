@@ -1,12 +1,12 @@
-#! perl
-# Copyright (C) 2005-2009, Parrot Foundation.
+#! ../../parrot
+# Copyright (C) 2009, Parrot Foundation.
 # $Id$
 
 =head1 LuaUserdata
 
 =head2 Synopsis
 
-    % perl t/pmc/userdata.t
+    % parrot t/pmc/userdata.t
 
 =head2 Description
 
@@ -15,198 +15,74 @@ Tests C<userdata> type
 
 =cut
 
-use strict;
-use warnings;
-use FindBin;
-use lib "$FindBin::Bin/../../../../lib";
-
-use Parrot::Test tests => 9;
-use Test::More;
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check inheritance' );
-.sub _main
+.sub 'main' :main
     loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaUserdata'
-    .local int bool1
-    bool1 = isa pmc1, 'scalar'
-    print bool1
-    print "\n"
-    bool1 = isa pmc1, 'LuaAny'
-    print bool1
-    print "\n"
-    bool1 = isa pmc1, 'LuaUserdata'
-    print bool1
-    print "\n"
-    end
-.end
-CODE
-0
-1
-1
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check interface' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaUserdata'
-    .local int bool1
-    bool1 = does pmc1, 'scalar'
-    print bool1
-    print "\n"
-    bool1 = does pmc1, 'no_interface'
-    print bool1
-    print "\n"
-    end
-.end
-CODE
-1
-0
-OUTPUT
+    .include 'test_more.pir'
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check name' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaUserdata'
-    .local string str1
-    str1 = typeof pmc1
-    print str1
-    print "\n"
-    end
-.end
-CODE
-userdata
-OUTPUT
+    plan(10)
 
-pir_output_like( << 'CODE', << 'OUTPUT', 'check get_string' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc val1
-    val1 = new 'Array'
-    .local pmc pmc1
-    pmc1 = new 'LuaUserdata'
-    setattribute pmc1, 'data', val1
-    print pmc1
-    print "\n"
-    end
+    check_inheritance()
+    check_interface()
+    check_name()
+    check_get_string()
+    check_get_bool()
+    check_logical_not()
 .end
-CODE
-/^userdata: [0-9A-Fa-f]{8}/
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check get_bool' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc val1
-    val1 = new 'Array'
-    .local pmc pmc1
-    pmc1 = new 'LuaUserdata'
-    setattribute pmc1, 'data', val1
-    .local int bool1
-    bool1 = istrue pmc1
-    print bool1
-    print "\n"
+.sub 'check_inheritance'
+    $P0 = new 'LuaUserdata'
+    $I0 = isa $P0, 'scalar'
+    is($I0, 0)
+    $I0 = isa $P0, 'LuaAny'
+    is($I0, 1)
+    $I0 = isa $P0, 'LuaUserdata'
+    is($I0, 1)
 .end
-CODE
-1
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check logical_not' );
-.sub _main
-    loadlib $P0, 'lua_group'
-    .local pmc val1
-    val1 = new 'Array'
-    .local pmc pmc1
-    pmc1 = new 'LuaUserdata'
-    setattribute pmc1, 'data', val1
-    .local pmc pmc2
-    pmc2 = new 'LuaBoolean'
-    pmc2 = not pmc1
-    print pmc2
-    print "\n"
-    .local string str1
-    str1 = typeof pmc2
-    print str1
-    print "\n"
-    end
+.sub 'check_interface'
+    $P0 = new 'LuaUserdata'
+    $I0 = does $P0, 'scalar'
+    is($I0, 1)
+    $I0 = does $P0, 'no_interface'
+    is($I0, 0)
 .end
-CODE
-false
-boolean
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check HLL' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc val1
-    val1 = new 'Array'
-    .local pmc pmc1
-    pmc1 = new 'LuaUserdata'
-    setattribute pmc1, 'data', val1
-    .local int bool1
-    bool1 = isa pmc1, 'LuaUserdata'
-    print bool1
-    print "\n"
-    end
-.end
-CODE
-1
-OUTPUT
-
-pir_output_like( << 'CODE', << 'OUTPUT', 'check tostring' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc val1
-    val1 = new 'Array'
-    .local pmc pmc1
-    pmc1 = new 'LuaUserdata'
-    setattribute pmc1, 'data', val1
-    print pmc1
-    print "\n"
-    $P0 = pmc1.'tostring'()
-    print $P0
-    print "\n"
+.sub 'check_name'
+    $P0 = new 'LuaUserdata'
     $S0 = typeof $P0
-    print $S0
-    print "\n"
+    is($S0, 'userdata')
 .end
-CODE
-/^
-userdata:\s[0-9A-Fa-f]{8}\n
-userdata:\s[0-9A-Fa-f]{8}\n
-string\n
-/x
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check tonumber' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc val1
-    val1 = new 'Array'
-    .local pmc pmc1
-    pmc1 = new 'LuaUserdata'
-    setattribute pmc1, 'data', val1
-    $P0 = pmc1.'tonumber'()
-    print $P0
-    print "\n"
-    $S0 = typeof $P0
-    print $S0
-    print "\n"
+.sub 'check_get_string'
+    $P0 = new 'LuaUserdata'
+    $S0 = $P0
+    like($S0, '^userdata: <[0..9A..Fa..f]>*')
 .end
-CODE
-nil
-nil
-OUTPUT
+
+.sub 'check_get_bool'
+    $P0 = new 'LuaUserdata'
+    $P1 = new 'Array'
+    setattribute $P0, 'data', $P1
+    $I0 = istrue $P0
+    is($I0, 1)
+.end
+
+.sub 'check_logical_not'
+    $P0 = new 'LuaUserdata'
+    $P1 = new 'Array'
+    setattribute $P0, 'data', $P1
+    $P2 = not $P0
+    $S0 = $P2
+    is($S0, 'false')
+    $S0 = typeof $P2
+    is($S0, 'boolean')
+.end
 
 # Local Variables:
-#   mode: cperl
+#   mode: pir
 #   cperl-indent-level: 4
 #   fill-column: 100
 # End:
-# vim: expandtab shiftwidth=4:
+# vim: expandtab shiftwidth=4 ft=pir:
 

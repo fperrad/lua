@@ -1,12 +1,12 @@
-#! perl
-# Copyright (C) 2005-2009, Parrot Foundation.
+#! ../../parrot
+# Copyright (C) 2009, Parrot Foundation.
 # $Id$
 
 =head1 LuaString
 
 =head2 Synopsis
 
-    % perl t/pmc/string.t
+    % parrot t/pmc/string.t
 
 =head2 Description
 
@@ -15,308 +15,76 @@ Tests C<LuaString> PMC
 
 =cut
 
-use strict;
-use warnings;
-use FindBin;
-use lib "$FindBin::Bin/../../../../lib";
+.sub 'main' :main
+    loadlib $P0, 'lua_group'
 
-use Parrot::Test tests => 15;
-use Test::More;
+    .include 'test_more.pir'
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check inheritance' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaString'
-    .local int bool1
-    bool1 = isa pmc1, 'LuaAny'
-    print bool1
-    print "\n"
-    bool1 = isa pmc1, 'LuaString'
-    print bool1
-    print "\n"
-    end
+    plan(11)
+
+    check_inheritance()
+    check_interface()
+    check_name()
+    check_get_bool()
+    check_logical_not()
+    check_embedded_zero()
 .end
-CODE
-1
-1
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check interface' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaString'
-    .local int bool1
-    bool1 = does pmc1, 'scalar'
-    print bool1
-    print "\n"
-    bool1 = does pmc1, 'string'
-    print bool1
-    print "\n"
-    bool1 = does pmc1, 'no_interface'
-    print bool1
-    print "\n"
-    end
+.sub 'check_inheritance'
+    $P0 = new 'LuaString'
+    $I0 = isa $P0, 'LuaAny'
+    is($I0, 1)
+    $I0 = isa $P0, 'LuaString'
+    is($I0, 1)
 .end
-CODE
-1
-1
-0
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check name' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaString'
-    .local string str1
-    str1 = typeof pmc1
-    print str1
-    print "\n"
-    end
+.sub 'check_interface'
+    $P0 = new 'LuaString'
+    $I0 = does $P0, 'scalar'
+    is($I0, 1)
+    $I0 = does $P0, 'string'
+    is($I0, 1)
+    $I0 = does $P0, 'no_interface'
+    is($I0, 0)
 .end
-CODE
-string
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check get_bool' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaString'
-    pmc1 = "str"
-    .local int bool1
-    bool1 = istrue pmc1
-    print bool1
-    print "\n"
-    pmc1 = ""
-    bool1 = istrue pmc1
-    print bool1
-    print "\n"
-    end
-.end
-CODE
-1
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check logical_not' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaString'
-    pmc1 = "str"
-    .local pmc pmc2
-    pmc2 = new 'LuaBoolean'
-    pmc2 = not pmc1
-    print pmc2
-    print "\n"
-    .local string str1
-    str1 = typeof pmc2
-    print str1
-    print "\n"
-    end
-.end
-CODE
-false
-boolean
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check embedded zero' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaString'
-    pmc1 = "embe\0_dd\0_ed\0"
-    .local int len1
-    len1 = elements pmc1
-    print len1
-    print "\n"
-.end
-CODE
-13
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check HLL' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaString'
-    pmc1 = "simple string"
-    print pmc1
-    print "\n"
-    .local int bool1
-    bool1 = isa pmc1, 'LuaString'
-    print bool1
-    print "\n"
-    end
-.end
-CODE
-simple string
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check HLL (autoboxing)' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = test()
-    print pmc1
-    print "\n"
-    .local int bool1
-    bool1 = isa pmc1, 'LuaString'
-    print bool1
-    print "\n"
-.end
-.sub test
-    .return ("simple string")
-.end
-CODE
-simple string
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check HLL & .const' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .const 'LuaString' cst1 = "simple string"
-    print cst1
-    print "\n"
-    .local int bool1
-    bool1 = isa cst1, 'LuaString'
-    print bool1
-    print "\n"
-.end
-CODE
-simple string
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', '.const & empty string' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .const 'LuaString' cst1 = ''
-    print cst1
-    print "\n"
-    .local int bool1
-    bool1 = isa cst1, 'LuaString'
-    print bool1
-    print "\n"
-.end
-CODE
-
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check box' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    box pmc1, "simple string"
-    print pmc1
-    print "\n"
-    .local int bool1
-    bool1 = isa pmc1, 'LuaString'
-    print bool1
-    print "\n"
-.end
-CODE
-simple string
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check is_equal (RT #60292)' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    new $P1, 'LuaString'
-    set $P1, 'str'
-    new $P2, 'LuaString'
-    set $P2, 'str'
-    $I0 = iseq $P1, $P2
-    print $I0
-    print "\n"
-.end
-CODE
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check tostring' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaString'
-    pmc1 = "value"
-    print pmc1
-    print "\n"
-    $P0 = pmc1.'tostring'()
-    print $P0
-    print "\n"
+.sub 'check_name'
+    $P0 = new 'LuaString'
     $S0 = typeof $P0
-    print $S0
-    print "\n"
+    is($S0, 'string')
 .end
-CODE
-value
-value
-string
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check tonumber' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaString'
-    pmc1 = "3.14"
-    print pmc1
-    print "\n"
-    $P0 = pmc1.'tonumber'()
-    print $P0
-    print "\n"
-    $S0 = typeof $P0
-    print $S0
-    print "\n"
+.sub 'check_get_bool'
+    $P0 = new 'LuaString'
+    set $P0, 'str'
+    $I0 = istrue $P0
+    is($I0, 1)
+    set $P0, ''
+    $I0 = istrue $P0
+    is($I0, 1)
 .end
-CODE
-3.14
-3.14
-number
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check tobase' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaString'
-    pmc1 = "111"
-    print pmc1
-    print "\n"
-    $P0 = pmc1.'tobase'(2)
-    print $P0
-    print "\n"
-    $S0 = typeof $P0
-    print $S0
-    print "\n"
+.sub 'check_logical_not'
+    $P0 = new 'LuaString'
+    set $P0, 'str'
+    $P1 = not $P0
+    $S0 = $P1
+    is($S0, 'false')
+    $S0 = typeof $P1
+    is($S0, 'boolean')
 .end
-CODE
-111
-7
-number
-OUTPUT
+
+.sub 'check_embedded_zero'
+    $P0 = new 'LuaString'
+    set $P0, "embe\0_dd\0_ed\0"
+    $I0 = elements $P0
+    is($I0, 13)
+.end
 
 # Local Variables:
-#   mode: cperl
+#   mode: pir
 #   cperl-indent-level: 4
 #   fill-column: 100
 # End:
-# vim: expandtab shiftwidth=4:
+# vim: expandtab shiftwidth=4 ft=pir:
 

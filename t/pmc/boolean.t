@@ -1,12 +1,12 @@
-#! perl
-# Copyright (C) 2005-2009, Parrot Foundation.
+#! ../../parrot
+# Copyright (C) 2009, Parrot Foundation.
 # $Id$
 
 =head1 LuaBoolean
 
 =head1 Synopsis
 
-    % perl t/pmc/boolean.t
+    % parrot t/pmc/boolean.t
 
 =head2 Description
 
@@ -15,178 +15,59 @@ Tests C<LuaBoolean> PMC
 
 =cut
 
-use strict;
-use warnings;
-use FindBin;
-use lib "$FindBin::Bin/../../../../lib";
+.sub 'main' :main
+    loadlib $P0, 'lua_group'
 
-use Parrot::Test tests => 8;
-use Test::More;
+    .include 'test_more.pir'
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check inheritance' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaBoolean'
-    .local int bool1
-    bool1 = isa pmc1, 'LuaAny'
-    print bool1
-    print "\n"
-    bool1 = isa pmc1, 'LuaBoolean'
-    print bool1
-    print "\n"
-    end
+    plan(9)
+
+    check_inheritance()
+    check_interface()
+    check_name()
+    check_get_string()
 .end
-CODE
-1
-1
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check interface' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaBoolean'
-    .local int bool1
-    bool1 = does pmc1, 'scalar'
-    print bool1
-    print "\n"
-    bool1 = does pmc1, 'boolean'
-    print bool1
-    print "\n"
-    bool1 = does pmc1, 'integer'
-    print bool1
-    print "\n"
-    bool1 = does pmc1, 'no_interface'
-    print bool1
-    print "\n"
-    end
+.sub 'check_inheritance'
+    $P0 = new 'LuaBoolean'
+    $I0 = isa $P0, 'LuaAny'
+    is($I0, 1)
+    $I0 = isa $P0, 'LuaBoolean'
+    is($I0, 1)
 .end
-CODE
-1
-1
-1
-0
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check name' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaBoolean'
-    .local string str1
-    str1 = typeof pmc1
-    print str1
-    print "\n"
-    end
+.sub 'check_interface'
+    $P0 = new 'LuaBoolean'
+    $I0 = does $P0, 'scalar'
+    is($I0, 1)
+    $I0 = does $P0, 'boolean'
+    is($I0, 1)
+    $I0 = does $P0, 'integer'
+    is($I0, 1)
+    $I0 = does $P0, 'no_interface'
+    is($I0, 0)
 .end
-CODE
-boolean
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check get_string' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaBoolean'
-    pmc1 = 0
-    print pmc1
-    print "\n"
-    pmc1 = 1
-    print pmc1
-    print "\n"
-    end
-.end
-CODE
-false
-true
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check HLL' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaBoolean'
-    pmc1 = 1
-    print pmc1
-    print "\n"
-    .local int bool1
-    bool1 = isa pmc1, 'LuaBoolean'
-    print bool1
-    print "\n"
-    end
-.end
-CODE
-true
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check HLL & .const' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .const 'LuaBoolean' cst1 = "1"
-    print cst1
-    print "\n"
-    .local int bool1
-    bool1 = isa cst1, 'LuaBoolean'
-    print bool1
-    print "\n"
-.end
-CODE
-true
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check tostring' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaBoolean'
-    pmc1 = 1
-    print pmc1
-    print "\n"
-    $P0 = pmc1.'tostring'()
-    print $P0
-    print "\n"
+.sub 'check_name'
+    $P0 = new 'LuaBoolean'
     $S0 = typeof $P0
-    print $S0
-    print "\n"
+    is($S0, 'boolean')
 .end
-CODE
-true
-true
-string
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check tonumber' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaBoolean'
-    pmc1 = 1
-    print pmc1
-    print "\n"
-    $P0 = pmc1.'tonumber'()
-    print $P0
-    print "\n"
-    $S0 = typeof $P0
-    print $S0
-    print "\n"
+.sub 'check_get_string'
+    $P0 = new 'LuaBoolean'
+    set $P0, 0
+    $S0 = $P0
+    is($S0, 'false')
+    set $P0, 1
+    $S0 = $P0
+    is($S0, 'true')
 .end
-CODE
-true
-nil
-nil
-OUTPUT
 
 # Local Variables:
-#   mode: cperl
+#   mode: pir
 #   cperl-indent-level: 4
 #   fill-column: 100
 # End:
-# vim: expandtab shiftwidth=4:
+# vim: expandtab shiftwidth=4 ft=pir:
 

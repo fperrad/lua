@@ -1,12 +1,12 @@
-#! perl
-# Copyright (C) 2005-2009, Parrot Foundation.
+#! ../../parrot
+# Copyright (C) 2009, Parrot Foundation.
 # $Id$
 
 =head1 LuaNumber
 
 =head2 Synopsis
 
-    % perl t/pmc/number.t
+    % parrot t/pmc/number.t
 
 =head2 Description
 
@@ -15,279 +15,72 @@ Tests C<LuaNumber> PMC
 
 =cut
 
-use strict;
-use warnings;
-use FindBin;
-use lib "$FindBin::Bin/../../../../lib";
+.sub 'main' :main
+    loadlib $P0, 'lua_group'
 
-use Parrot::Test tests => 13;
-use Test::More;
+    .include 'test_more.pir'
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check inheritance' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaNumber'
-    .local int bool1
-    bool1 = isa pmc1, 'LuaAny'
-    print bool1
-    print "\n"
-    bool1 = isa pmc1, 'LuaNumber'
-    print bool1
-    print "\n"
-    end
+    plan(12)
+
+    check_inheritance()
+    check_interface()
+    check_name()
+    check_set_integer_native()
+    check_logical_not()
 .end
-CODE
-1
-1
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check interface' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaNumber'
-    .local int bool1
-    bool1 = does pmc1, 'scalar'
-    print bool1
-    print "\n"
-    bool1 = does pmc1, 'float'
-    print bool1
-    print "\n"
-    bool1 = does pmc1, 'no_interface'
-    print bool1
-    print "\n"
-    end
+.sub 'check_inheritance'
+    $P0 = new 'LuaNumber'
+    $I0 = isa $P0, 'LuaAny'
+    is($I0, 1)
+    $I0 = isa $P0, 'LuaNumber'
+    is($I0, 1)
 .end
-CODE
-1
-1
-0
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check name' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaNumber'
-    .local string str1
-    str1 = typeof pmc1
-    print str1
-    print "\n"
-    end
+.sub 'check_interface'
+    $P0 = new 'LuaNumber'
+    $I0 = does $P0, 'scalar'
+    is($I0, 1)
+    $I0 = does $P0, 'float'
+    is($I0, 1)
+    $I0 = does $P0, 'no_interface'
+    is($I0, 0)
 .end
-CODE
-number
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check set_integer_native' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    .local string str1
-    pmc1 = new 'LuaNumber'
-    pmc1 = 3.14
-    str1 = typeof pmc1
-    print str1
-    print "\n"
-    print pmc1
-    print "\n"
-    pmc1 = 2
-    str1 = typeof pmc1
-    print str1
-    print "\n"
-    print pmc1
-    print "\n"
-    end
-.end
-CODE
-number
-3.14
-number
-2
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check get_bool' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaNumber'
-    pmc1 = 3.14
-    .local int bool1
-    bool1 = istrue pmc1
-    print bool1
-    print "\n"
-    pmc1 = 0.0
-    bool1 = istrue pmc1
-    print bool1
-    print "\n"
-    end
-.end
-CODE
-1
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check logical_not' );
-.sub _main
-    loadlib $P1, 'lua_group'
-    .local pmc pmc1
-    pmc1 = new 'LuaNumber'
-    pmc1 = 3.14
-    .local pmc pmc2
-    pmc2 = new 'LuaBoolean'
-    pmc2 = not pmc1
-    print pmc2
-    print "\n"
-    .local string str1
-    str1 = typeof pmc2
-    print str1
-    print "\n"
-    end
-.end
-CODE
-false
-boolean
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check HLL' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = new 'LuaNumber'
-    pmc1 = 3.14
-    print pmc1
-    print "\n"
-    .local int bool1
-    bool1 = isa pmc1, 'LuaNumber'
-    print bool1
-    print "\n"
-    end
-.end
-CODE
-3.14
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check HLL (autoboxing)' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    pmc1 = test()
-    print pmc1
-    print "\n"
-    .local int bool1
-    bool1 = isa pmc1, 'LuaNumber'
-    print bool1
-    print "\n"
-.end
-.sub test
-    .return (3.14)
-.end
-CODE
-3.14
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check HLL & .const' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .const 'LuaNumber' cst1 = '3.14'
-    print cst1
-    print "\n"
-    .local int bool1
-    bool1 = isa cst1, 'LuaNumber'
-    print bool1
-    print "\n"
-.end
-CODE
-3.14
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check box float' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    box pmc1, 3.14
-    print pmc1
-    print "\n"
-    .local int bool1
-    bool1 = isa pmc1, 'LuaNumber'
-    print bool1
-    print "\n"
-.end
-CODE
-3.14
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check box integer' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .local pmc pmc1
-    box pmc1, -2
-    print pmc1
-    print "\n"
-    .local int bool1
-    bool1 = isa pmc1, 'LuaNumber'
-    print bool1
-    print "\n"
-.end
-CODE
--2
-1
-OUTPUT
-
-pir_output_is( << 'CODE', << 'OUTPUT', 'check tostring' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .const 'LuaNumber' cst1 = '3.14'
-    print cst1
-    print "\n"
-    $P0 = cst1.'tostring'()
-    print $P0
-    print "\n"
+.sub 'check_name'
+    $P0 = new 'LuaNumber'
     $S0 = typeof $P0
-    print $S0
-    print "\n"
+    is($S0, 'number')
 .end
-CODE
-3.14
-3.14
-string
-OUTPUT
 
-pir_output_is( << 'CODE', << 'OUTPUT', 'check tonumber' );
-.HLL 'lua'
-.loadlib 'lua_group'
-.sub _main
-    .const 'LuaNumber' cst1 = '3.14'
-    print cst1
-    print "\n"
-    $P0 = cst1.'tonumber'()
-    print $P0
-    print "\n"
+.sub 'check_set_integer_native'
+    $P0 = new 'LuaNumber'
+    set $P0, 3.14
     $S0 = typeof $P0
-    print $S0
-    print "\n"
+    is($S0, 'number')
+    $S0 = $P0
+    is($S0, '3.14')
+    set $P0, 2
+    $S0 = typeof $P0
+    is($S0, 'number')
+    $S0 = $P0
+    is($S0, '2')
 .end
-CODE
-3.14
-3.14
-number
-OUTPUT
+
+.sub 'check_logical_not'
+    $P0 = new 'LuaNumber'
+    set $P0, 3.14
+    $P1 = not $P0
+    $S0 = $P1
+    is($S0, 'false')
+    $S0 = typeof $P1
+    is($S0, 'boolean')
+.end
 
 # Local Variables:
-#   mode: cperl
+#   mode: pir
 #   cperl-indent-level: 4
 #   fill-column: 100
 # End:
-# vim: expandtab shiftwidth=4:
+# vim: expandtab shiftwidth=4 ft=pir:
 
