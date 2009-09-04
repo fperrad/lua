@@ -51,8 +51,8 @@ CODE
 /^lua[^:]*: (\w:)?[^:]+:\d+: /
 OUT
 
-unlink("$FindBin::Bin/../../../hello.lua") if ( -f "$FindBin::Bin/../../../hello.lua" );
-open my $X, '>', "$FindBin::Bin/../../../hello.lua";
+unlink("$FindBin::Bin/../hello.lua") if ( -f "$FindBin::Bin/../hello.lua" );
+open my $X, '>', "$FindBin::Bin/../hello.lua";
 print {$X} "print 'Hello World'\n";
 close $X;
 
@@ -63,16 +63,16 @@ OUTPUT
 SKIP: {
 skip("need luac", 1) unless (`luac -v` =~ /^Lua 5\.1/);
 
-system("luac -o $FindBin::Bin/../../../hello.luac $FindBin::Bin/../../../hello.lua");
+system("luac -o $FindBin::Bin/../hello.luac $FindBin::Bin/../hello.lua");
 
 language_output_is( 'lua', undef, << 'OUTPUT', 'bytecode translation', params => "hello.luac"  );
 Hello World
 OUTPUT
 
-unlink("$FindBin::Bin/../../../hello.luac") if ( -f "$FindBin::Bin/../../../hello.luac" );
+unlink("$FindBin::Bin/../hello.luac") if ( -f "$FindBin::Bin/../hello.luac" );
 
-unlink("$FindBin::Bin/../../../bt.lua") if ( -f "$FindBin::Bin/../../../bt.lua" );
-open my $X, '>', "$FindBin::Bin/../../../bt.lua";
+unlink("$FindBin::Bin/../bt.lua") if ( -f "$FindBin::Bin/../bt.lua" );
+open my $X, '>', "$FindBin::Bin/../bt.lua";
 print {$X} << 'CODE';
 function f ()
     error "TRACK"
@@ -82,20 +82,20 @@ f()
 CODE
 close $X;
 
-system("luac -o $FindBin::Bin/../../../bt.luac $FindBin::Bin/../../../bt.lua");
+system("luac -o $FindBin::Bin/../bt.luac $FindBin::Bin/../bt.lua");
 
 language_output_like( 'lua', undef, << 'OUTPUT', 'bytecode translation & traceback', params => "bt.luac"  );
 /bt\.lua:2: TRACK\nstack traceback:\n/
 OUTPUT
 
-unlink("$FindBin::Bin/../../../bt.luac") if ( -f "$FindBin::Bin/../../../bt.luac" );
+unlink("$FindBin::Bin/../bt.luac") if ( -f "$FindBin::Bin/../bt.luac" );
 }
 
 language_output_is( 'lua', undef, << 'OUTPUT', 'redirect', params => "< hello.lua"  );
 Hello World
 OUTPUT
 
-unlink("$FindBin::Bin/../../../hello.lua") if ( -f "$FindBin::Bin/../../../hello.lua" );
+unlink("$FindBin::Bin/../hello.lua") if ( -f "$FindBin::Bin/../hello.lua" );
 
 language_output_like( 'lua', undef, << 'OUTPUT', 'no file', params => "no_file.lua"  );
 /^lua[^:]*: cannot open no_file.lua: No such file or directory$/
@@ -126,8 +126,8 @@ CODE
 OUT
 delete $ENV{LUA_INIT};
 
-unlink("$FindBin::Bin/../../../boot.lua") if ( -f "$FindBin::Bin/../../../boot.lua" );
-open $X, '>', "$FindBin::Bin/../../../boot.lua";
+unlink("$FindBin::Bin/../boot.lua") if ( -f "$FindBin::Bin/../boot.lua" );
+open $X, '>', "$FindBin::Bin/../boot.lua";
 print {$X} "print 'boot from boot.lua by LUA_INIT'\n";
 close $X;
 
@@ -139,8 +139,8 @@ boot from boot.lua by LUA_INIT
 Hello World
 OUT
 
-unlink("$FindBin::Bin/../../../boot.lua") if ( -f "$FindBin::Bin/../../../boot.lua" );
-open $X, '>', "$FindBin::Bin/../../../boot.lua";
+unlink("$FindBin::Bin/../boot.lua") if ( -f "$FindBin::Bin/../boot.lua" );
+open $X, '>', "$FindBin::Bin/../boot.lua";
 print {$X} '?syntax error?';
 close $X;
 
@@ -151,7 +151,7 @@ CODE
 /^lua[^:]*: (\w:)?[^:]+:\d+: /
 OUT
 
-unlink("$FindBin::Bin/../../../boot.lua");
+unlink("$FindBin::Bin/../boot.lua");
 
 $ENV{LUA_INIT} = '@no_file.lua';
 language_output_like( 'lua', <<'CODE', <<'OUT', 'LUA_INIT no file' );

@@ -49,8 +49,9 @@ foreach my $func ( keys %language_test_map ) {
 
         my $params = $options{params} || q{};
 
-        # flatten filenames (don't use directories)
         my $lua_test = get_test_prog();
+        my $parrot = File::Spec->catfile( $self->{relpath}, $self->{parrot} );
+        # flatten filenames (don't use directories)
         my $lang_fn = File::Spec->rel2abs( Parrot::Test::per_test( '.lua', $count ) );
         my $pir_fn  = File::Spec->rel2abs( Parrot::Test::per_test( '.pir', $count ) );
         my $lua_out_fn = File::Spec->rel2abs(
@@ -65,26 +66,26 @@ foreach my $func ( keys %language_test_map ) {
         }
         elsif ( $lua_test eq 'luac.pl' ) {
             @test_prog = (
-                "perl languages/lua/luac.pl $src",
-                "$self->{parrot} ${pir_fn} $params",
+                "perl luac.pl $src",
+                "$parrot $pir_fn $params",
             );
         }
         elsif ( $lua_test eq 'luap.pir' ) {
             @test_prog = (
-                "$self->{parrot} languages/lua/luap.pir -o ${pir_fn} --target=pir $src",
-                "$self->{parrot} ${pir_fn} $params",
+                "$parrot luap.pir -o $pir_fn --target=pir $src",
+                "$parrot $pir_fn $params",
             );
         }
         elsif ( $lua_test eq 'luac2pir.pir' ) {
             @test_prog = (
                 "luac -o ${src}c $src",
-                "$self->{parrot} languages/lua/luac2pir.pir ${src}c",
-                "$self->{parrot} ${src}c.pir $params",
+                "$parrot luac2pir.pir ${src}c",
+                "$parrot ${src}c.pir $params",
             );
         }
         elsif ( $lua_test eq 'lua.pbc' ) {
             @test_prog = (
-                "$self->{parrot} languages/lua/lua.pbc $test_prog_args $src $params",
+                "$parrot lua.pbc $test_prog_args $src $params",
             );
         }
         else {
@@ -98,7 +99,6 @@ foreach my $func ( keys %language_test_map ) {
         # STDERR is written into same output file
         my $exit_code = Parrot::Test::run_command(
             \@test_prog,
-            CD     => $self->{relpath},
             STDOUT => $lua_out_fn,
             STDERR => $lua_out_fn,
         );

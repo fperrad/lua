@@ -45,13 +45,14 @@ foreach my $func ( keys %language_test_map ) {
 
         my $params = $options{params} || q{};
 
+        my $parrot = File::Spec->catfile( $self->{relpath}, $self->{parrot} );
         # flatten filenames (don't use directories)
         my $lang_fn = File::Spec->rel2abs( Parrot::Test::per_test( '.lua', $count ) );
         my $luac_fn  = File::Spec->rel2abs( Parrot::Test::per_test( '.luac', $count ) );
         my $lua_out_fn = File::Spec->rel2abs( Parrot::Test::per_test( '.parrot_out', $count ) );
         my @test_prog = (
-            "luac -o ${luac_fn} ${lang_fn}",
-            "$self->{parrot} languages/lua/luad.pbc ${luac_fn}",
+            "luac -o $luac_fn $lang_fn",
+            "$parrot luad.pbc $luac_fn",
         );
 
         # This does not create byte code, but lua code
@@ -60,7 +61,6 @@ foreach my $func ( keys %language_test_map ) {
         # STDERR is written into same output file
         my $exit_code = Parrot::Test::run_command(
             \@test_prog,
-            CD     => $self->{relpath},
             STDOUT => $lua_out_fn,
             STDERR => $lua_out_fn,
         );

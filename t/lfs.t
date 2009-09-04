@@ -37,7 +37,7 @@ table
 LuaFileSystem 1.4.0
 OUT
 
-my $cwd = File::Spec->canonpath( realpath( "$FindBin::Bin/../../../" ) );
+my $cwd = File::Spec->canonpath( realpath( "$FindBin::Bin/../" ) );
 language_output_is( 'lua', << 'CODE', << "OUT", 'function lfs.currentdir' );
 require "lfs"
 print(lfs.currentdir())
@@ -137,8 +137,8 @@ nil
 No such file or directory
 OUT
 
-unlink("$FindBin::Bin/../../../file.txt") if ( -f "$FindBin::Bin/../../../file.txt" );
-open my $X, '>', "$FindBin::Bin/../../../file.txt";
+unlink("$FindBin::Bin/../file.txt") if ( -f "$FindBin::Bin/../file.txt" );
+open my $X, '>', "$FindBin::Bin/../file.txt";
 binmode $X, ':raw';
 print {$X} "file with text\n";
 close $X;
@@ -216,7 +216,7 @@ file
 OUT
 
 # clean up file.txt
-unlink("$FindBin::Bin/../../../file.txt") if ( -f "$FindBin::Bin/../../../file.txt" );
+unlink("$FindBin::Bin/../file.txt") if ( -f "$FindBin::Bin/../file.txt" );
 
 # Local Variables:
 #   mode: cperl
