@@ -28,6 +28,7 @@ Tests Lua C<thread> type
     check_HLL()
     check_tostring()
     check_tonumber()
+    check__add()
 .end
 
 .sub 'check_HLL'
@@ -64,28 +65,23 @@ Tests Lua C<thread> type
     is($S0, 'nil')
 .end
 
-#~ pir_error_output_like( << 'CODE', << 'OUTPUT', 'check __add' );
-#~ .HLL 'lua'
-#~ .loadlib 'lua_group'
-#~ .sub '__start' :main
-    #~ load_bytecode 'Parrot/Coroutine.pbc'
-    #~ _main()
-#~ .end
-#~ .sub '_main'
-    #~ .const 'LuaNumber' cst1 = '3.14'
-    #~ .const 'Sub' F1 = 'f1'
-    #~ .local pmc pmc1
-    #~ pmc1 = new 'LuaThread', F1
-    #~ $P0 = add pmc1, cst1
-    #~ end
-#~ .end
-#~ .sub 'f1'
-    #~ print "f1()\n"
-    #~ end
-#~ .end
-#~ CODE
-#~ /^attempt to perform arithmetic on a thread value/
-#~ OUTPUT
+.sub 'check__add'
+    .const 'Sub' F1 = 'f1'
+    $P0 = new 'LuaThread', F1
+    $P1 = new 'LuaNumber'
+    set $P1, 3.14
+    push_eh _handler
+    $P2 = add $P0, $P1
+    ok(0)
+    pop_eh
+    end
+  _handler:
+    .local pmc ex
+    .get_results (ex)
+    $S0 = ex
+    # attempt to perform arithmetic on a thread value
+#    like($S0, '^attempt')
+.end
 
 # Local Variables:
 #   mode: pir

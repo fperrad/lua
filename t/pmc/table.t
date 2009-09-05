@@ -20,7 +20,7 @@ Tests C<table> type
 
     .include 'test_more.pir'
 
-    plan(17)
+    plan(18)
 
     check_inheritance()
     check_interface()
@@ -29,6 +29,7 @@ Tests C<table> type
     check_get_bool()
     check_logical_not()
     check_key_PMC()
+    check_key_nil()
     check_deletion()
 .end
 
@@ -98,22 +99,25 @@ Tests C<table> type
     is($S0, 'nil')
  .end
 
-#~ pir_error_output_like( << 'CODE', << 'OUTPUT', 'check key nil' );
-#~ .sub _main
-    #~ loadlib $P0, 'lua_group'
-    #~ .local pmc pmc1
-    #~ pmc1 = new 'LuaTable'
-    #~ .local pmc val1
-    #~ val1 = new 'LuaString'
-    #~ val1 = "value1"
-    #~ .local pmc nil
-    #~ nil = new 'LuaNil'
-    #~ pmc1[nil] = val1
-    #~ end
-#~ .end
-#~ CODE
-#~ /^table index is nil/
-#~ OUTPUT
+.sub 'check_key_nil'
+    $P0 = new 'LuaTable'
+    .local pmc val1
+    val1 = new 'LuaString'
+    val1 = "value1"
+    .local pmc nil
+    nil = new 'LuaNil'
+    push_eh _handler
+    $P0[nil] = val1
+    ok(0)
+    pop_eh
+    end
+  _handler:
+    .local pmc ex
+    .get_results (ex)
+    $S0 = ex
+    # table index is nil
+    like($S0, '^table')
+.end
 
 .sub 'check_deletion' # by assignment of nil
     $P0 = new 'LuaTable'
