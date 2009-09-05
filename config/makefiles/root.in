@@ -358,9 +358,9 @@ codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
 
 T_C     = src//pmc//*.pmc src//pmc//lua_private.h
 T_MAKE  = config//makefiles//root.in config//makefiles//pmc.in
-T_PERL  = Configure.pl t//harness t//*.t t//pmc//*.t t//Parrot//Test//*.pm \
+T_PERL  = Configure.pl t//harness t//*.t t//Parrot//Test//*.pm \
           src//build//*.pl src//yapp//Lua//*.pm
-T_PIR   = *.pir src//lua51.pir src//grammar51.pir src//lib//*.pir
+T_PIR   = *.pir src//lua51.pir src//grammar51.pir src//lib//*.pir t//pmc//*.t
 T_POD   = doc//*.pod
 
 codetest-c:
