@@ -9,9 +9,25 @@ C<lua.pbc> is the Lua interpreter.
 
 =head2 Building
 
-After building C<parrot> (see F<docs/gettingstarted.pod>):
+Retrieve Parrot
+
+  svn checkout https://svn.parrot.org/parrot/trunk parrot
+
+Configure & build & install Parrot
+
+  cd parrot
+  perl Configure.pl
+  make
+  sudo make install-dev
+
+Retrieve Lua
+
+  perl tools/dev/fetch_language.pl --lang=lua
+
+Configure & build Lua
 
   cd languages/lua
+  perl Configure.pl
   make
 
 =head2 Running the whole test suite
