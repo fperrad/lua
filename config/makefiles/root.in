@@ -127,7 +127,6 @@ BUILD_CLEANUPS := \
   installable_luap@exe@
 
 TEST_CLEANUPS := \
-  "t/pmc/*.pir" \
   "t/*.pir" \
   "t/*.lua" \
   "t/*.luac" \
