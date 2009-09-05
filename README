@@ -6,3 +6,10 @@ This is the port of the language Lua 5.1 (http://www.lua.org/)
 on the Parrot VM (http://www.parrot.org/).
 
 Many external libraries are already included.
+
+
+    Suffice it to say that Lua is an elegant, easy-to-learn language with
+    a mostly procedural syntax, featuring automatic memory management, full
+    lexical scoping, closures, iterators, coroutines, proper tail calls,
+    and extremely practical data-handling using associative arrays.
+    (A. Hirschi 2007)
