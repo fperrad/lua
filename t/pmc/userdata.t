@@ -33,7 +33,7 @@ Tests C<userdata> type
 .sub 'check_inheritance'
     $P0 = new 'LuaUserdata'
     $I0 = isa $P0, 'scalar'
-    is($I0, 0)
+    is($I0, 0, "check inheritance")
     $I0 = isa $P0, 'LuaAny'
     is($I0, 1)
     $I0 = isa $P0, 'LuaUserdata'
@@ -43,7 +43,7 @@ Tests C<userdata> type
 .sub 'check_interface'
     $P0 = new 'LuaUserdata'
     $I0 = does $P0, 'scalar'
-    is($I0, 1)
+    is($I0, 1, "check interface")
     $I0 = does $P0, 'no_interface'
     is($I0, 0)
 .end
@@ -51,13 +51,13 @@ Tests C<userdata> type
 .sub 'check_name'
     $P0 = new 'LuaUserdata'
     $S0 = typeof $P0
-    is($S0, 'userdata')
+    is($S0, 'userdata', "check name")
 .end
 
 .sub 'check_get_string'
     $P0 = new 'LuaUserdata'
     $S0 = $P0
-    like($S0, '^userdata: <[0..9A..Fa..f]>*')
+    like($S0, '^userdata: <[0..9A..Fa..f]>*', "check get_string")
 .end
 
 .sub 'check_get_bool'
@@ -65,7 +65,7 @@ Tests C<userdata> type
     $P1 = new 'Array'
     setattribute $P0, 'data', $P1
     $I0 = istrue $P0
-    is($I0, 1)
+    is($I0, 1, "check get_bool")
 .end
 
 .sub 'check_logical_not'
@@ -74,7 +74,7 @@ Tests C<userdata> type
     setattribute $P0, 'data', $P1
     $P2 = not $P0
     $S0 = $P2
-    is($S0, 'false')
+    is($S0, 'false', "check logical_not")
     $S0 = typeof $P2
     is($S0, 'boolean')
 .end

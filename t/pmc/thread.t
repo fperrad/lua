@@ -35,7 +35,7 @@ Tests Lua C<thread> type
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
     $I0 = isa $P0, 'scalar'
-    is($I0, 0)
+    is($I0, 0, "check inheritance")
     $I0 = isa $P0, 'LuaAny'
     is($I0, 1)
     $I0 = isa $P0, 'LuaThread'
@@ -51,7 +51,7 @@ Tests Lua C<thread> type
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
     $I0 = does $P0, 'scalar'
-    is($I0, 1)
+    is($I0, 1, "check interface")
     $I0 = does $P0, 'no_interface'
     is($I0, 0)
 .end
@@ -60,21 +60,21 @@ Tests Lua C<thread> type
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
     $S0 = typeof $P0
-    is($S0, 'thread')
+    is($S0, 'thread', "check name")
 .end
 
 .sub 'check_get_string'
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
     $S0 = $P0
-    like($S0, '^thread: <[0..9A..Fa..f]>*')
+    like($S0, '^thread: <[0..9A..Fa..f]>*', "check get_string")
 .end
 
 .sub 'check_get_bool'
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
     $I0 = istrue $P0
-    is($I0, 1)
+    is($I0, 1, "check get_bool")
 .end
 
 .sub 'check_logical_not'
@@ -82,7 +82,7 @@ Tests Lua C<thread> type
     $P0 = new 'LuaThread', F1
     $P1 = not $P0
     $S0 = $P1
-    is($S0, 'false')
+    is($S0, 'false', "check logical_not")
     $S0 = typeof $P1
     is($S0, 'boolean')
 .end

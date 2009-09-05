@@ -36,7 +36,7 @@ Tests C<LuaNumber> PMC
     $P0 = new 'LuaNumber'
     set $P0, 3.14
     $S0 = $P0
-    is($S0, '3.14')
+    is($S0, '3.14', "check HLL")
     $I0 = isa $P0, 'LuaNumber'
     is($I0, 1)
 .end
@@ -44,7 +44,7 @@ Tests C<LuaNumber> PMC
 .sub 'check_HLL_autoboxing'
     $P0 = fct()
     $S0 = $P0
-    is($S0, '3.14')
+    is($S0, '3.14', "check HLL autoboxing")
     $I0 = isa $P0, 'LuaNumber'
     is($I0, 1)
 .end
@@ -56,7 +56,7 @@ Tests C<LuaNumber> PMC
 .sub 'check_HLL_const'
     .const 'LuaNumber' K = '3.14'
     $S0 = K
-    is($S0, '3.14')
+    is($S0, '3.14', "check HLL & .const")
     $I0 = isa K, 'LuaNumber'
     is($I0, 1)
 .end
@@ -64,7 +64,7 @@ Tests C<LuaNumber> PMC
 .sub 'check_box_float'
     $P0 = box 3.14
     $S0 = $P0
-    is($S0, '3.14')
+    is($S0, '3.14', "check box float")
     $I0 = isa $P0, 'LuaNumber'
     is($I0, 1)
 .end
@@ -72,7 +72,7 @@ Tests C<LuaNumber> PMC
 .sub 'check_box_integer'
     $P0 = box -2
     $S0 = $P0
-    is($S0, '-2')
+    is($S0, '-2', "check box integer")
     $I0 = isa $P0, 'LuaNumber'
     is($I0, 1)
 .end
@@ -81,7 +81,7 @@ Tests C<LuaNumber> PMC
     $P0 = new 'LuaNumber'
     set $P0, 3.14
     $S0 = $P0
-    is($S0, '3.14')
+    is($S0, '3.14', "check tostring")
     $P1 = $P0.'tostring'()
     $S0 = $P1
     is($S0, '3.14')
@@ -93,7 +93,7 @@ Tests C<LuaNumber> PMC
     $P0 = new 'LuaNumber'
     set $P0, 3.14
     $S0 = $P0
-    is($S0, '3.14')
+    is($S0, '3.14', "check tonumber")
     $P1 = $P0.'tonumber'()
     $S0 = $P1
     is($S0, '3.14')

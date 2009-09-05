@@ -33,7 +33,7 @@ Tests C<LuaBoolean> PMC
     $P0 = new 'LuaBoolean'
     set $P0, 1
     $S0 = $P0
-    is($S0, 'true')
+    is($S0, 'true', "check HLL")
     $I0 = isa $P0, 'LuaBoolean'
     is($I0, 1)
 .end
@@ -41,7 +41,7 @@ Tests C<LuaBoolean> PMC
 .sub 'check_HLL_const'
     .const 'LuaBoolean' K = '1'
     $S0 = K
-    is($S0, 'true')
+    is($S0, 'true', "check HLL & .const")
     $I0 = isa K, 'LuaBoolean'
     is($I0, 1)
 .end
@@ -50,7 +50,7 @@ Tests C<LuaBoolean> PMC
     $P0 = new 'LuaBoolean'
     set $P0, 1
     $S0 = $P0
-    is($S0, 'true')
+    is($S0, 'true', "check tostring")
     $P1 = $P0.'tostring'()
     $S0 = $P1
     is($S0, 'true')
@@ -62,7 +62,7 @@ Tests C<LuaBoolean> PMC
     $P0 = new 'LuaBoolean'
     set $P0, 1
     $S0 = $P0
-    is($S0, 'true')
+    is($S0, 'true', "check tonumber")
     $P1 = $P0.'tonumber'()
     $S0 = $P1
     is($S0, 'nil')

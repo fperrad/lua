@@ -31,7 +31,7 @@ Tests C<LuaBoolean> PMC
 .sub 'check_inheritance'
     $P0 = new 'LuaBoolean'
     $I0 = isa $P0, 'LuaAny'
-    is($I0, 1)
+    is($I0, 1, "check inheritance")
     $I0 = isa $P0, 'LuaBoolean'
     is($I0, 1)
 .end
@@ -39,7 +39,7 @@ Tests C<LuaBoolean> PMC
 .sub 'check_interface'
     $P0 = new 'LuaBoolean'
     $I0 = does $P0, 'scalar'
-    is($I0, 1)
+    is($I0, 1, "check interface")
     $I0 = does $P0, 'boolean'
     is($I0, 1)
     $I0 = does $P0, 'integer'
@@ -51,14 +51,14 @@ Tests C<LuaBoolean> PMC
 .sub 'check_name'
     $P0 = new 'LuaBoolean'
     $S0 = typeof $P0
-    is($S0, 'boolean')
+    is($S0, 'boolean', "check name")
 .end
 
 .sub 'check_get_string'
     $P0 = new 'LuaBoolean'
     set $P0, 0
     $S0 = $P0
-    is($S0, 'false')
+    is($S0, 'false', "check get_string")
     set $P0, 1
     $S0 = $P0
     is($S0, 'true')

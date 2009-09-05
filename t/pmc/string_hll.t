@@ -38,7 +38,7 @@ Tests C<LuaString> PMC
     $P0 = new 'LuaString'
     set $P0, "simple string"
     $S0 = $P0
-    is($S0, "simple string")
+    is($S0, "simple string", "check HLL")
     $I0 = isa $P0, 'LuaString'
     is($I0, 1)
 .end
@@ -46,7 +46,7 @@ Tests C<LuaString> PMC
 .sub 'check_HLL_autoboxing'
     $P0 = fct()
     $S0 = $P0
-    is($S0, "simple string")
+    is($S0, "simple string", "check HLL autoboxing")
     $I0 = isa $P0, 'LuaString'
     is($I0, 1)
 .end
@@ -58,7 +58,7 @@ Tests C<LuaString> PMC
 .sub 'check_HLL_const'
     .const 'LuaString' K = "simple string"
     $S0 = K
-    is($S0, "simple string")
+    is($S0, "simple string", "check HLL & .const")
     $I0 = isa K, 'LuaString'
     is($I0, 1)
 .end
@@ -66,7 +66,7 @@ Tests C<LuaString> PMC
 .sub 'check_empty_string'
     .const 'LuaString' K = ''
     $S0 = K
-    is($S0, '')
+    is($S0, '', "check empty string")
     $I0 = isa K, 'LuaString'
     is($I0, 1)
 .end
@@ -74,26 +74,25 @@ Tests C<LuaString> PMC
 .sub 'check_box'
     $P0 = box "simple string"
     $S0 = $P0
-    is($S0, "simple string")
+    is($S0, "simple string", "check box")
     $I0 = isa $P0, 'LuaString'
     is($I0, 1)
 .end
 
 .sub 'check_is_equal'
-    # RT #60292
     $P1 = new 'LuaString'
     set $P1, 'str'
     $P2 = new 'LuaString'
     set $P2, 'str'
     $I0 = iseq $P1, $P2
-    is($I0, 1)
+    is($I0, 1, "check is_equal (RT #60292)")
 .end
 
 .sub 'check_tostring'
     $P0 = new 'LuaString'
     set $P0, 'value'
     $S0 = $P0
-    is($S0, 'value')
+    is($S0, 'value', "check tostring")
     $P1 = $P0.'tostring'()
     $S0 = $P1
     is($S0, 'value')
@@ -105,7 +104,7 @@ Tests C<LuaString> PMC
     $P0 = new 'LuaString'
     set $P0, '3.14'
     $S0 = $P0
-    is($S0, '3.14')
+    is($S0, '3.14', "check tonumber")
     $P1 = $P0.'tonumber'()
     $S0 = $P1
     is($S0, '3.14')
@@ -117,7 +116,7 @@ Tests C<LuaString> PMC
     $P0 = new 'LuaString'
     set $P0, '111'
     $S0 = $P0
-    is($S0, '111')
+    is($S0, '111', "check tobase")
     $P1 = $P0.'tobase'(2)
     $S0 = $P1
     is($S0, '7')

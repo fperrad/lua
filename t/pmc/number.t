@@ -32,7 +32,7 @@ Tests C<LuaNumber> PMC
 .sub 'check_inheritance'
     $P0 = new 'LuaNumber'
     $I0 = isa $P0, 'LuaAny'
-    is($I0, 1)
+    is($I0, 1, "check inheritance")
     $I0 = isa $P0, 'LuaNumber'
     is($I0, 1)
 .end
@@ -40,7 +40,7 @@ Tests C<LuaNumber> PMC
 .sub 'check_interface'
     $P0 = new 'LuaNumber'
     $I0 = does $P0, 'scalar'
-    is($I0, 1)
+    is($I0, 1, "check interface")
     $I0 = does $P0, 'float'
     is($I0, 1)
     $I0 = does $P0, 'no_interface'
@@ -50,14 +50,14 @@ Tests C<LuaNumber> PMC
 .sub 'check_name'
     $P0 = new 'LuaNumber'
     $S0 = typeof $P0
-    is($S0, 'number')
+    is($S0, 'number', "check name")
 .end
 
 .sub 'check_set_integer_native'
     $P0 = new 'LuaNumber'
     set $P0, 3.14
     $S0 = typeof $P0
-    is($S0, 'number')
+    is($S0, 'number', "check set_integer_native")
     $S0 = $P0
     is($S0, '3.14')
     set $P0, 2
@@ -72,7 +72,7 @@ Tests C<LuaNumber> PMC
     set $P0, 3.14
     $P1 = not $P0
     $S0 = $P1
-    is($S0, 'false')
+    is($S0, 'false', "check logical_not")
     $S0 = typeof $P1
     is($S0, 'boolean')
 .end

@@ -33,7 +33,7 @@ Tests C<LuaNil> PMC
 .sub 'check_inheritance'
     $P0 = new 'LuaNil'
     $I0 = isa $P0, 'LuaAny'
-    is($I0, 1)
+    is($I0, 1, "check inheritance")
     $I0 = isa $P0, 'LuaNil'
     is($I0, 1)
 .end
@@ -41,7 +41,7 @@ Tests C<LuaNil> PMC
 .sub 'check_interface'
     $P0 = new 'LuaNil'
     $I0 = does $P0, 'scalar'
-    is($I0, 1)
+    is($I0, 1, "check interface")
     $I0 = does $P0, 'no_interface'
     is($I0, 0)
 .end
@@ -49,26 +49,26 @@ Tests C<LuaNil> PMC
 .sub 'check_name'
     $P0 = new 'LuaNil'
     $S0 = typeof $P0
-    is($S0, 'nil')
+    is($S0, 'nil', "check name")
 .end
 
 .sub 'check_get_string'
     $P0 = new 'LuaNil'
     $S0 = $P0
-    is($S0, 'nil')
+    is($S0, 'nil', "check get_string")
 .end
 
 .sub 'check_get_bool'
     $P0 = new 'LuaNil'
     $I0 = isfalse $P0
-    is($I0, 1)
+    is($I0, 1, "check get_bool")
 .end
 
 .sub 'check_logical_not'
     $P0 = new 'LuaNil'
     $P1 = not $P0
     $S0 = $P1
-    is($S0, 'true')
+    is($S0, 'true', "check logical_not")
     $S0 = typeof $P1
     is($S0, 'boolean')
 .end

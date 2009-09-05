@@ -33,7 +33,7 @@ Tests C<LuaString> PMC
 .sub 'check_inheritance'
     $P0 = new 'LuaString'
     $I0 = isa $P0, 'LuaAny'
-    is($I0, 1)
+    is($I0, 1, "check inheritance")
     $I0 = isa $P0, 'LuaString'
     is($I0, 1)
 .end
@@ -41,7 +41,7 @@ Tests C<LuaString> PMC
 .sub 'check_interface'
     $P0 = new 'LuaString'
     $I0 = does $P0, 'scalar'
-    is($I0, 1)
+    is($I0, 1, "check interface")
     $I0 = does $P0, 'string'
     is($I0, 1)
     $I0 = does $P0, 'no_interface'
@@ -51,14 +51,14 @@ Tests C<LuaString> PMC
 .sub 'check_name'
     $P0 = new 'LuaString'
     $S0 = typeof $P0
-    is($S0, 'string')
+    is($S0, 'string', "check name")
 .end
 
 .sub 'check_get_bool'
     $P0 = new 'LuaString'
     set $P0, 'str'
     $I0 = istrue $P0
-    is($I0, 1)
+    is($I0, 1, "check get_bool")
     set $P0, ''
     $I0 = istrue $P0
     is($I0, 1)
@@ -69,7 +69,7 @@ Tests C<LuaString> PMC
     set $P0, 'str'
     $P1 = not $P0
     $S0 = $P1
-    is($S0, 'false')
+    is($S0, 'false', "check logical_not")
     $S0 = typeof $P1
     is($S0, 'boolean')
 .end
@@ -78,7 +78,7 @@ Tests C<LuaString> PMC
     $P0 = new 'LuaString'
     set $P0, "embe\0_dd\0_ed\0"
     $I0 = elements $P0
-    is($I0, 13)
+    is($I0, 13, "check embedded zero")
 .end
 
 # Local Variables:

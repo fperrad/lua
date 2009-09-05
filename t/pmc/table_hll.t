@@ -33,7 +33,7 @@ Tests C<table> type
 .sub 'check_HLL'
     $P0 = new 'LuaTable'
     $I0 = isa $P0, 'LuaTable'
-    is($I0, 1)
+    is($I0, 1, "check HLL")
 .end
 
 .sub 'check_len'
@@ -63,7 +63,7 @@ Tests C<table> type
     .local pmc len
     len = $P0.'len'()
     $I0 = len
-    is($I0, 4)
+    is($I0, 4, "check len")
     val3 = new 'LuaNil'
     dec key1
     $P0[key1] = val3
@@ -99,7 +99,7 @@ Tests C<table> type
     key = $P0[0]
     pmc2 = $P0[1]
     $S0 = pmc2
-    is($S0, "value1")
+    is($S0, "value1", "check next")
     $P0 = pmc1.'next'(key)
     key = $P0[0]
     pmc2 = $P0[1]
@@ -118,7 +118,7 @@ Tests C<table> type
 .sub 'check_tostring'
     $P0 = new 'LuaTable'
     $S0 = $P0
-    like($S0, '^table: <[0..9A..Fa..f]>*')
+    like($S0, '^table: <[0..9A..Fa..f]>*', "check tostring")
     $P1 = $P0.'tostring'()
     $S0 = $P1
     like($S0, '^table: <[0..9A..Fa..f]>*')
@@ -130,7 +130,7 @@ Tests C<table> type
     $P0 = new 'LuaTable'
     $P1 = $P0.'tonumber'()
     $S0 = $P1
-    is($S0, 'nil')
+    is($S0, 'nil', "check tonumber")
     $S0 = typeof $P1
     is($S0, 'nil')
 .end

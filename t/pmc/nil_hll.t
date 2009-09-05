@@ -32,7 +32,7 @@ Tests C<LuaNil> PMC
 .sub 'check_HLL'
     $P0 = new 'LuaNil'
     $S0 = $P0
-    is($S0, 'nil')
+    is($S0, 'nil', "check HLL")
     $I0 = isa $P0, 'LuaNil'
     is($I0, 1)
 .end
@@ -40,7 +40,7 @@ Tests C<LuaNil> PMC
 .sub 'check_HLL_const'
     .const 'LuaNil' K = 'dummy'
     $S0 = K
-    is($S0, 'nil')
+    is($S0, 'nil', "check HLL & .const")
     $I0 = isa K, 'LuaNil'
     is($I0, 1)
 .end
@@ -48,7 +48,7 @@ Tests C<LuaNil> PMC
 .sub 'check_tostring'
     $P0 = new 'LuaNil'
     $S0 = $P0
-    is($S0, 'nil')
+    is($S0, 'nil', "check tostring")
     $P1 = $P0.'tostring'()
     $S0 = $P1
     is($S0, 'nil')
@@ -59,7 +59,7 @@ Tests C<LuaNil> PMC
 .sub 'check_tonumber'
     $P0 = new 'LuaNil'
     $S0 = $P0
-    is($S0, 'nil')
+    is($S0, 'nil', "check tonumber")
     $P1 = $P0.'tonumber'()
     $S0 = $P1
     is($S0, 'nil')

@@ -36,7 +36,7 @@ Tests C<LuaFunction> PMC
 #    .const 'LuaFunction' F1 = 'f1'
     .const 'Sub' F1 = 'f1'
     $I0 = isa F1, 'LuaFunction'
-    is($I0, 1)
+    is($I0, 1, "check HLL")
     $S0 = F1()
     is($S0, "f1()")
     .const 'Sub' F2 = 'f2'
@@ -57,7 +57,7 @@ Tests C<LuaFunction> PMC
 .sub 'check_HLL_autoboxing'
     $P0 = fct1()
     $I0 = isa $P0, 'LuaFunction'
-    is($I0, 1)
+    is($I0, 1, "check HLL autoboxing")
     $P0 = fct2()
     $I0 = isa $P0, 'LuaFunction'
     is($I0, 1)
@@ -76,7 +76,7 @@ Tests C<LuaFunction> PMC
 .sub 'check_tostring'
     $P0 = new 'LuaFunction'
     $S0 = $P0
-    like($S0, '^function: <[0..9A..Fa..f]>*')
+    like($S0, '^function: <[0..9A..Fa..f]>*', "check tostring")
     $P1 = $P0.'tostring'()
     $S0 = $P1
     like($S0, '^function: <[0..9A..Fa..f]>*')
@@ -88,7 +88,7 @@ Tests C<LuaFunction> PMC
     $P0 = new 'LuaFunction'
     $P1 = $P0.'tonumber'()
     $S0 = $P1
-    is($S0, 'nil')
+    is($S0, 'nil', "check tonumber")
     $S0 = typeof $P1
     is($S0, 'nil')
 .end
@@ -97,7 +97,7 @@ Tests C<LuaFunction> PMC
     .const 'Sub'F1 = 'f1'
     $P0 = new 'LuaFunction', F1
     $I0 = isa $P0, 'LuaFunction'
-    is($I0, 1)
+    is($I0, 1, "check init_pmc")
     $S0 = $P0()
     is($S0, "f1()")
 .end
@@ -111,7 +111,7 @@ Tests C<LuaFunction> PMC
     .const 'LuaString' k_print = 'print'
     $P2 = $P1[k_print]
     $I0 = isa $P2, 'LuaFunction'
-    is($I0, 1)
+    is($I0, 1, "load from pbc")
 #    $P2($P2)
 .end
 
@@ -122,7 +122,7 @@ Tests C<LuaFunction> PMC
     .const 'LuaString' k_print = 'print'
     $P2 = $P1[k_print]
     $I0 = isa $P2, 'LuaFunction'
-    is($I0, 1)
+    is($I0, 1, "load from pbc")
 #    $P2($P2)
 .end
 

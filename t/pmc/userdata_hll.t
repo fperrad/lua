@@ -33,7 +33,7 @@ Tests C<userdata> type
     $P1 = new 'Array'
     setattribute $P0, 'data', $P1
     $I0 = isa $P0, 'LuaUserdata'
-    is($I0, 1)
+    is($I0, 1, "check HLL")
 .end
 
 .sub 'check_tostring'
@@ -41,7 +41,7 @@ Tests C<userdata> type
     $P1 = new 'Array'
     setattribute $P0, 'data', $P1
     $S0 = $P0
-    like($S0, '^userdata: <[0..9A..Fa..f]>*')
+    like($S0, '^userdata: <[0..9A..Fa..f]>*', "check tostring")
     $P2 = $P0.'tostring'()
     $S0 = $P2
     like($S0, '^userdata: <[0..9A..Fa..f]>*')
@@ -55,7 +55,7 @@ Tests C<userdata> type
     setattribute $P0, 'data', $P1
     $P2 = $P0.'tonumber'()
     $S0 = $P2
-    is($S0, 'nil')
+    is($S0, 'nil', "check tonumber")
     $S0 = typeof $P2
     is($S0, 'nil')
 .end

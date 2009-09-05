@@ -36,7 +36,7 @@ Tests C<table> type
 .sub 'check_inheritance'
     $P0 = new 'LuaTable'
     $I0 = isa $P0, 'scalar'
-    is($I0, 0)
+    is($I0, 0, "check ingeritance")
     $I0 = isa $P0, 'LuaAny'
     is($I0, 1)
     $I0 = isa $P0, 'LuaTable'
@@ -46,7 +46,7 @@ Tests C<table> type
 .sub 'check_interface'
     $P0 = new 'LuaTable'
     $I0 = does $P0, 'scalar'
-    is($I0, 0)
+    is($I0, 0, "check interface")
     $I0 = does $P0, 'no_interface'
     is($I0, 0)
 .end
@@ -54,26 +54,26 @@ Tests C<table> type
 .sub 'check_name'
     $P0 = new 'LuaTable'
     $S0 = typeof $P0
-    is($S0, 'table')
+    is($S0, 'table', "check name")
 .end
 
 .sub 'check_get_string'
     $P0 = new 'LuaTable'
     $S0 = $P0
-    like($S0, '^table: <[0..9A..Fa..f]>*')
+    like($S0, '^table: <[0..9A..Fa..f]>*', "check get_string")
 .end
 
 .sub 'check_get_bool'
     $P0 = new 'LuaTable'
     $I0 = istrue $P0
-    is($I0, 1)
+    is($I0, 1, "check get_bool")
 .end
 
 .sub 'check_logical_not'
     $P0 = new 'LuaTable'
     $P1 = not $P0
     $S0 = $P1
-    is($S0, 'false')
+    is($S0, 'false', "check logical_not")
     $S0 = typeof $P1
     is($S0, 'boolean')
 .end
@@ -90,7 +90,7 @@ Tests C<table> type
     $P0[val2] = val2
     $P1 = $P0[val1]
     $S0 = $P1
-    is($S0, "value1")
+    is($S0, "value1", "check key PMC")
     $P1 = $P0[val2]
     $S0 = $P1
     is($S0, "value2")
@@ -108,7 +108,7 @@ Tests C<table> type
     nil = new 'LuaNil'
     push_eh _handler
     $P0[nil] = val1
-    ok(0)
+    ok(0, "check key nil")
     pop_eh
     end
   _handler:
@@ -116,7 +116,7 @@ Tests C<table> type
     .get_results (ex)
     $S0 = ex
     # table index is nil
-    like($S0, '^table')
+    like($S0, '^table', "check key nil")
 .end
 
 .sub 'check_deletion' # by assignment of nil
@@ -128,7 +128,7 @@ Tests C<table> type
     val2 = new 'LuaString'
     val2 = "value2"
     $I0 = elements $P0
-    is($I0, 0)
+    is($I0, 0, "check deletion")
     $P0[val1] = val1
     $I0 = elements $P0
     is($I0, 1)
