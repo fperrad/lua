@@ -22,7 +22,7 @@ Configure & build & install Parrot
 
 Retrieve Lua
 
-  perl tools/dev/fetch_language.pl --lang=lua
+  perl tools/dev/fetch_languages.pl --lang=lua
 
 Configure & build Lua
 
