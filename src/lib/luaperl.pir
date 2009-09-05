@@ -103,7 +103,7 @@ It's a temporary work. Waiting for the real PIR compiler/interpreter.
     $S1 .= '.pir'
     unlink($S1)
     unlink(out)
-    $S0 = 'perl -Ilanguages/lua languages/lua/luac.pl '
+    $S0 = 'perl luac.pl '
     $S0 .= filename
     $S0 .= ' > '
     $S0 .= out
