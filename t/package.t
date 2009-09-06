@@ -284,7 +284,7 @@ print(type(package.pbcpath))
 print(package.pbcpath)
 CODE
 string
-languages/lua/library/?.pbc;lua/?.pbc;./?.pbc;./?.pir
+lua/?.pbc;./?.pbc;./?.pir
 OUTPUT
 
 $ENV{LUA_PBCPATH} = "?.pbc";
@@ -298,7 +298,7 @@ $ENV{LUA_PBCPATH} = ";;languages/lua/?.pbc";
 language_output_is( 'lua', << 'CODE', << 'OUTPUT', 'table package.pbcpath' );
 print(package.pbcpath)
 CODE
-;languages/lua/library/?.pbc;lua/?.pbc;./?.pbc;./?.pir;languages/lua/?.pbc
+;lua/?.pbc;./?.pbc;./?.pir;languages/lua/?.pbc
 OUTPUT
 
 delete $ENV{LUA_PBCPATH};
