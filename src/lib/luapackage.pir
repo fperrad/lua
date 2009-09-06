@@ -64,7 +64,7 @@ LIST
     inc $P2
     _loaders[$P2] = loader_PBCroot
 
-    setpath(_package, 'path', 'LUA_PATH', './?.lua;languages/lua/src/lib/?.lua')
+    setpath(_package, 'path', 'LUA_PATH', './?.lua;src/lib/?.lua')
 #    setpath(_package, 'pbcpath', 'LUA_PBCPATH', 'languages/lua/library/?.pbc;./?.pbc;./?.pir')
     setpath(_package, 'pbcpath', 'LUA_PBCPATH', 'languages/lua/library/?.pbc;lua/?.pbc;./?.pbc;./?.pir')
 
