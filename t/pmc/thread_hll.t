@@ -35,7 +35,7 @@ Tests Lua C<thread> type
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
     $I0 = isa $P0, 'LuaThread'
-    is($I0, 1, "check HLL")
+    ok($I0, "check HLL")
 .end
 
 .sub 'f1'

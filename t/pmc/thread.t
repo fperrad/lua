@@ -35,11 +35,11 @@ Tests Lua C<thread> type
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
     $I0 = isa $P0, 'scalar'
-    is($I0, 0, "check inheritance")
+    nok($I0, "check inheritance")
     $I0 = isa $P0, 'LuaAny'
-    is($I0, 1)
+    ok($I0)
     $I0 = isa $P0, 'LuaThread'
-    is($I0, 1)
+    ok($I0)
 .end
 
 .sub 'f1'
@@ -51,9 +51,9 @@ Tests Lua C<thread> type
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
     $I0 = does $P0, 'scalar'
-    is($I0, 1, "check interface")
+    ok($I0, "check interface")
     $I0 = does $P0, 'no_interface'
-    is($I0, 0)
+    nok($I0)
 .end
 
 .sub 'check_name'

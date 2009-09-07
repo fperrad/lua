@@ -34,7 +34,7 @@ Tests C<LuaNil> PMC
     $S0 = $P0
     is($S0, 'nil', "check HLL")
     $I0 = isa $P0, 'LuaNil'
-    is($I0, 1)
+    ok($I0)
 .end
 
 .sub 'check_HLL_const'
@@ -42,7 +42,7 @@ Tests C<LuaNil> PMC
     $S0 = K
     is($S0, 'nil', "check HLL & .const")
     $I0 = isa K, 'LuaNil'
-    is($I0, 1)
+    ok($I0)
 .end
 
 .sub 'check_tostring'

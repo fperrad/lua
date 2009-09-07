@@ -33,25 +33,25 @@ Tests C<LuaFunction> PMC
 .sub 'check_inheritance'
     $P0 = new 'LuaFunction'
     $I0 = isa $P0, 'scalar'
-    is($I0, 0, "check inheritance")
+    nok($I0, "check inheritance")
     $I0 = isa $P0, 'Sub'
-    is($I0, 1)
+    ok($I0)
     $I0 = isa $P0, 'Closure'
-    is($I0, 0)
+    nok($I0)
     $I0 = isa $P0, 'LuaAny'
-    is($I0, 1)
+    ok($I0)
     $I0 = isa $P0, 'LuaFunction'
-    is($I0, 1)
+    ok($I0)
 .end
 
 .sub 'check_interface'
     $P0 = new 'LuaFunction'
     $I0 = does $P0, 'scalar'
-    is($I0, 1, "check interface")
+    ok($I0, "check interface")
     $I0 = does $P0, 'sub'
-    is($I0, 1)
+    ok($I0)
     $I0 = does $P0, 'no_interface'
-    is($I0, 0)
+    nok($I0)
 .end
 
 .sub 'check_name'
@@ -69,10 +69,10 @@ Tests C<LuaFunction> PMC
 .sub 'check_get_bool'
     $P0 = new 'LuaFunction'
     $I0 = istrue $P0
-    is($I0, 1)
+    is($I0, 1, "check get_bool")
     .const 'Sub' F1 = 'f1'
     $I0 = istrue F1
-    is($I0, 1, "check get_bool")
+    is($I0, 1)
 .end
 
 .sub f1

@@ -33,7 +33,7 @@ Tests C<userdata> type
     $P1 = new 'Array'
     setattribute $P0, 'data', $P1
     $I0 = isa $P0, 'LuaUserdata'
-    is($I0, 1, "check HLL")
+    ok($I0, "check HLL")
 .end
 
 .sub 'check_tostring'

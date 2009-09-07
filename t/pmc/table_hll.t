@@ -33,7 +33,7 @@ Tests C<table> type
 .sub 'check_HLL'
     $P0 = new 'LuaTable'
     $I0 = isa $P0, 'LuaTable'
-    is($I0, 1, "check HLL")
+    ok($I0, "check HLL")
 .end
 
 .sub 'check_len'

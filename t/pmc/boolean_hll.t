@@ -35,7 +35,7 @@ Tests C<LuaBoolean> PMC
     $S0 = $P0
     is($S0, 'true', "check HLL")
     $I0 = isa $P0, 'LuaBoolean'
-    is($I0, 1)
+    ok($I0)
 .end
 
 .sub 'check_HLL_const'
@@ -43,7 +43,7 @@ Tests C<LuaBoolean> PMC
     $S0 = K
     is($S0, 'true', "check HLL & .const")
     $I0 = isa K, 'LuaBoolean'
-    is($I0, 1)
+    ok($I0)
 .end
 
 .sub 'check_tostring'

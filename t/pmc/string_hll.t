@@ -40,7 +40,7 @@ Tests C<LuaString> PMC
     $S0 = $P0
     is($S0, "simple string", "check HLL")
     $I0 = isa $P0, 'LuaString'
-    is($I0, 1)
+    ok($I0)
 .end
 
 .sub 'check_HLL_autoboxing'
@@ -48,7 +48,7 @@ Tests C<LuaString> PMC
     $S0 = $P0
     is($S0, "simple string", "check HLL autoboxing")
     $I0 = isa $P0, 'LuaString'
-    is($I0, 1)
+    ok($I0)
 .end
 
 .sub 'fct' :anon
@@ -60,7 +60,7 @@ Tests C<LuaString> PMC
     $S0 = K
     is($S0, "simple string", "check HLL & .const")
     $I0 = isa K, 'LuaString'
-    is($I0, 1)
+    ok($I0)
 .end
 
 .sub 'check_empty_string'
@@ -68,7 +68,7 @@ Tests C<LuaString> PMC
     $S0 = K
     is($S0, '', "check empty string")
     $I0 = isa K, 'LuaString'
-    is($I0, 1)
+    ok($I0)
 .end
 
 .sub 'check_box'
@@ -76,7 +76,7 @@ Tests C<LuaString> PMC
     $S0 = $P0
     is($S0, "simple string", "check box")
     $I0 = isa $P0, 'LuaString'
-    is($I0, 1)
+    ok($I0)
 .end
 
 .sub 'check_is_equal'
