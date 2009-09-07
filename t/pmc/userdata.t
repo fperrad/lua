@@ -73,10 +73,10 @@ Tests C<userdata> type
     $P1 = new 'Array'
     setattribute $P0, 'data', $P1
     $P2 = not $P0
+    $I0 = isa $P2, 'LuaBoolean'
+    ok($I0, "check logical_not")
     $S0 = $P2
-    is($S0, 'false', "check logical_not")
-    $S0 = typeof $P2
-    is($S0, 'boolean')
+    is($S0, 'false')
 .end
 
 # Local Variables:

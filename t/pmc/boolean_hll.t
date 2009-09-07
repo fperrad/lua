@@ -21,7 +21,7 @@ Tests C<LuaBoolean> PMC
 .sub 'main' :main
     .include 'test_more.pir'
 
-    plan(10)
+    plan(9)
 
     check_HLL()
     check_HLL_const()
@@ -52,10 +52,10 @@ Tests C<LuaBoolean> PMC
     $S0 = $P0
     is($S0, 'true', "check tostring")
     $P1 = $P0.'tostring'()
+    $I0 = isa $P1, 'LuaString'
+    ok($I0)
     $S0 = $P1
     is($S0, 'true')
-    $S0 = typeof $P1
-    is($S0, 'string')
 .end
 
 .sub 'check_tonumber'
@@ -64,10 +64,8 @@ Tests C<LuaBoolean> PMC
     $S0 = $P0
     is($S0, 'true', "check tonumber")
     $P1 = $P0.'tonumber'()
-    $S0 = $P1
-    is($S0, 'nil')
-    $S0 = typeof $P1
-    is($S0, 'nil')
+    $I0 = isa $P1, 'LuaNil'
+    ok($I0)
 .end
 
 # Local Variables:

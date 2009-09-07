@@ -21,7 +21,7 @@ Tests C<LuaFunction> PMC
 .sub 'main' :main
     .include 'test_more.pir'
 
-    plan(15)
+    plan(14)
 
     check_HLL()
     check_HLL_autoboxing()
@@ -78,19 +78,17 @@ Tests C<LuaFunction> PMC
     $S0 = $P0
     like($S0, '^function: <[0..9A..Fa..f]>*', "check tostring")
     $P1 = $P0.'tostring'()
+    $I0 = isa $P1, 'LuaString'
+    ok($I0)
     $S0 = $P1
     like($S0, '^function: <[0..9A..Fa..f]>*')
-    $S0 = typeof $P1
-    is($S0, 'string')
 .end
 
 .sub 'check_tonumber'
     $P0 = new 'LuaFunction'
     $P1 = $P0.'tonumber'()
-    $S0 = $P1
-    is($S0, 'nil', "check tonumber")
-    $S0 = typeof $P1
-    is($S0, 'nil')
+    $I0 = isa $P1, 'LuaNil'
+    ok($I0, "check tonumber")
 .end
 
 .sub 'check_init_pmc'

@@ -68,10 +68,10 @@ Tests C<LuaString> PMC
     $P0 = new 'LuaString'
     set $P0, 'str'
     $P1 = not $P0
+    $I0 = isa $P1, 'LuaBoolean'
+    ok($I0, "check logical_not")
     $S0 = $P1
-    is($S0, 'false', "check logical_not")
-    $S0 = typeof $P1
-    is($S0, 'boolean')
+    is($S0, 'false')
 .end
 
 .sub 'check_embedded_zero'

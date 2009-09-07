@@ -21,7 +21,7 @@ Tests C<userdata> type
 .sub 'main' :main
     .include 'test_more.pir'
 
-    plan(6)
+    plan(5)
 
     check_HLL()
     check_tostring()
@@ -43,10 +43,10 @@ Tests C<userdata> type
     $S0 = $P0
     like($S0, '^userdata: <[0..9A..Fa..f]>*', "check tostring")
     $P2 = $P0.'tostring'()
+    $I0 = isa $P2, 'LuaString'
+    ok($I0)
     $S0 = $P2
     like($S0, '^userdata: <[0..9A..Fa..f]>*')
-    $S0 = typeof $P2
-    is($S0, 'string')
 .end
 
 .sub 'check_tonumber'
@@ -54,10 +54,8 @@ Tests C<userdata> type
     $P1 = new 'Array'
     setattribute $P0, 'data', $P1
     $P2 = $P0.'tonumber'()
-    $S0 = $P2
-    is($S0, 'nil', "check tonumber")
-    $S0 = typeof $P2
-    is($S0, 'nil')
+    $I0 = isa $P2, 'LuaNil'
+    ok($I0, "check tonumber")
 .end
 
 # Local Variables:

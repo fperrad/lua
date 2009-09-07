@@ -67,10 +67,10 @@ Tests C<LuaNil> PMC
 .sub 'check_logical_not'
     $P0 = new 'LuaNil'
     $P1 = not $P0
+    $I0 = isa $P1, 'LuaBoolean'
+    ok($I0, "check logical_not")
     $S0 = $P1
-    is($S0, 'true', "check logical_not")
-    $S0 = typeof $P1
-    is($S0, 'boolean')
+    is($S0, 'true')
 .end
 
 # Local Variables:
