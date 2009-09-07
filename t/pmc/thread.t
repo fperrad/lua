@@ -81,8 +81,7 @@ Tests Lua C<thread> type
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
     $P1 = not $P0
-    $I0 = isa $P1, 'LuaBoolean'
-    ok($I0, "check logical_not")
+    isa_ok($P1, 'LuaBoolean', "check logical_not")
     $S0 = $P1
     is($S0, 'false')
 .end

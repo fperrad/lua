@@ -32,8 +32,7 @@ Tests C<userdata> type
     $P0 = new 'LuaUserdata'
     $P1 = new 'Array'
     setattribute $P0, 'data', $P1
-    $I0 = isa $P0, 'LuaUserdata'
-    ok($I0, "check HLL")
+    isa_ok($P0, 'LuaUserdata', "check HLL")
 .end
 
 .sub 'check_tostring'
@@ -43,8 +42,7 @@ Tests C<userdata> type
     $S0 = $P0
     like($S0, '^userdata: <[0..9A..Fa..f]>*', "check tostring")
     $P2 = $P0.'tostring'()
-    $I0 = isa $P2, 'LuaString'
-    ok($I0)
+    isa_ok($P2, 'LuaString')
     $S0 = $P2
     like($S0, '^userdata: <[0..9A..Fa..f]>*')
 .end
@@ -54,8 +52,7 @@ Tests C<userdata> type
     $P1 = new 'Array'
     setattribute $P0, 'data', $P1
     $P2 = $P0.'tonumber'()
-    $I0 = isa $P2, 'LuaNil'
-    ok($I0, "check tonumber")
+    isa_ok($P2, 'LuaNil', "check tonumber")
 .end
 
 # Local Variables:

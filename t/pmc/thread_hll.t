@@ -34,8 +34,7 @@ Tests Lua C<thread> type
 .sub 'check_HLL'
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
-    $I0 = isa $P0, 'LuaThread'
-    ok($I0, "check HLL")
+    isa_ok($P0, 'LuaThread', "check HLL")
 .end
 
 .sub 'f1'
@@ -49,8 +48,7 @@ Tests Lua C<thread> type
     $S0 = $P0
     like($S0, '^thread: <[0..9A..Fa..f]>*', "check tostring")
     $P1 = $P0.'tostring'()
-    $I0 = isa $P1, 'LuaString'
-    ok($I0)
+    isa_ok($P1, 'LuaString')
     $S0 = $P1
     like($S0, '^thread: <[0..9A..Fa..f]>*')
 .end
@@ -59,8 +57,7 @@ Tests Lua C<thread> type
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
     $P1 = $P0.'tonumber'()
-    $I0 = isa $P1, 'LuaNil'
-    ok($I0, "check tonumber")
+    isa_ok($P1, 'LuaNil', "check tonumber")
 .end
 
 .sub 'check__add'

@@ -32,8 +32,7 @@ Tests C<table> type
 
 .sub 'check_HLL'
     $P0 = new 'LuaTable'
-    $I0 = isa $P0, 'LuaTable'
-    ok($I0, "check HLL")
+    isa_ok($P0, 'LuaTable', "check HLL")
 .end
 
 .sub 'check_len'
@@ -120,8 +119,7 @@ Tests C<table> type
     $S0 = $P0
     like($S0, '^table: <[0..9A..Fa..f]>*', "check tostring")
     $P1 = $P0.'tostring'()
-    $I0 = isa $P1, 'LuaString'
-    ok($I0)
+    isa_ok($P1, 'LuaString')
     $S0 = $P1
     like($S0, '^table: <[0..9A..Fa..f]>*')
 .end
@@ -129,8 +127,7 @@ Tests C<table> type
 .sub 'check_tonumber'
     $P0 = new 'LuaTable'
     $P1 = $P0.'tonumber'()
-    $I0 = isa $P1, 'LuaNil'
-    ok($I0, "check tonumber")
+    isa_ok($P1, 'LuaNil', "check tonumber")
 .end
 
 # Local Variables:

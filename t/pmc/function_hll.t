@@ -35,13 +35,11 @@ Tests C<LuaFunction> PMC
 .sub 'check_HLL'
 #    .const 'LuaFunction' F1 = 'f1'
     .const 'Sub' F1 = 'f1'
-    $I0 = isa F1, 'LuaFunction'
-    ok($I0, "check HLL")
+    isa_ok(F1, 'LuaFunction', "check HLL")
     $S0 = F1()
     is($S0, "f1()")
     .const 'Sub' F2 = 'f2'
-    $I0 = isa F2, 'LuaFunction'
-    ok($I0)
+    isa_ok(F2, 'LuaFunction')
     $S0 = F2()
     is($S0, "f2()")
 .end
@@ -56,11 +54,9 @@ Tests C<LuaFunction> PMC
 
 .sub 'check_HLL_autoboxing'
     $P0 = fct1()
-    $I0 = isa $P0, 'LuaFunction'
-    ok($I0, "check HLL autoboxing")
+    isa_ok($P0, 'LuaFunction', "check HLL autoboxing")
     $P0 = fct2()
-    $I0 = isa $P0, 'LuaFunction'
-    ok($I0)
+    isa_ok($P0, 'LuaFunction')
 .end
 
 .sub 'fct1'
@@ -78,8 +74,7 @@ Tests C<LuaFunction> PMC
     $S0 = $P0
     like($S0, '^function: <[0..9A..Fa..f]>*', "check tostring")
     $P1 = $P0.'tostring'()
-    $I0 = isa $P1, 'LuaString'
-    ok($I0)
+    isa_ok($P1, 'LuaString')
     $S0 = $P1
     like($S0, '^function: <[0..9A..Fa..f]>*')
 .end
@@ -87,15 +82,13 @@ Tests C<LuaFunction> PMC
 .sub 'check_tonumber'
     $P0 = new 'LuaFunction'
     $P1 = $P0.'tonumber'()
-    $I0 = isa $P1, 'LuaNil'
-    ok($I0, "check tonumber")
+    isa_ok($P1, 'LuaNil', "check tonumber")
 .end
 
 .sub 'check_init_pmc'
     .const 'Sub'F1 = 'f1'
     $P0 = new 'LuaFunction', F1
-    $I0 = isa $P0, 'LuaFunction'
-    ok($I0, "check init_pmc")
+    isa_ok($P0, 'LuaFunction', "check init_pmc")
     $S0 = $P0()
     is($S0, "f1()")
 .end
@@ -108,8 +101,7 @@ Tests C<LuaFunction> PMC
     $P1 = get_hll_global '_G'
     .const 'LuaString' k_print = 'print'
     $P2 = $P1[k_print]
-    $I0 = isa $P2, 'LuaFunction'
-    ok($I0, "load from pbc")
+    isa_ok($P2, 'LuaFunction', "load from pbc")
 #    $P2($P2)
 .end
 
@@ -119,8 +111,7 @@ Tests C<LuaFunction> PMC
     $P1 = get_hll_global '_G'
     .const 'LuaString' k_print = 'print'
     $P2 = $P1[k_print]
-    $I0 = isa $P2, 'LuaFunction'
-    ok($I0, "load from pbc")
+    isa_ok($P2, 'LuaFunction', "load from pbc")
 #    $P2($P2)
 .end
 

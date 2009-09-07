@@ -83,8 +83,7 @@ Tests C<LuaFunction> PMC
 .sub 'check_logical_not'
     $P0 = new 'LuaFunction'
     $P1 = not $P0
-    $I0 = isa $P1, 'LuaBoolean'
-    ok($I0, "check logical_not")
+    isa_ok($P1, 'LuaBoolean', "check logical_not")
     $S0 = $P1
     is($S0, 'false')
 .end

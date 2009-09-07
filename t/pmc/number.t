@@ -56,13 +56,11 @@ Tests C<LuaNumber> PMC
 .sub 'check_set_integer_native'
     $P0 = new 'LuaNumber'
     set $P0, 3.14
-    $I0 = isa $P0, 'LuaNumber'
-    ok($I0, "check set_integer_native")
+    isa_ok($P0, 'LuaNumber', "check set_integer_native")
     $N0 = $P0
     is($N0, 3.14)
     set $P0, 2
-    $I0 = isa $P0, 'LuaNumber'
-    ok($I0)
+    isa_ok($P0, 'LuaNumber')
     $N0 = $P0
     is($N0, 2)
 .end
@@ -71,8 +69,7 @@ Tests C<LuaNumber> PMC
     $P0 = new 'LuaNumber'
     set $P0, 3.14
     $P1 = not $P0
-    $I0 = isa $P1, 'LuaBoolean'
-    ok($I0, "check logical_not")
+    isa_ok($P1, 'LuaBoolean', "check logical_not")
     $S0 = $P1
     is($S0, 'false')
 .end
