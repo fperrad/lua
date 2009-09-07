@@ -106,8 +106,8 @@ Tests C<LuaString> PMC
     $S0 = $P0
     is($S0, '3.14', "check tonumber")
     $P1 = $P0.'tonumber'()
-    $S0 = $P1
-    is($S0, '3.14')
+    $N0 = $P1
+    is($N0, 3.14)
     $S0 = typeof $P1
     is($S0, 'number')
 .end
@@ -118,8 +118,8 @@ Tests C<LuaString> PMC
     $S0 = $P0
     is($S0, '111', "check tobase")
     $P1 = $P0.'tobase'(2)
-    $S0 = $P1
-    is($S0, '7')
+    $I0 = $P1
+    is($I0, 7)
     $S0 = typeof $P1
     is($S0, 'number')
 .end

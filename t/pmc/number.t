@@ -58,13 +58,13 @@ Tests C<LuaNumber> PMC
     set $P0, 3.14
     $S0 = typeof $P0
     is($S0, 'number', "check set_integer_native")
-    $S0 = $P0
-    is($S0, '3.14')
+    $N0 = $P0
+    is($N0, 3.14)
     set $P0, 2
     $S0 = typeof $P0
     is($S0, 'number')
-    $S0 = $P0
-    is($S0, '2')
+    $N0 = $P0
+    is($N0, 2)
 .end
 
 .sub 'check_logical_not'
