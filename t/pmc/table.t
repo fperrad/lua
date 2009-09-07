@@ -99,23 +99,17 @@ Tests C<table> type
  .end
 
 .sub 'check_key_nil'
+    throws_like(<<'CODE', '^table\ index\ is\ nil', "check key nil")
+  .sub ''
     $P0 = new 'LuaTable'
     .local pmc val1
     val1 = new 'LuaString'
     val1 = "value1"
     .local pmc nil
     nil = new 'LuaNil'
-    push_eh _handler
     $P0[nil] = val1
-    ok(0, "check key nil")
-    pop_eh
-    end
-  _handler:
-    .local pmc ex
-    .get_results (ex)
-    $S0 = ex
-    # table index is nil
-    like($S0, '^table', "check key nil")
+  .end
+CODE
 .end
 
 .sub 'check_deletion' # by assignment of nil

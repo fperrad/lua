@@ -61,21 +61,21 @@ Tests Lua C<thread> type
 .end
 
 .sub 'check__add'
+    # attempt to perform arithmetic on a thread value
+    throws_like(<<'CODE', '^attempt', "check__add")
+  .sub ''
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
     $P1 = new 'LuaNumber'
     set $P1, 3.14
-    push_eh _handler
     $P2 = add $P0, $P1
-    ok(0)
-    pop_eh
+  .end
+
+  .sub 'f1'
+    print "f1()\n"
     end
-  _handler:
-    .local pmc ex
-    .get_results (ex)
-    $S0 = ex
-    # attempt to perform arithmetic on a thread value
-#    like($S0, '^attempt')
+  .end
+CODE
 .end
 
 # Local Variables:
