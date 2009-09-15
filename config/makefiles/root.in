@@ -389,7 +389,8 @@ else { \
 }
 
 smoke : build lua@exe@
-	@$(CP) lua@exe@ parrot-lua@exe@
+#IF(win32):	@$(CP) lua@exe@ parrot-lua@exe@
+#UNLESS(win32):	@which parrot-lua
 	-@prove  --archive test_lua51.tar.gz --exec=parrot-lua t/lua-TestMore/test_lua51/0*.t
 	perl -e '$(upload_pl)'
 
