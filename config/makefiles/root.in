@@ -373,6 +373,7 @@ my $$response = $$ua->post( \
         password     => q{squ@wk}, \
         project_id   => $$project_id, \
         report_file  => [q{test_lua51.tar.gz}], \
+        revision     => @revision@, \
         ] \
 ); \
 if ($$response->code == 302) { \
