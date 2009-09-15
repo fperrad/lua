@@ -11,6 +11,8 @@ luap
 installable_lua
 installable_luap
 
+*.tar.gz
+
 *.tmp
 *.sto
 man
