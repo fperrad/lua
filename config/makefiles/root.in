@@ -351,9 +351,47 @@ help:
 test: build
 	$(PERL) -I$(LIB_DIR)/tools/lib t/harness
 
+upload_pl = \
+use strict; \
+use warnings; \
+use LWP::UserAgent; \
+my $$lua_version = qx{parrot-lua -e "print(_VERSION)"}; \
+my $$ua = LWP::UserAgent->new(); \
+$$ua->env_proxy(); \
+my $$server = q{http:////smolder.plusthree.com}; \
+my $$project_id = 12; \
+my $$url = $$server . q{//app//developer_projects//process_add_report//} . $$project_id; \
+my $$response = $$ua->post( \
+    $$url, \
+    Content_Type => q{form-data}, \
+    Content      => [ \
+        architecture => q{@archname@}, \
+        platform     => q{@osname@}, \
+        tags         => qq{@osname@, @archname@, parrot-lua, $$lua_version}, \
+        comments     => q{}, \
+        username     => q{parrot-autobot}, \
+        password     => q{squ@wk}, \
+        project_id   => $$project_id, \
+        report_file  => [q{test_lua51.tar.gz}], \
+        ] \
+); \
+if ($$response->code == 302) { \
+    my ($$report_id) = $$response->content =~ //Reported .(\d+) added//i; \
+    my $$report_url = $$server . q{//app//public_projects//report_details//} . $$report_id; \
+    my $$project_url = $$server . q{//app//public_projects//smoke_reports//} . $$project_id; \
+    print qq{Test report successfully sent to Smolder at\n$$report_url} \
+      . qq{\nYou can see other recent reports at\n$$project_url .\n\n}; \
+} \
+else { \
+    die qq{Could not upload report to Smolder at $$server} \
+      . qq{\nHTTP CODE: } . $$response->code . q{ (} \
+      . $$response->message . qq{)\n}; \
+}
+
 smoke : build lua@exe@
 	@$(CP) lua@exe@ parrot-lua@exe@
-	-@prove --exec=parrot-lua t/lua-TestMore/test_lua51/0*.t
+	-@prove  --archive test_lua51.tar.gz --exec=parrot-lua t/lua-TestMore/test_lua51/0*.t
+	perl -e '$(upload_pl)'
 
 codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
 
