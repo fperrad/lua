@@ -351,8 +351,9 @@ help:
 test: build
 	$(PERL) -I$(LIB_DIR)/tools/lib t/harness
 
-smoke : build
-	-$(PERL) -I$(LIB_DIR)/tools/lib t/harness --archive --send-to-smolder
+smoke : build lua@exe@
+	@$(CP) lua@exe@ parrot-lua@exe@
+	-@prove --exec=parrot-lua t/lua-TestMore/test_lua51/0*.t
 
 codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
 
@@ -436,6 +437,7 @@ install: installable
 uninstall:
 	$(MAKE) $(PMC_DIR) uninstall
 	$(RM_F) $(BIN_DIR)/parrot-lua@exe@
+	$(RM_F) $(BIN_DIR)/parrot-luap@exe@
 	$(RM_RF) $(LIB_DIR)/languages/lua
 	$(RM_F) $(MANDIR)/man1/parrot-lua.1
 	$(RM_RF) $(DOC_DIR)/languages/lua
