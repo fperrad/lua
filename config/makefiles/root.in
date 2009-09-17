@@ -354,9 +354,10 @@ test: build
 export LUA_PATH=;;../src/?.lua
 export LUA_INIT=platform = { osname=[[@osname@]], intsize=@intsize@ }
 
-spectest : build lua@exe@
-#UNLESS(win32):	@which parrot-lua
-	@cd t && cd lua-TestMore && cd test_lua51 && prove --exec=parrot-lua *.t lib/*.t
+spectest : build
+#UNLESS(win32):	which parrot-lua
+	cd t && cd lua-TestMore && cd test_lua51 \
+	 && prove --exec=parrot-lua *.t lib//*.t
 
 upload_pl = \
 use strict; \
@@ -396,9 +397,9 @@ else { \
       . $$response->message . qq{)\n}; \
 }
 
-smoke : build lua@exe@
-#UNLESS(win32):	@which parrot-lua
-	-@cd t && cd lua-TestMore && cd test_lua51 \
+smoke : build
+#UNLESS(win32):	which parrot-lua
+	-cd t && cd lua-TestMore && cd test_lua51 \
 	 && prove --archive=test_lua51.tar.gz --exec=parrot-lua *.t
 	@perl -e '$(upload_pl)'
 
