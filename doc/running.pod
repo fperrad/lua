@@ -24,9 +24,12 @@ Retrieve Lua
 
   perl tools/dev/fetch_languages.pl --lang=lua
 
+  cd languages/lua
+  git submodule init t/lua-TestMore
+  git submodule update
+
 Configure & build Lua
 
-  cd languages/lua
   perl Configure.pl
   make
 
