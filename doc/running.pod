@@ -37,11 +37,11 @@ Configure & build Lua
 
   make test
 
-=head2 Testing the test suite
+=head2 Smoking to Smolder
 
-With an original C<Lua> in your path, it's possible to check the test suite.
+  make smoke
 
-  perl t/harness --use-lua
+Note : t/lua-TestMore/test_lua51 is used as Test Suite
 
 =head2 Running your own code
 
@@ -50,6 +50,14 @@ With an original C<Lua> in your path, it's possible to check the test suite.
 or in interactive mode :
 
   ../../parrot lua.pbc
+
+=head2 Installing
+
+  make install
+
+and now :
+
+  parrot-lua example.lua
 
 =head2 Bugs & Limitations
 
