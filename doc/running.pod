@@ -33,9 +33,13 @@ Configure & build Lua
   perl Configure.pl
   make
 
-=head2 Running the whole test suite
+=head2 Running the Test Suite
 
   make test
+
+With t/lua-TestMore/test_lua51 is used as Test Suite
+
+  make spectest
 
 =head2 Smoking to Smolder
 

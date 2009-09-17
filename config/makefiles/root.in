@@ -351,6 +351,12 @@ help:
 test: build
 	$(PERL) -I$(LIB_DIR)/tools/lib t/harness
 
+export LUA_PATH=;;../src/?.lua
+
+spectest : build lua@exe@
+#UNLESS(win32):	@which parrot-lua
+	cd t && cd lua-TestMore && cd test_lua51 && @prove --exec=parrot-lua *.t lib/*.t
+
 upload_pl = \
 use strict; \
 use warnings; \
@@ -372,7 +378,7 @@ my $$response = $$ua->post( \
         username     => q{parrot-autobot}, \
         password     => q{squ@wk}, \
         project_id   => $$project_id, \
-        report_file  => [q{test_lua51.tar.gz}], \
+        report_file  => [q{t//lua-TestMore//test_lua51//test_lua51.tar.gz}], \
         revision     => @revision@, \
         ] \
 ); \
@@ -390,9 +396,9 @@ else { \
 }
 
 smoke : build lua@exe@
-#IF(win32):	@$(CP) lua@exe@ parrot-lua@exe@
 #UNLESS(win32):	@which parrot-lua
-	-@prove  --archive test_lua51.tar.gz --exec=parrot-lua t/lua-TestMore/test_lua51/0*.t
+	-cd t && cd lua-TestMore && cd test_lua51 \
+	 && @prove --archive test_lua51.tar.gz --exec=parrot-lua *.t lib/*.t
 	perl -e '$(upload_pl)'
 
 codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
