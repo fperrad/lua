@@ -352,7 +352,7 @@ test: build
 	$(PERL) -I$(LIB_DIR)/tools/lib t/harness
 
 export LUA_PATH=;;../src/?.lua
-export LUA_INIT=platform = { osname=[[@osname@]], intsize=@intsize@ }
+export LUA_INIT=platform = { osname=[[@osname@]], intsize=@intsize@, longsize=@longsize@ }
 
 spectest : build
 #UNLESS(win32):	which parrot-lua
