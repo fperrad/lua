@@ -118,6 +118,8 @@ BUILD_CLEANUPS := \
   "library/Test/*.pbc" \
   "$(LIBPATH)/*.pbc" \
   $(GEN_PIR) \
+  gl.lua \
+  Test \
   "*.c" \
   "*$(O)" \
   lua@exe@ \
