@@ -103,7 +103,7 @@ used in F<languages/lua/src/PASTGrammar.tg>
 
 =cut
 
-.sub internal_error
+.sub 'internal_error'
     .param string msg
     $S0 = "ERROR_INTERNAL (PAST): " . msg
     $S0 .= "\n"
@@ -120,12 +120,21 @@ used in F<languages/lua/src/POSTGrammar.tg>
 
 =cut
 
-.sub internal_error
+.sub 'internal_error'
     .param string msg
     $S0 = "ERROR_INTERNAL (POST): " . msg
     $S0 .= "\n"
     printerr $S0
     exit 1
+.end
+
+.sub 'mkfuncname' :anon
+    .param pmc file
+    $S1 = file
+    $I0 = index $S1, '.'
+    $S0 = substr $S1, 0, $I0
+    $S0 = 'luaopen_' . $S0
+    .return ($S0)
 .end
 
 

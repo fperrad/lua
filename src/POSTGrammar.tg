@@ -117,6 +117,16 @@ PIRCODE
   L3:
 PIRCODE
     post.'outer'(start)
+    .local pmc onload
+    $P0 = get_hll_global ['Lua'; 'POST'], 'Sub'
+    onload = $P0.'new'('name'=>'&on_require', 'pirflags'=>':anon :load')
+    $P0 = find_caller_lex '$?FILES'
+    $S1 = mkfuncname($P0)
+    onload.'push_pirop'('inline', $S0, $S1, 'inline'=><<'PIRCODE')
+    .const "Sub" entry = "%0"
+    set_hll_global "%1", entry
+PIRCODE
+    start.'push'(onload)
     start.'push'(post)
     $P0 = get_hll_global ['Lua'; 'POST'], 'Chunk'
     .tailcall $P0.'new'(start, 'node'=>node, 'prologue'=><<'PIRCODE')

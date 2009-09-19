@@ -64,7 +64,7 @@ LIST
     inc $P2
     _loaders[$P2] = loader_PBCroot
 
-    setpath(_package, 'path', 'LUA_PATH', './?.lua;src/lib/?.lua')
+    setpath(_package, 'path', 'LUA_PATH', './?.lua')
 #    setpath(_package, 'pbcpath', 'LUA_PBCPATH', 'library/?.pbc;./?.pbc;./?.pir')
     setpath(_package, 'pbcpath', 'LUA_PBCPATH', 'library/?.pbc;lua/?.pbc;./?.pbc;./?.pir')
 
@@ -293,6 +293,8 @@ LIST
     .param string sym
     $P0 = get_hll_global sym
     if null $P0 goto L1
+    $P1 = get_hll_global '_G'
+    $P0.'setfenv'($P1)
     .return ($P0)
   L1:
     $S0 = "can't found function '"

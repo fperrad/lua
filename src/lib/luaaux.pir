@@ -608,7 +608,7 @@ messages and in debug information.
     lua_comp = compreg 'lua'
     push_eh _handler
     $P0 = lua_comp.'compile'(data)
-    $P0 = $P0[1]
+    $P0 = $P0[2] # 0=&start, 1=&on_require, 2=&main
     .local pmc env
     env = get_hll_global '_G'
     $P0.'setfenv'(env)

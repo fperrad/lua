@@ -51,6 +51,11 @@ package pirVisitor;
   L1:
 .end
 
+.sub '__on_require' :anon :load
+    .const 'Sub' entry = '_main'
+    set_hll_global 'luaopen_TODO_XXX', entry
+.end
+
 };
         return $self;
     }

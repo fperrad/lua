@@ -259,8 +259,9 @@ library/bitlib.pbc: $(LIBPATH)/bitlib.pir
 library/complex.pbc: $(LIBPATH)/complex.pir
 	-$(PARROT) --output=library/complex.pbc $(LIBPATH)/complex.pir
 
-#IF(has_opengl):$(LIBPATH)/gl.pir: $(LIBPATH)/gl.lua lua.pbc
-#IF(has_opengl):	-$(PARROT) luap.pir --target=pir $(LIBPATH)/gl.lua > $(LIBPATH)/gl.pir
+#IF(has_opengl):$(LIBPATH)/gl.pir: $(LIBPATH)/gl.lua
+#IF(has_opengl):	-$(CP) $(LIBPATH)/gl.lua gl.lua
+#IF(has_opengl):	-$(PARROT) luap.pir --target=pir gl.lua > $(LIBPATH)/gl.pir
 #IF(has_opengl):
 #IF(has_opengl):library/gl.pbc: $(LIBPATH)/gl.pir
 #IF(has_opengl):	-$(PARROT) --output=library/gl.pbc $(LIBPATH)/gl.pir
