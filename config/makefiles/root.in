@@ -74,6 +74,7 @@ GEN_PIR := \
  src/lua51_gen.pir \
  src/PASTGrammar_gen.pir \
  src/POSTGrammar_gen.pir \
+ $(LIBPATH)/More.pir \
 #IF(has_opengl): $(LIBPATH)/gl.pir \
 #IF(has_crypto): $(LIBPATH)/sha1.pir \
  $(LIBPATH)/luabytecode_gen.pir
@@ -114,6 +115,7 @@ BUILD_CLEANUPS := \
   man \
   "*.pbc" \
   "library/*.pbc" \
+  "library/Test/*.pbc" \
   "$(LIBPATH)/*.pbc" \
   $(GEN_PIR) \
   "*.c" \
@@ -137,6 +139,7 @@ build: \
  $(LUA_GROUP) \
  $(LIB_PBCS) \
  $(LIBPATH)/luaperl.pbc \
+ library/Test/More.pbc \
  library/_helpers.pbc \
  library/alarm.pbc \
  library/base64.pbc \
@@ -238,6 +241,15 @@ $(LIBPATH)/luadebug.pbc: $(LIBPATH)/luadebug.pir
 $(LIBPATH)/luabytecode.pbc: $(LIBPATH)/luabytecode.pir $(LIBPATH)/luabytecode_gen.pir
 	-$(PARROT) --output=$(LIBPATH)/luabytecode.pbc $(LIBPATH)/luabytecode.pir
 
+$(LIBPATH)/More.pir: t/lua-TestMore/src/Test/More.lua lua.pbc
+	-$(MKPATH) Test
+	-$(CP) t/lua-TestMore/src/Test/More.lua Test/More.lua
+	-$(PARROT) luap.pir --target=pir Test/More.lua > $(LIBPATH)/More.pir
+
+library/Test/More.pbc: $(LIBPATH)/More.pir
+	-$(MKPATH) library/Test
+	-$(PARROT) --output=library/Test/More.pbc $(LIBPATH)/More.pir
+
 library/_helpers.pbc: $(LIBPATH)/_helpers.pir
 	$(PARROT) --output=library/_helpers.pbc $(LIBPATH)/_helpers.pir
 
@@ -259,7 +271,7 @@ library/bitlib.pbc: $(LIBPATH)/bitlib.pir
 library/complex.pbc: $(LIBPATH)/complex.pir
 	-$(PARROT) --output=library/complex.pbc $(LIBPATH)/complex.pir
 
-#IF(has_opengl):$(LIBPATH)/gl.pir: $(LIBPATH)/gl.lua
+#IF(has_opengl):$(LIBPATH)/gl.pir: $(LIBPATH)/gl.lua lua.pbc
 #IF(has_opengl):	-$(CP) $(LIBPATH)/gl.lua gl.lua
 #IF(has_opengl):	-$(PARROT) luap.pir --target=pir gl.lua > $(LIBPATH)/gl.pir
 #IF(has_opengl):
@@ -474,8 +486,12 @@ install: installable
 	$(CP) lua.pbc $(LIB_DIR)/languages/lua/lua.pbc
 #	-$(MKPATH) $(LIB_DIR)/languages/lua/library
 #	$(CP) library/*.pbc $(LIB_DIR)/languages/lua/library
+#	-$(MKPATH) $(LIB_DIR)/languages/lua/library/Test
+#	$(CP) library/Test/*.pbc $(LIB_DIR)/languages/lua/library/Test
 	-$(MKPATH) $(LIB_DIR)/library/lua
 	$(CP) library/*.pbc $(LIB_DIR)/library/lua
+	-$(MKPATH) $(LIB_DIR)/library/lua/Test
+	$(CP) library/Test/*.pbc $(LIB_DIR)/library/lua/Test
 	-$(MKPATH) $(MANDIR)/man1
 	pod2man lua.pir > $(MANDIR)/man1/parrot-lua.1
 	pod2man luap.pir > $(MANDIR)/man1/parrot-luap.1
