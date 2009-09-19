@@ -133,6 +133,20 @@ used in F<languages/lua/src/POSTGrammar.tg>
     $S1 = file
     $I0 = index $S1, '.'
     $S0 = substr $S1, 0, $I0
+    $I0 = index $S0, "/"
+  L1:
+    unless $I0 >= 0 goto L2
+    substr $S0, $I0, 1, "."
+    $I0 = index $S0, "/", $I0
+    goto L1
+  L2:
+    $I0 = index $S0, "\\"
+  L3:
+    unless $I0 >= 0 goto L4
+    substr $S0, $I0, 1, "."
+    $I0 = index $S0, "\\", $I0
+    goto L3
+  L4:
     $S0 = 'luaopen_' . $S0
     .return ($S0)
 .end
