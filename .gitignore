@@ -6,8 +6,6 @@ Makefile
 *.obj
 *.exe
 *.iss
-lua
-luap
 installable_lua
 installable_luap
 

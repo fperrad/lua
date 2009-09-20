@@ -122,8 +122,6 @@ BUILD_CLEANUPS := \
   Test \
   "*.c" \
   "*$(O)" \
-  lua@exe@ \
-  luap@exe@ \
 #IF(win32):  "parrot-*.exe" \
 #IF(win32):  parrot-lua.iss \
 #IF(win32):  "setup-parrot-*.exe" \
@@ -167,7 +165,7 @@ build_core: \
  $(GEN_PBC) \
  src/yapp/Lua/parser.pm
 
-all: build lua@exe@ luap@exe@ installable
+all: build installable
 
 src/lua51_testlex_gen.pir: src/lua51_testlex.pg
 	$(PGE) --output=src/lua51_testlex_gen.pir src/lua51_testlex.pg
@@ -190,17 +188,11 @@ lua/lua.pbc: $(SOURCES)
 lua.pbc: lua.pir
 	$(PARROT) $(PARROT_ARGS) -o lua.pbc lua.pir
 
-lua@exe@: lua.pbc
-	$(PBC_TO_EXE) lua.pbc
-
 lua/luad.pbc: luad.pir
 	$(PARROT) -o lua/luad.pbc --output-pbc luad.pir
 
 luap.pbc: luap.pir
 	$(PARROT) -o luap.pbc --output-pbc luap.pir
-
-luap@exe@: luap.pbc
-	$(PBC_TO_EXE) luap.pbc
 
 $(LUA_GROUP): $(PMC_DEPS)
 	$(MAKE) $(PMC_DIR)
@@ -344,8 +336,7 @@ help:
 	@echo ""
 	@echo "  build:             lua.pbc"
 	@echo "                     This is the default."
-	@echo "  lua@exe@            Self-hosting binary not to be installed."
-	@echo "  all:               lua.pbc lua@exe@ installable"
+	@echo "  all:               lua.pbc installable"
 	@echo "  installable:       Create libs and self-hosting binaries to be installed."
 	@echo "  install:           Install the installable targets and docs."
 	@echo ""
