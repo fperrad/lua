@@ -286,6 +286,23 @@ used in F<languages/lua/src/POSTGrammar.tg>
 .include 'src/lua51_gen.pir'
 .include 'src/PASTGrammar_gen.pir'
 .include 'src/POSTGrammar_gen.pir'
+.include 'src/lib/luaregex.pir'
+
+.HLL 'lua'
+.loadlib 'lua_group'
+
+.include 'src/lib/luaaux.pir'
+.include 'src/lib/luastring.pir'
+.include 'src/lib/luabasic.pir'
+.include 'src/lib/luacoroutine.pir'
+.include 'src/lib/luapackage.pir'
+.include 'src/lib/luatable.pir'
+.include 'src/lib/luamath.pir'
+.include 'src/lib/luaio.pir'
+.include 'src/lib/luafile.pir'
+.include 'src/lib/luaos.pir'
+.include 'src/lib/luadebug.pir'
+.include 'src/lib/luabytecode.pir'
 
 =back
 

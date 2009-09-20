@@ -88,15 +88,12 @@ show version information.
     sweepoff  # stop collector during initialization
 .end
 
-.include 'src/lua51.pir'
-.include 'src/lib/luaregex.pir'
-
 
 .HLL 'lua'
-.loadlib 'lua_group'
 
 .sub 'main' :anon :main
     .param pmc args
+    load_language 'lua'
     lua_openlibs()
     .local int status
     status = handle_luainit()
@@ -274,8 +271,9 @@ show version information.
     (narg, $P0) = getargs(args, n)  # collect arguments
     .local pmc env
     env = get_hll_global '_G'
-    .const 'LuaString' k_arg = 'arg'
-    env.'rawset'(k_arg, $P0)
+    $P1 = new 'LuaString'
+    set $P1, 'arg'
+    env.'rawset'($P1, $P0)
     .local string fname
     fname = args[n]
     unless fname == '-' goto L1
@@ -361,8 +359,9 @@ show version information.
     .param string name
     .local pmc env
     env = get_hll_global '_G'
-    .const 'LuaString' k_require = 'require'
-    $P0 = env.'rawget'(k_require)
+    $P0 = new 'LuaString'
+    set $P0, 'require'
+    $P0 = env.'rawget'($P0)
     new $P1, 'LuaString'
     set $P1, name
     ($P0 :slurpy) = docall($P0, $P1)
@@ -373,7 +372,9 @@ show version information.
 .sub 'dotty' :anon
     .local pmc env
     env = get_hll_global '_G'
-    .const 'LuaString' k_print = 'print'
+    .local pmc k_print
+    k_print = new 'LuaString'
+    set k_print, 'print'
     .local pmc stdin
     stdin = getstdin
     .local string code
@@ -493,20 +494,6 @@ Available options are:
   -        execute stdin and stop handling options
 USAGE
 .end
-
-
-.include 'src/lib/luaaux.pir'
-.include 'src/lib/luastring.pir'
-.include 'src/lib/luabasic.pir'
-.include 'src/lib/luacoroutine.pir'
-.include 'src/lib/luapackage.pir'
-.include 'src/lib/luatable.pir'
-.include 'src/lib/luamath.pir'
-.include 'src/lib/luaio.pir'
-.include 'src/lib/luafile.pir'
-.include 'src/lib/luaos.pir'
-.include 'src/lib/luadebug.pir'
-.include 'src/lib/luabytecode.pir'
 
 
 =head2 See Also

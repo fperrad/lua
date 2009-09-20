@@ -80,9 +80,10 @@ GEN_PIR := \
  $(LIBPATH)/luabytecode_gen.pir
 
 GEN_PBC := \
+ lua/lua.pbc \
  lua.pbc \
- luad.pbc \
- luap.pbc
+ luap.pbc \
+ lua/luad.pbc
 
 LUA_GROUP := $(PMC_DIR)/lua_group$(LOAD_EXT)
 
@@ -101,7 +102,6 @@ PMC_DEPS := \
  $(PMC_DIR)/luauserdata.pmc
 
 SOURCES := \
-  lua.pir \
   src/lua51.pir \
   src/grammar51.pir \
   src/lua51_gen.pir \
@@ -114,8 +114,8 @@ DOCS := README
 BUILD_CLEANUPS := \
   man \
   "*.pbc" \
-  "library/*.pbc" \
-  "library/Test/*.pbc" \
+  "lua/library/*.pbc" \
+  "lua/library/Test/*.pbc" \
   "$(LIBPATH)/*.pbc" \
   $(GEN_PIR) \
   gl.lua \
@@ -137,32 +137,33 @@ TEST_CLEANUPS := \
   "t/*.orig_out" \
   "t/*.parrot_out"
 
-build: \
+build: build_core \
+ lua/library/Test/More.pbc \
+ lua/library/_helpers.pbc \
+ lua/library/alarm.pbc \
+ lua/library/base64.pbc \
+ lua/library/bc.pbc \
+ lua/library/bit.pbc \
+ lua/library/bitlib.pbc \
+ lua/library/complex.pbc \
+#IF(has_opengl): lua/library/gl.pbc \
+#IF(has_opengl): lua/library/gl_binding.pbc \
+#IF(has_opengl): lua/library/glut.pbc \
+ lua/library/lfs.pbc \
+ lua/library/lpeg.pbc \
+ lua/library/markdown.pbc \
+ lua/library/mathx.pbc \
+#IF(has_crypto): lua/library/md5.pbc \
+ lua/library/random.pbc \
+#IF(has_crypto): lua/library/sha1.pbc \
+ lua/library/struct.pbc \
+ lua/library/uuid.pbc \
+ lua/library/zlib.pbc
+
+build_core: \
  $(LUA_GROUP) \
  $(LIB_PBCS) \
  $(LIBPATH)/luaperl.pbc \
- library/Test/More.pbc \
- library/_helpers.pbc \
- library/alarm.pbc \
- library/base64.pbc \
- library/bc.pbc \
- library/bit.pbc \
- library/bitlib.pbc \
- library/complex.pbc \
-#IF(has_opengl): library/gl.pbc \
-#IF(has_opengl): library/gl_binding.pbc \
-#IF(has_opengl): library/glut.pbc \
- library/lfs.pbc \
- library/lpeg.pbc \
- library/markdown.pbc \
- library/mathx.pbc \
-#IF(has_crypto): library/md5.pbc \
- library/random.pbc \
-#IF(has_crypto): library/sha1.pbc \
- library/struct.pbc \
- library/uuid.pbc \
- library/zlib.pbc \
- $(GEN_PIR) \
  $(GEN_PBC) \
  src/yapp/Lua/parser.pm
 
@@ -183,14 +184,17 @@ src/PASTGrammar_gen.pir: src/PASTGrammar.tg
 src/POSTGrammar_gen.pir: src/POSTGrammar.tg
 	$(TGE) --output=src/POSTGrammar_gen.pir src/POSTGrammar.tg
 
-lua.pbc: $(SOURCES)
+lua/lua.pbc: $(SOURCES)
+	$(PARROT) $(PARROT_ARGS) -o lua/lua.pbc src/lua51.pir
+
+lua.pbc: lua.pir
 	$(PARROT) $(PARROT_ARGS) -o lua.pbc lua.pir
 
 lua@exe@: lua.pbc
 	$(PBC_TO_EXE) lua.pbc
 
-luad.pbc: luad.pir
-	$(PARROT) -o luad.pbc --output-pbc luad.pir
+lua/luad.pbc: luad.pir
+	$(PARROT) -o lua/luad.pbc --output-pbc luad.pir
 
 luap.pbc: luap.pir
 	$(PARROT) -o luap.pbc --output-pbc luap.pir
@@ -243,83 +247,82 @@ $(LIBPATH)/luadebug.pbc: $(LIBPATH)/luadebug.pir
 $(LIBPATH)/luabytecode.pbc: $(LIBPATH)/luabytecode.pir $(LIBPATH)/luabytecode_gen.pir
 	-$(PARROT) --output=$(LIBPATH)/luabytecode.pbc $(LIBPATH)/luabytecode.pir
 
-$(LIBPATH)/More.pir: t/lua-TestMore/src/Test/More.lua lua.pbc
+$(LIBPATH)/luabytecode_gen.pir: $(LIBPATH)/luabytecode.rules src/build/translator.pl
+	$(PERL) src/build/translator.pl $(LIBPATH)/luabytecode.rules \
+            --output $(LIBPATH)/luabytecode_gen.pir
+
+$(LIBPATH)/More.pir: t/lua-TestMore/src/Test/More.lua
 	-$(MKPATH) Test
 	-$(CP) t/lua-TestMore/src/Test/More.lua Test/More.lua
 	-$(PARROT) luap.pir --target=pir Test/More.lua > $(LIBPATH)/More.pir
 
-library/Test/More.pbc: $(LIBPATH)/More.pir
-	-$(MKPATH) library/Test
-	-$(PARROT) --output=library/Test/More.pbc $(LIBPATH)/More.pir
+lua/library/Test/More.pbc: $(LIBPATH)/More.pir
+	-$(PARROT) --output=lua/library/Test/More.pbc $(LIBPATH)/More.pir
 
-library/_helpers.pbc: $(LIBPATH)/_helpers.pir
-	$(PARROT) --output=library/_helpers.pbc $(LIBPATH)/_helpers.pir
+lua/library/_helpers.pbc: $(LIBPATH)/_helpers.pir
+	$(PARROT) --output=lua/library/_helpers.pbc $(LIBPATH)/_helpers.pir
 
-library/alarm.pbc: $(LIBPATH)/alarm.pir
-	-$(PARROT) --output=library/alarm.pbc $(LIBPATH)/alarm.pir
+lua/library/alarm.pbc: $(LIBPATH)/alarm.pir
+	-$(PARROT) --output=lua/library/alarm.pbc $(LIBPATH)/alarm.pir
 
-library/base64.pbc: $(LIBPATH)/base64.pir
-	-$(PARROT) --output=library/base64.pbc $(LIBPATH)/base64.pir
+lua/library/base64.pbc: $(LIBPATH)/base64.pir
+	-$(PARROT) --output=lua/library/base64.pbc $(LIBPATH)/base64.pir
 
-library/bc.pbc: $(LIBPATH)/bc.pir
-	-$(PARROT) --output=library/bc.pbc $(LIBPATH)/bc.pir
+lua/library/bc.pbc: $(LIBPATH)/bc.pir
+	-$(PARROT) --output=lua/library/bc.pbc $(LIBPATH)/bc.pir
 
-library/bit.pbc: $(LIBPATH)/bit.pir
-	-$(PARROT) --output=library/bit.pbc $(LIBPATH)/bit.pir
+lua/library/bit.pbc: $(LIBPATH)/bit.pir
+	-$(PARROT) --output=lua/library/bit.pbc $(LIBPATH)/bit.pir
 
-library/bitlib.pbc: $(LIBPATH)/bitlib.pir
-	-$(PARROT) --output=library/bitlib.pbc $(LIBPATH)/bitlib.pir
+lua/library/bitlib.pbc: $(LIBPATH)/bitlib.pir
+	-$(PARROT) --output=lua/library/bitlib.pbc $(LIBPATH)/bitlib.pir
 
-library/complex.pbc: $(LIBPATH)/complex.pir
-	-$(PARROT) --output=library/complex.pbc $(LIBPATH)/complex.pir
+lua/library/complex.pbc: $(LIBPATH)/complex.pir
+	-$(PARROT) --output=lua/library/complex.pbc $(LIBPATH)/complex.pir
 
-#IF(has_opengl):$(LIBPATH)/gl.pir: $(LIBPATH)/gl.lua lua.pbc
+#IF(has_opengl):$(LIBPATH)/gl.pir: $(LIBPATH)/gl.lua
 #IF(has_opengl):	-$(CP) $(LIBPATH)/gl.lua gl.lua
 #IF(has_opengl):	-$(PARROT) luap.pir --target=pir gl.lua > $(LIBPATH)/gl.pir
 #IF(has_opengl):
-#IF(has_opengl):library/gl.pbc: $(LIBPATH)/gl.pir
-#IF(has_opengl):	-$(PARROT) --output=library/gl.pbc $(LIBPATH)/gl.pir
+#IF(has_opengl):lua/library/gl.pbc: $(LIBPATH)/gl.pir
+#IF(has_opengl):	-$(PARROT) --output=lua/library/gl.pbc $(LIBPATH)/gl.pir
 #IF(has_opengl):
-#IF(has_opengl):library/gl_binding.pbc: $(LIBPATH)/gl_binding.pir
-#IF(has_opengl):	-$(PARROT) --output=library/gl_binding.pbc $(LIBPATH)/gl_binding.pir
+#IF(has_opengl):lua/library/gl_binding.pbc: $(LIBPATH)/gl_binding.pir
+#IF(has_opengl):	-$(PARROT) --output=lua/library/gl_binding.pbc $(LIBPATH)/gl_binding.pir
 #IF(has_opengl):
-#IF(has_opengl):library/glut.pbc: $(LIBPATH)/glut.pir
-#IF(has_opengl):	-$(PARROT) --output=library/glut.pbc $(LIBPATH)/glut.pir
+#IF(has_opengl):lua/library/glut.pbc: $(LIBPATH)/glut.pir
+#IF(has_opengl):	-$(PARROT) --output=lua/library/glut.pbc $(LIBPATH)/glut.pir
 
-library/lfs.pbc: $(LIBPATH)/lfs.pir
-	-$(PARROT) --output=library/lfs.pbc $(LIBPATH)/lfs.pir
+lua/library/lfs.pbc: $(LIBPATH)/lfs.pir
+	-$(PARROT) --output=lua/library/lfs.pbc $(LIBPATH)/lfs.pir
 
-library/lpeg.pbc: $(LIBPATH)/lpeg.pir
-	-$(PARROT) --output=library/lpeg.pbc $(LIBPATH)/lpeg.pir
+lua/library/lpeg.pbc: $(LIBPATH)/lpeg.pir
+	-$(PARROT) --output=lua/library/lpeg.pbc $(LIBPATH)/lpeg.pir
 
-library/markdown.pbc: $(LIBPATH)/markdown.pir
-	-$(PARROT) --output=library/markdown.pbc $(LIBPATH)/markdown.pir
+lua/library/markdown.pbc: $(LIBPATH)/markdown.pir
+	-$(PARROT) --output=lua/library/markdown.pbc $(LIBPATH)/markdown.pir
 
-library/mathx.pbc: $(LIBPATH)/mathx.pir
-	-$(PARROT) --output=library/mathx.pbc $(LIBPATH)/mathx.pir
+lua/library/mathx.pbc: $(LIBPATH)/mathx.pir
+	-$(PARROT) --output=lua/library/mathx.pbc $(LIBPATH)/mathx.pir
 
-#IF(has_crypto):library/md5.pbc: $(LIBPATH)/md5.pir
-#IF(has_crypto):	-$(PARROT) --output=library/md5.pbc $(LIBPATH)/md5.pir
+#IF(has_crypto):lua/library/md5.pbc: $(LIBPATH)/md5.pir
+#IF(has_crypto):	-$(PARROT) --output=lua/library/md5.pbc $(LIBPATH)/md5.pir
 
-library/random.pbc: $(LIBPATH)/random.pir
-	-$(PARROT) --output=library/random.pbc $(LIBPATH)/random.pir
+lua/library/random.pbc: $(LIBPATH)/random.pir
+	-$(PARROT) --output=lua/library/random.pbc $(LIBPATH)/random.pir
 
-#IF(has_crypto):library/sha1.pbc: $(LIBPATH)/md5.pir
+#IF(has_crypto):lua/library/sha1.pbc: $(LIBPATH)/md5.pir
 #IF(has_crypto):	$(PERL) -pe "s|md5|sha1|g; s|MD5|SHA1|g" $(LIBPATH)/md5.pir > $(LIBPATH)/sha1.pir
-#IF(has_crypto):	-$(PARROT) --output=library/sha1.pbc $(LIBPATH)/sha1.pir
+#IF(has_crypto):	-$(PARROT) --output=lua/library/sha1.pbc $(LIBPATH)/sha1.pir
 
-library/struct.pbc: $(LIBPATH)/struct.pir
-	-$(PARROT) --output=library/struct.pbc $(LIBPATH)/struct.pir
+lua/library/struct.pbc: $(LIBPATH)/struct.pir
+	-$(PARROT) --output=lua/library/struct.pbc $(LIBPATH)/struct.pir
 
-library/uuid.pbc: $(LIBPATH)/uuid.pir
-	-$(PARROT) --output=library/uuid.pbc $(LIBPATH)/uuid.pir
+lua/library/uuid.pbc: $(LIBPATH)/uuid.pir
+	-$(PARROT) --output=lua/library/uuid.pbc $(LIBPATH)/uuid.pir
 
-library/zlib.pbc: $(LIBPATH)/zlib.pir
-	-$(PARROT) --output=library/zlib.pbc $(LIBPATH)/zlib.pir
-
-$(LIBPATH)/luabytecode_gen.pir: $(LIBPATH)/luabytecode.rules src/build/translator.pl
-	$(PERL) src/build/translator.pl $(LIBPATH)/luabytecode.rules \
-            --output $(LIBPATH)/luabytecode_gen.pir
+lua/library/zlib.pbc: $(LIBPATH)/zlib.pir
+	-$(PARROT) --output=lua/library/zlib.pbc $(LIBPATH)/zlib.pir
 
 src/yapp/Lua/parser.pm: src/yapp/Lua/lua51.yp
 	yapp -v -m Lua::parser -o src/yapp/Lua/parser.pm src/yapp/Lua/lua51.yp
@@ -485,15 +488,11 @@ install: installable
 	$(CP) installable_luap@exe@ $(BIN_DIR)/parrot-luap@exe@
 	$(CHMOD) 0755 $(BIN_DIR)/parrot-luap@exe@
 	-$(MKPATH) $(LIB_DIR)/languages/lua
-	$(CP) lua.pbc $(LIB_DIR)/languages/lua/lua.pbc
-#	-$(MKPATH) $(LIB_DIR)/languages/lua/library
-#	$(CP) library/*.pbc $(LIB_DIR)/languages/lua/library
-#	-$(MKPATH) $(LIB_DIR)/languages/lua/library/Test
-#	$(CP) library/Test/*.pbc $(LIB_DIR)/languages/lua/library/Test
-	-$(MKPATH) $(LIB_DIR)/library/lua
-	$(CP) library/*.pbc $(LIB_DIR)/library/lua
-	-$(MKPATH) $(LIB_DIR)/library/lua/Test
-	$(CP) library/Test/*.pbc $(LIB_DIR)/library/lua/Test
+	$(CP) lua/*.pbc $(LIB_DIR)/languages/lua
+	-$(MKPATH) $(LIB_DIR)/languages/lua/library
+	$(CP) lua/library/*.pbc $(LIB_DIR)/languages/lua/library
+	-$(MKPATH) $(LIB_DIR)/languages/lua/library/Test
+	$(CP) lua/library/Test/*.pbc $(LIB_DIR)/languages/lua/library/Test
 	-$(MKPATH) $(MANDIR)/man1
 	pod2man lua.pir > $(MANDIR)/man1/parrot-lua.1
 	pod2man luap.pir > $(MANDIR)/man1/parrot-luap.1
