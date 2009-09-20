@@ -28,7 +28,7 @@ This implementation is based on F<languages/markdown/markdown.pir>.
 .sub 'luaopen_markdown'
 
 #    print "luaopen_markdown\n"
-    load_bytecode 'languages/markdown/markdown.pbc'
+    load_language 'markdown'
 
     .local pmc _lua__GLOBAL
     _lua__GLOBAL = get_hll_global '_G'
