@@ -10,7 +10,7 @@
 
 .namespace ['Lua'; 'Bytecode']
 
-.sub '__onload' :anon :load
+.sub '__onload' :anon :load :init
     $P0 = newclass ['Lua'; 'Bytecode']
     addattribute $P0, 'version'
     addattribute $P0, 'format'
@@ -72,7 +72,7 @@
 .sub '&start' :anon :main
     .param pmc args :optional
 #    print "start\n"
-    load_bytecode 'languages/lua/lua.pbc'
+    load_language 'lua'
     lua_openlibs()
     .local pmc env
     env = get_hll_global '_G'
