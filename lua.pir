@@ -94,6 +94,7 @@ show version information.
 .sub 'main' :anon :main
     .param pmc args
     load_language 'lua'
+#    dump_paths()
     lua_openlibs()
     .local int status
     status = handle_luainit()

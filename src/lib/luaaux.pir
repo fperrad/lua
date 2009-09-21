@@ -1105,6 +1105,43 @@ This function never returns.
 .end
 
 
+=item C<dump_paths>
+
+For development only.
+
+=cut
+
+.include 'iglobals.pasm'
+.include 'libpaths.pasm'
+
+.sub 'dump_paths'
+    $P0 = getinterp
+    $P1 = $P0[.IGLOBALS_LIB_PATHS]
+    $P2 = $P1[.PARROT_LIB_PATH_INCLUDE]
+    print_path('PATH_INCLUDE', $P2)
+    $P2 = $P1[.PARROT_LIB_PATH_LIBRARY]
+    print_path('PATH_LIBRARY', $P2)
+    $P2 = $P1[.PARROT_LIB_PATH_DYNEXT]
+    print_path('PATH_PATH_DYNEXT', $P2)
+    $P2 = $P1[.PARROT_LIB_PATH_LANG]
+    print_path('PATH_LANG', $P2)
+.end
+
+.sub 'print_path' :anon
+    .param string name
+    .param pmc paths
+    $S0 = name . ' :'
+    say $S0
+    $P0 = iter paths
+  L1:
+    unless $P0 goto L2
+    $S0 = shift $P0
+    $S0 = "\t" . $S0
+    say $S0
+    goto L1
+  L2:
+.end
+
 =item C<mkarg (argv)>
 
 Support variable number of arguments function call.
