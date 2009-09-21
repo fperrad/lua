@@ -178,7 +178,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
 
 =cut
 
-.sub '__onload' :anon :load :init
+.sub '__onload' :anon :load
     load_bytecode 'PGE.pbc'
 
     .local pmc p6meta
@@ -250,7 +250,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
 .include 'cclass.pasm'
 
 
-.sub '__onload' :anon :load :init
+.sub '__onload' :anon :load
     .local pmc optable
     optable = new ['PGE';'OPTable']
     set_hll_global ['PGE';'LuaRegex'], '$optable', optable

@@ -29,7 +29,7 @@ It's a temporary work. Waiting for the real PIR compiler/interpreter.
 
 .namespace []
 
-.sub '__onload' :anon :load :init
+.sub '__onload' :anon :load
     $P0 = newclass [ 'Lua'; 'PerlCompiler' ]
     new $P1, $P0
     compreg 'lua', $P1

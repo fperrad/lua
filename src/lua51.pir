@@ -26,7 +26,7 @@ Used by F<languages/lua/lua.pir>.
 
 .namespace [ 'Lua' ]
 
-.sub '__onload' :anon :load :init
+.sub '__onload' :anon :load
     load_bytecode 'PCT.pbc'
     load_bytecode 'PGE/Text.pbc'
 
@@ -173,7 +173,7 @@ used in F<languages/lua/src/POSTGrammar.tg>
 
 .namespace [ 'Lua';'POST';'Sub' ]
 
-.sub '__onload' :anon :load :init
+.sub '__onload' :anon :load
     new $P0, 'P6metaclass'
     $P0.'new_class'('Lua::POST::Sub', 'parent'=>'POST::Sub')
 .end
@@ -205,7 +205,7 @@ used in F<languages/lua/src/POSTGrammar.tg>
 
 .namespace [ 'Lua';'POST';'Chunk' ]
 
-.sub '__onload' :anon :load :init
+.sub '__onload' :anon :load
     new $P0, 'P6metaclass'
     $P0.'new_class'('Lua::POST::Chunk', 'parent'=>'Lua::POST::Sub')
 .end
@@ -233,7 +233,7 @@ used in F<languages/lua/src/POSTGrammar.tg>
 
 .namespace [ 'Lua';'Symbtab' ]
 
-.sub '__onload' :anon :load :init
+.sub '__onload' :anon :load
     $P0 = get_hll_global 'P6metaclass'
     $P0 = $P0.'new_class'('Lua::Symbtab', 'parent'=>'ResizablePMCArray')
     new $P0, 'Integer'

@@ -10,7 +10,7 @@
 
 .namespace ['Lua'; 'Bytecode']
 
-.sub '__onload' :anon :load :init
+.sub '__onload' :anon :load
     $P0 = newclass ['Lua'; 'Bytecode']
     addattribute $P0, 'version'
     addattribute $P0, 'format'

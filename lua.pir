@@ -84,7 +84,7 @@ show version information.
 
 =cut
 
-.sub '__gcstop' :anon :load :init
+.sub '__gcstop' :anon :init
     sweepoff  # stop collector during initialization
 .end
 

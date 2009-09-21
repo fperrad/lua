@@ -31,7 +31,7 @@ and imports many definitions from the full Lua compiler
 
 =cut
 
-.sub '__onload' :anon :load :init
+.sub '__onload' :anon :init
     load_bytecode 'PCT.pbc'
 
     $P0 = get_hll_global ['PCT'], 'HLLCompiler'

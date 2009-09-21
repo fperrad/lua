@@ -1053,7 +1053,7 @@ NOT YET IMPLEMENTED.
 
 .namespace [ 'lpeg::Pattern' ]
 
-.sub '__onload' :anon :load :init
+.sub '__onload' :anon :load
     $P0 = subclass 'FixedPMCArray', 'lpeg::Pattern'
 .end
 
@@ -1116,7 +1116,7 @@ NOT YET IMPLEMENTED.
 
 .namespace [ 'lpeg::Instruction' ]
 
-.sub '__onload' :anon :load :init
+.sub '__onload' :anon :load
     $P0 = newclass 'lpeg::Instruction'
     addattribute $P0, 'code'
     addattribute $P0, 'aux'
