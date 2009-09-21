@@ -115,7 +115,6 @@ BUILD_CLEANUPS := \
   man \
   "*.pbc" \
   "lua/library/*.pbc" \
-  "lua/library/Test/*.pbc" \
   "$(LIBPATH)/*.pbc" \
   $(GEN_PIR) \
   gl.lua \
@@ -136,7 +135,7 @@ TEST_CLEANUPS := \
   "t/*.parrot_out"
 
 build: build_core \
- lua/library/Test/More.pbc \
+ Test/More.pbc \
  lua/library/_helpers.pbc \
  lua/library/alarm.pbc \
  lua/library/base64.pbc \
@@ -163,6 +162,8 @@ build_core: \
  $(LIB_PBCS) \
  $(LIBPATH)/luaperl.pbc \
  $(GEN_PBC) \
+ src/lua51_testlex_gen.pir \
+ src/dumplex_gen.pir \
  src/yapp/Lua/parser.pm
 
 all: build installable
@@ -243,13 +244,14 @@ $(LIBPATH)/luabytecode_gen.pir: $(LIBPATH)/luabytecode.rules src/build/translato
 	$(PERL) src/build/translator.pl $(LIBPATH)/luabytecode.rules \
             --output $(LIBPATH)/luabytecode_gen.pir
 
-$(LIBPATH)/More.pir: t/lua-TestMore/src/Test/More.lua
+Test/More.pir: t/lua-TestMore/src/Test/More.lua
 	-$(MKPATH) Test
 	-$(CP) t/lua-TestMore/src/Test/More.lua Test/More.lua
-	-$(PARROT) luap.pir --target=pir Test/More.lua > $(LIBPATH)/More.pir
+	-$(PARROT) luap.pir --target=pir Test/More.lua > Test/More.pir
 
-lua/library/Test/More.pbc: $(LIBPATH)/More.pir
-	-$(PARROT) --output=lua/library/Test/More.pbc $(LIBPATH)/More.pir
+Test/More.pbc: Test/More.pir
+	-$(PARROT) --output=Test/More.pbc Test/More.pir
+	-$(CP) Test/More.pbc t/lua-TestMore/src/Test/More.pbc
 
 lua/library/_helpers.pbc: $(LIBPATH)/_helpers.pir
 	$(PARROT) --output=lua/library/_helpers.pbc $(LIBPATH)/_helpers.pir
@@ -366,7 +368,7 @@ export LUA_INIT=platform = { osname=[[@osname@]], intsize=@intsize@, longsize=@l
 spectest : build
 #UNLESS(win32):	which parrot-lua
 	cd t && cd lua-TestMore && cd test_lua51 \
-	 && prove --exec=parrot-lua *.t lib//*.t
+	 && prove -f --exec=parrot-lua --jobs 1 *.t lib//*.t
 
 upload_pl = \
 use strict; \
@@ -409,7 +411,7 @@ else { \
 smoke : build
 #UNLESS(win32):	which parrot-lua
 	-cd t && cd lua-TestMore && cd test_lua51 \
-	 && prove --archive=test_lua51.tar.gz --exec=parrot-lua *.t
+	 && prove -f --archive=test_lua51.tar.gz --exec=parrot-lua --jobs 1 *.t
 	@perl -e '$(upload_pl)'
 
 codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
@@ -482,8 +484,6 @@ install: installable
 	$(CP) lua/*.pbc $(LIB_DIR)/languages/lua
 	-$(MKPATH) $(LIB_DIR)/languages/lua/library
 	$(CP) lua/library/*.pbc $(LIB_DIR)/languages/lua/library
-	-$(MKPATH) $(LIB_DIR)/languages/lua/library/Test
-	$(CP) lua/library/Test/*.pbc $(LIB_DIR)/languages/lua/library/Test
 	-$(MKPATH) $(MANDIR)/man1
 	pod2man lua.pir > $(MANDIR)/man1/parrot-lua.1
 	pod2man luap.pir > $(MANDIR)/man1/parrot-luap.1

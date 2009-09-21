@@ -229,7 +229,7 @@ LIST
     # library not found in this path
     .return ($P0)
   L1:
-    ($P0, $S0) = lua_loadfile(filename)
+    ($P0, $S0) = lua_loadfile(filename, name)
     unless null $P0 goto L2
     loaderror($S1, filename, $S0)
   L2:
@@ -279,29 +279,6 @@ LIST
   L3:
     # library loaded successfully
     .return ($P0)
-.end
-
-.sub 'mkfuncname' :anon
-    .param string modname
-    $S0 = 'luaopen_' . modname
-    .return ($S0)
-.end
-
-.sub 'loadfunc' :anon
-    .param string path
-    .param string sym
-    $P0 = get_hll_global sym
-    if null $P0 goto L1
-    $P1 = get_hll_global '_G'
-    $P0.'setfenv'($P1)
-    .return ($P0)
-  L1:
-    $S0 = "can't found function '"
-    $S0 .= sym
-    $S0 .= "' in module '"
-    $S0 .= path
-    $S0 .= "'"
-    .return ($P0, $S0)
 .end
 
 .sub 'loader_preload' :anon

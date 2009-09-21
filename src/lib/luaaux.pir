@@ -671,8 +671,12 @@ This function only loads the chunk; it does not run it.
 
 =cut
 
+.include 'stat.pasm'
+
 .sub 'lua_loadfile'
     .param string filename
+    .param string modname       :optional
+    .param int has_modname      :opt_flag
     .local string chunkname
     .local pmc f
     unless filename == '' goto L1
@@ -681,6 +685,20 @@ This function only loads the chunk; it does not run it.
     goto L2
   L1:
     chunkname = filename
+    unless has_modname goto L3
+    .local string pbcname
+    $I0 = index filename, '.lua'
+    pbcname = substr filename, 0, $I0
+    pbcname .= '.pbc'
+    $I0 = stat pbcname, .STAT_EXISTS
+    unless $I0 goto L3
+    load_bytecode pbcname
+    .local string funcname
+    funcname = mkfuncname(modname)
+    ($P0, $S0) = loadfunc(pbcname, funcname)
+    if null $P0 goto L3
+    .return ($P0)
+  L3:
     f = new 'FileHandle'
     push_eh _handler
     f.'open'(filename, 'r')
@@ -1142,6 +1160,27 @@ For development only.
   L2:
 .end
 
+=item C<loadfunc (path, sym)>
+
+=cut
+
+.sub 'loadfunc'
+    .param string path
+    .param string sym
+    $P0 = get_hll_global sym
+    if null $P0 goto L1
+    $P1 = get_hll_global '_G'
+    $P0.'setfenv'($P1)
+    .return ($P0)
+  L1:
+    $S0 = "can't found function '"
+    $S0 .= sym
+    $S0 .= "' in module '"
+    $S0 .= path
+    $S0 .= "'"
+    .return ($P0, $S0)
+.end
+
 =item C<mkarg (argv)>
 
 Support variable number of arguments function call.
@@ -1153,6 +1192,15 @@ Support variable number of arguments function call.
     .return (argv :flat)
 .end
 
+=item C<mkfuncname (modname)>
+
+=cut
+
+.sub 'mkfuncname'
+    .param string modname
+    $S0 = 'luaopen_' . modname
+    .return ($S0)
+.end
 
 =item C<not_implemented ()>
 
