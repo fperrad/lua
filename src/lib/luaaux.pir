@@ -692,6 +692,10 @@ This function only loads the chunk; it does not run it.
     pbcname .= '.pbc'
     $I0 = stat pbcname, .STAT_EXISTS
     unless $I0 goto L3
+    new $P0, 'OS'
+    $S0 = $P0.'cwd'()
+    $S0 .= '/'
+    pbcname = $S0 . pbcname
     load_bytecode pbcname
     .local string funcname
     funcname = mkfuncname(modname)
