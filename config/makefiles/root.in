@@ -114,6 +114,7 @@ DOCS := README
 BUILD_CLEANUPS := \
   man \
   "*.pbc" \
+  "lua/*.pbc" \
   "lua/library/*.pbc" \
   "$(LIBPATH)/*.pbc" \
   $(GEN_PIR) \
