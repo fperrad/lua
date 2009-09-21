@@ -76,10 +76,10 @@ and imports many definitions from the full Lua compiler
     $P0.'command_line'(args)
 .end
 
-.include 'languages/lua/src/dumplex_gen.pir'
-.include 'languages/lua/src/lua51_testlex_gen.pir'
-.include 'languages/lua/src/grammar51.pir'
-.include 'languages/lua/src/lua51_gen.pir'
+.include 'src/dumplex_gen.pir'
+.include 'src/lua51_testlex_gen.pir'
+.include 'src/grammar51.pir'
+.include 'src/lua51_gen.pir'
 
 .namespace []
 
