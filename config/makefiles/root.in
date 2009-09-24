@@ -371,49 +371,17 @@ spectest : build
 	cd t && cd lua-TestMore && cd test_lua51 \
 	 && prove -f --exec=parrot-lua --jobs 1 *.t lib//*.t
 
-upload_pl = \
-use strict; \
-use warnings; \
-use LWP::UserAgent; \
-my $$lua_version = qx{parrot-lua -e "print(_VERSION)"}; \
-my $$ua = LWP::UserAgent->new(); \
-$$ua->env_proxy(); \
-my $$server = q{http:////smolder.plusthree.com}; \
-my $$project_id = 12; \
-my $$url = $$server . q{//app//developer_projects//process_add_report//} . $$project_id; \
-my $$response = $$ua->post( \
-    $$url, \
-    Content_Type => q{form-data}, \
-    Content      => [ \
-        architecture => q{@archname@}, \
-        platform     => q{@osname@}, \
-        tags         => qq{@osname@, @archname@, parrot-lua, $$lua_version}, \
-        comments     => q{parrot-lua}, \
-        username     => q{parrot-autobot}, \
-        password     => q{squ@wk}, \
-        project_id   => $$project_id, \
-        report_file  => [q{t//lua-TestMore//test_lua51//test_lua51.tar.gz}], \
-        revision     => @revision@, \
-        ] \
-); \
-if ($$response->code == 302) { \
-    my ($$report_id) = $$response->content =~ //Reported .(\d+) added//i; \
-    my $$report_url = $$server . q{//app//public_projects//report_details//} . $$report_id; \
-    my $$project_url = $$server . q{//app//public_projects//smoke_reports//} . $$project_id; \
-    print qq{Test report successfully sent to Smolder at\n$$report_url} \
-      . qq{\nYou can see other recent reports at\n$$project_url .\n\n}; \
-} \
-else { \
-    die qq{Could not upload report to Smolder at $$server} \
-      . qq{\nHTTP CODE: } . $$response->code . q{ (} \
-      . $$response->message . qq{)\n}; \
-}
-
 smolder : build
 #UNLESS(win32):	which parrot-lua
 	-cd t && cd lua-TestMore && cd test_lua51 \
 	 && prove -f --archive=test_lua51.tar.gz --exec=parrot-lua --jobs 1 *.t
-	@perl -e '$(upload_pl)'
+	curl -F architecture=@cpuarch@ \
+	     -F platform=@osname@ \
+	     -F revision=@revision@ \
+	     -F tags="@osname@, @archname@, parrot-lua, Lua 5.1 (on Parrot)" \
+	     -F comments=parrot-lua \
+	     -F report_file=@t//lua-TestMore//test_lua51//test_lua51.tar.gz \
+	        http:////smolder.plusthree.com/app/public_projects/process_add_report/12
 
 codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
 
