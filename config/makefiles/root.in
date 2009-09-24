@@ -349,7 +349,7 @@ help:
 	@echo "  testclean:         Clean up test results."
 	@echo ""
 	@echo "Smoke Testing:"
-	@echo "  smoke:             Run the test suite and send report to the smolder server"
+	@echo "  smolder:           Run the test suite and send report to the smolder server"
 	@echo ""
 	@echo "Cleaning:"
 	@echo "  clean:             Basic cleaning up."
@@ -409,7 +409,7 @@ else { \
       . $$response->message . qq{)\n}; \
 }
 
-smoke : build
+smolder : build
 #UNLESS(win32):	which parrot-lua
 	-cd t && cd lua-TestMore && cd test_lua51 \
 	 && prove -f --archive=test_lua51.tar.gz --exec=parrot-lua --jobs 1 *.t
