@@ -86,7 +86,7 @@ Marks the function as live.
     VTABLE void mark() {
         SUPER();
         if (f_env(SELF))
-            Parrot_gc_mark_PObj_alive(INTERP, (PObj *)f_env(SELF));
+            Parrot_gc_mark_PMC_alive(INTERP, f_env(SELF));
     }
 
 /*

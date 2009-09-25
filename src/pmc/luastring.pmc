@@ -49,8 +49,8 @@ Initializes the string.
 
 */
     VTABLE void init() {
-        STRING *_str = Parrot_str_new_noinit(INTERP, enum_stringrep_one, 0);
-        SET_ATTR_str_val(INTERP, SELF, _str);
+        STRING *str_val = Parrot_str_new_noinit(INTERP, enum_stringrep_one, 0);
+        SET_ATTR_str_val(INTERP, SELF, str_val);
         PObj_custom_mark_SET(SELF);
     }
 
@@ -89,8 +89,7 @@ Marks the string as live.
     VTABLE void mark() {
         STRING * str_val;
         GET_ATTR_str_val(INTERP, SELF, str_val);
-        if (str_val)
-            Parrot_gc_mark_PObj_alive(INTERP, (PObj *)str_val);
+        Parrot_gc_mark_STRING_alive(INTERP, str_val);
     }
 
 /*
@@ -104,7 +103,6 @@ Creates a copy of the string.
 */
     VTABLE PMC* clone() {
         PMC * const res = pmc_new(INTERP, PMC_type(SELF));
-        PObj_custom_mark_destroy_SETALL(res);
         VTABLE_set_string_native(INTERP, res, Parrot_str_copy(INTERP, SELF.get_string()));
         return res;
     }
