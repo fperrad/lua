@@ -21,7 +21,6 @@ This implementation is based on the Lua 4.0 one.
 
 #include "lua_private.h"
 
-#define t_val(pmc) (PARROT_LUATABLE(pmc))->val
 #define t_mt(pmc)  (PARROT_LUATABLE(pmc))->mt
 
 PMC *
@@ -56,13 +55,6 @@ typedef struct Node {
     struct Node *next;  /* for chaining */
 } Node;
 
-typedef struct LuaHash {
-    Node *node;
-    Node *firstfree;  /* this position is free; all positions after it are full */
-    PMC *container;
-    int   size;
-} LuaHash;
-
 #define node(t, i)       (&(t)->node[i])
 
 /******************************************************************************/
@@ -92,7 +84,7 @@ static int lua_equalObj(PARROT_INTERP, PMC * const t1, PMC * const t2)
 ** returns the `main' position of an element in a table (that is, the index
 ** of its hash value)
 */
-static Node *mainposition(PARROT_INTERP, const LuaHash *t, PMC *key)
+static Node *mainposition(PARROT_INTERP, const Parrot_LuaTable_attributes *t, PMC *key)
 {
     unsigned long h;
 
@@ -120,7 +112,7 @@ static Node *mainposition(PARROT_INTERP, const LuaHash *t, PMC *key)
 }
 
 /* specialized version for strings */
-static PMC** lua_getstr(PARROT_INTERP, const LuaHash *t, STRING *key)
+static PMC** lua_getstr(PARROT_INTERP, const Parrot_LuaTable_attributes *t, STRING *key)
 {
     unsigned long h = Parrot_str_to_hashval(interp, key);
     Node         *n = &t->node[h&(t->size-1)];
@@ -137,7 +129,7 @@ static PMC** lua_getstr(PARROT_INTERP, const LuaHash *t, STRING *key)
     return NULL;
 }
 
-static PMC** lua_get(PARROT_INTERP, const LuaHash *t, PMC *key)
+static PMC** lua_get(PARROT_INTERP, const Parrot_LuaTable_attributes *t, PMC *key)
 {
     Node *n = mainposition(interp, t, key);
 
@@ -154,7 +146,7 @@ static PMC** lua_get(PARROT_INTERP, const LuaHash *t, PMC *key)
     return NULL;
 }
 
-static Node* lua_next(PARROT_INTERP, const LuaHash *t, PMC *key)
+static Node* lua_next(PARROT_INTERP, const Parrot_LuaTable_attributes *t, PMC *key)
 {
     int i;
 
@@ -181,7 +173,7 @@ static Node* lua_next(PARROT_INTERP, const LuaHash *t, PMC *key)
     return NULL;
 }
 
-static void rehash(PARROT_INTERP, LuaHash *t);
+static void rehash(PARROT_INTERP, Parrot_LuaTable_attributes *t);
 
 /*
 ** inserts a key into a hash table; first, check whether key is
@@ -191,7 +183,7 @@ static void rehash(PARROT_INTERP, LuaHash *t);
 ** in its main position; otherwise (colliding node is in its main position),
 ** new key goes to an empty position.
 */
-static PMC** lua_set(PARROT_INTERP, LuaHash *t, PMC *key)
+static PMC** lua_set(PARROT_INTERP, Parrot_LuaTable_attributes *t, PMC *key)
 {
     Node *mp = mainposition(interp, t, key);
     Node *n  = mp;
@@ -261,7 +253,7 @@ static PMC** lua_set(PARROT_INTERP, LuaHash *t, PMC *key)
     return lua_set(interp, t, key);
 }
 
-static void setnodevector(PARROT_INTERP, LuaHash *t, int size)
+static void setnodevector(PARROT_INTERP, Parrot_LuaTable_attributes *t, int size)
 {
     if (size > MAX_INT)
         Parrot_ex_throw_from_c_args(interp, NULL, 1, "table overflow");
@@ -273,7 +265,7 @@ static void setnodevector(PARROT_INTERP, LuaHash *t, int size)
     t->firstfree = &t->node[size-1];
 }
 
-static int numuse(const LuaHash *t)
+static int numuse(const Parrot_LuaTable_attributes *t)
 {
     Node *v       = t->node;
     int   size    = t->size;
@@ -288,7 +280,7 @@ static int numuse(const LuaHash *t)
     return realuse;
 }
 
-static void rehash(PARROT_INTERP, LuaHash *t)
+static void rehash(PARROT_INTERP, Parrot_LuaTable_attributes *t)
 {
     int   oldsize = t->size;
     Node *nold    = t->node;
@@ -322,24 +314,17 @@ static void rehash(PARROT_INTERP, LuaHash *t)
     mem_sys_free(nold);
 }
 
-static void lua_new_table(PARROT_INTERP, PMC *container)
+static void lua_new_table(PARROT_INTERP, Parrot_LuaTable_attributes *t)
 {
-    LuaHash * const t = mem_allocate_zeroed_typed(LuaHash);
-    t_val(container)  = t;
-    t->container      = container;
-
     setnodevector(interp, t, MINPOWER2);
 }
 
-static void lua_destroy_table(PARROT_INTERP, LuaHash *t)
+static void lua_destroy_table(PARROT_INTERP, Parrot_LuaTable_attributes *t)
 {
-    if (t) {
-        mem_sys_free(t->node);
-        mem_sys_free(t);
-    }
+    mem_sys_free(t->node);
 }
 
-static void lua_mark_table(PARROT_INTERP, LuaHash *t, STRING *mode)
+static void lua_mark_table(PARROT_INTERP, Parrot_LuaTable_attributes *t, STRING *mode)
 {
     Node *v        = t->node;
     int   mark_key = 1;
@@ -373,7 +358,9 @@ pmclass LuaTable
     group    lua_group
     hll      Lua {
 
-    ATTR struct LuaHash *val;
+    ATTR struct Node *node;
+    ATTR struct Node *firstfree;  /* this position is free; all positions after it are full */
+    ATTR INTVAL  size;
     ATTR PMC     *mt;
 
 /*
@@ -386,7 +373,7 @@ Initializes the instance.
 
 */
     VTABLE void init() {
-        lua_new_table(INTERP, SELF);
+        lua_new_table(INTERP, PARROT_LUATABLE(SELF));
         PObj_custom_mark_destroy_SETALL(SELF);
     }
 
@@ -409,17 +396,16 @@ Marks the hash as live.
             PMC * const key = pmc_new(INTERP, dynpmc_LuaString);
             VTABLE_set_string_native(INTERP, key,
                     Parrot_str_new_constant(INTERP, "__mode"));
-            m = lua_get(INTERP, t_val(meta), key);
+            m = lua_get(INTERP, PARROT_LUATABLE(meta), key);
 #else
-            m = lua_getstr(INTERP, t_val(meta),
+            m = lua_getstr(INTERP, PARROT_LUATABLE(meta),
                     Parrot_str_new_constant(INTERP, "__mode"));
 #endif
             if (m && *m)
                 mode = VTABLE_get_string(INTERP, *m);
         }
 
-        if (t_val(SELF))
-            lua_mark_table(INTERP, t_val(SELF), mode);
+        lua_mark_table(INTERP, PARROT_LUATABLE(SELF), mode);
 
         if (meta)
             Parrot_gc_mark_PMC_alive(INTERP, meta);
@@ -435,10 +421,7 @@ Free hash structure.
 
 */
     VTABLE void destroy() {
-        Parrot_LuaTable_attributes *t = PARROT_LUATABLE(SELF);
-        if (t) {
-            lua_destroy_table(INTERP, t->val);
-        }
+        lua_destroy_table(INTERP, PARROT_LUATABLE(SELF));
     }
 
 /*
@@ -493,8 +476,7 @@ therefore only clone the reference to themselves, not make a deep copy.
 
 */
     VTABLE void set_pmc(PMC *other) {
-        t_val(SELF) = t_val(other);
-        t_mt(SELF)  = t_mt(other);
+        memcpy(PMC_data(SELF), PMC_data(other), sizeof (Parrot_LuaTable_attributes));
     }
 
 /*
@@ -508,7 +490,7 @@ C<table> accessor.
 */
     VTABLE PMC* get_pmc_keyed(PMC *key) {
         PMC  *value  = NULL;
-        PMC **pvalue = lua_get(INTERP, t_val(SELF), key);
+        PMC **pvalue = lua_get(INTERP, PARROT_LUATABLE(SELF), key);
 
         if (pvalue)
             value = *pvalue;
@@ -540,7 +522,7 @@ C<table> mutator.
 
 */
     VTABLE void set_pmc_keyed(PMC *key, PMC *value) {
-        if (! lua_get(INTERP, t_val(SELF), key)) {
+        if (! lua_get(INTERP, PARROT_LUATABLE(SELF), key)) {
             PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__newindex");
             if (meth) {
                 if (dynpmc_LuaFunction == PMC_type(meth)) {
@@ -562,7 +544,7 @@ C<table> mutator.
             key   = VTABLE_clone(INTERP, key);
         }
 
-        *lua_set(INTERP, t_val(SELF), key) = value;
+        *lua_set(INTERP, PARROT_LUATABLE(SELF), key) = value;
     }
 
 /*
@@ -578,7 +560,7 @@ Need by NameSpace.export_to().
         PMC * const pmc_key = pmc_new(INTERP, dynpmc_LuaString);
         VTABLE_set_string_native(INTERP, pmc_key, Parrot_str_copy(INTERP, key));
         value = VTABLE_clone(INTERP, value);
-        *lua_set(INTERP, t_val(SELF), pmc_key) = value;
+        *lua_set(INTERP, PARROT_LUATABLE(SELF), pmc_key) = value;
     }
 
 /*
@@ -591,7 +573,7 @@ Returns the number of elements in the table.
 
 */
     VTABLE INTVAL elements() {
-        return numuse(t_val(SELF));
+        return numuse(PARROT_LUATABLE(SELF));
     }
 
 /*
@@ -720,12 +702,12 @@ The C<==> operation. Compares reference (not in depth).
 
         VTABLE_set_integer_native(INTERP, key, idx);
 
-        pvalue = lua_get(INTERP, t_val(SELF), key);
+        pvalue = lua_get(INTERP, PARROT_LUATABLE(SELF), key);
 
         while (pvalue && *pvalue) {
             idx++;
             VTABLE_set_integer_native(INTERP, key, idx);
-            pvalue = lua_get(INTERP, t_val(SELF), key);
+            pvalue = lua_get(INTERP, PARROT_LUATABLE(SELF), key);
         }
 
         VTABLE_set_integer_native(INTERP, key, idx - 1);
@@ -740,7 +722,7 @@ The C<==> operation. Compares reference (not in depth).
 
 */
     METHOD PMC* next(PMC* index) {
-        Node * const n = lua_next(INTERP, t_val(SELF), index);
+        Node * const n = lua_next(INTERP, PARROT_LUATABLE(SELF), index);
 
         if (n) {
             PMC * const retval = pmc_new(INTERP, enum_class_Array);
@@ -778,7 +760,7 @@ The C<==> operation. Compares reference (not in depth).
 
 */
     METHOD PMC* rawget(PMC *key) {
-        PMC **pvalue = lua_get(INTERP, t_val(SELF), key);
+        PMC **pvalue = lua_get(INTERP, PARROT_LUATABLE(SELF), key);
         PMC *retval;
 
         if (! pvalue || ! *pvalue)
@@ -806,7 +788,7 @@ The C<==> operation. Compares reference (not in depth).
             key   = VTABLE_clone(INTERP, key);
         }
 
-        *lua_set(INTERP, t_val(SELF), key) = value;
+        *lua_set(INTERP, PARROT_LUATABLE(SELF), key) = value;
     }
 
 /*
