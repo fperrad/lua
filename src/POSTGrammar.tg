@@ -627,7 +627,7 @@ transform forlist (PAST;Op) :language('PIR') {
     $S0 .= ')'
     ops.'push_pirop'('call', func, state, var, 'node'=>node, 'result'=>$S0)
     $S0 = tmp[0]
-    ops.'push_pirop'('assign', var, $S0)
+    ops.'push_pirop'('clone', var, $S0)
     $S0 = ops.'unique'('$I')
     ops.'push_pirop'('isa', $S0, var, '"LuaNil"')
     ops.'push_pirop'('if', $S0, endlabel)
