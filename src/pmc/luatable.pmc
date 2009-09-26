@@ -476,7 +476,13 @@ therefore only clone the reference to themselves, not make a deep copy.
 
 */
     VTABLE void set_pmc(PMC *other) {
-        memcpy(PMC_data(SELF), PMC_data(other), sizeof (Parrot_LuaTable_attributes));
+        if (PMC_type(SELF) == PMC_type(value))
+            memcpy(PMC_data(SELF), PMC_data(value),
+                sizeof (Parrot_LuaTable_attributes));
+        else
+            Parrot_ex_throw_from_c_args(INTERP, NULL,
+                EXCEPTION_INVALID_OPERATION,
+                "Can't assign a non-LuaTable type to a LuaTable");
     }
 
 /*

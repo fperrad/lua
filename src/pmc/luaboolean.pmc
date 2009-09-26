@@ -174,7 +174,7 @@ Sets the value of the boolean to the value in C<*value>.
 
 */
     VTABLE void set_pmc(PMC *value) {
-        SELF.set_integer_native(VTABLE_get_bool(INTERP, value));
+        SET_ATTR_iv(INTERP, SELF, VTABLE_get_bool(INTERP, value));
     }
 
 /*

@@ -160,10 +160,13 @@ Return the string "userdata".
 
 */
     VTABLE void set_pmc(PMC *value) {
-        /* TODO: should be get_attr_str() and getfenv() */
-        u_val(SELF) = u_val(value);
-        u_env(SELF) = u_env(value);
-        u_mt(SELF)  = u_mt(value);
+        if (PMC_type(SELF) == PMC_type(value))
+            memcpy(PMC_data(SELF), PMC_data(value),
+                sizeof (Parrot_LuaUserdata_attributes));
+        else
+            Parrot_ex_throw_from_c_args(INTERP, NULL,
+                EXCEPTION_INVALID_OPERATION,
+                "Can't assign a non-LuaUserdata type to a LuaUserdata");
     }
 
 /*

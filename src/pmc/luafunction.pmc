@@ -134,8 +134,14 @@ Return the string "function".
 
 */
     VTABLE void set_pmc(PMC *value) {
-        SUPER(value);
-        f_env(SELF) = f_env(value);
+        if (PMC_type(SELF) == PMC_type(value)) {
+            SUPER(value);
+            f_env(SELF) = f_env(value);
+        }
+        else
+            Parrot_ex_throw_from_c_args(INTERP, NULL,
+                EXCEPTION_INVALID_OPERATION,
+                "Can't assign a non-LuaFunction type to a LuaFunction");
     }
 
 /*

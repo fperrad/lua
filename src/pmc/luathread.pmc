@@ -151,8 +151,13 @@ Return the string "thread".
 
 */
     VTABLE void set_pmc(PMC *value) {
-        t_val(SELF) = t_val(value);
-        t_env(SELF) = t_env(value);
+        if (PMC_type(SELF) == PMC_type(value))
+            memcpy(PMC_data(SELF), PMC_data(value),
+                sizeof (Parrot_LuaThread_attributes));
+        else
+            Parrot_ex_throw_from_c_args(INTERP, NULL,
+                EXCEPTION_INVALID_OPERATION,
+                "Can't assign a non-LuaThread type to a LuaThread");
     }
 
 /*
