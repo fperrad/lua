@@ -106,7 +106,7 @@ Tests C<LuaFunction> PMC
 .end
 
 .sub 'load_from_pbc_2'
-    load_bytecode 'languages/lua/lua.pbc'
+    load_bytecode 'lua/lua.pbc'
     lua_openlibs()
     $P1 = get_hll_global '_G'
     .const 'LuaString' k_print = 'print'
