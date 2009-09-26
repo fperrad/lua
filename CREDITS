@@ -102,6 +102,9 @@ N: Moritz Lenz
 U: moritz
 D: fix SVN properties
 
+U: Notfound
+D: fix C++ build
+
 N: Nuno Carvalho
 U: smash
 D: fix SVN properties

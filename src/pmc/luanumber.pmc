@@ -307,7 +307,7 @@ Used to unarchive the number.
     }
 
     MULTI PMC *add(LuaString value, PMC *dest) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                 "->P", &n);
 
@@ -349,7 +349,7 @@ Used to unarchive the number.
     }
 
     MULTI void i_add(LuaString value) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                 "->P", &n);
 
@@ -393,7 +393,7 @@ Used to unarchive the number.
     }
 
     MULTI PMC *subtract(LuaString value, PMC *dest) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                 "->P", &n);
 
@@ -436,7 +436,7 @@ Used to unarchive the number.
     }
 
     MULTI void i_subtract(LuaString value) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                 "->P", &n);
 
@@ -479,7 +479,7 @@ Used to unarchive the number.
     }
 
     MULTI PMC *multiply(LuaString value, PMC *dest) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                 "->P", &n);
 
@@ -519,7 +519,7 @@ Used to unarchive the number.
     }
 
     MULTI void i_multiply(LuaString value) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                 "->P", &n);
 
@@ -562,7 +562,7 @@ Used to unarchive the number.
     }
 
     MULTI PMC *divide(LuaString value, PMC *dest) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                 "->P", &n);
 
@@ -603,7 +603,7 @@ Used to unarchive the number.
     }
 
     MULTI void i_divide(LuaString value) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                 "->P", &n);
 
@@ -647,7 +647,7 @@ Used to unarchive the number.
     }
 
     MULTI PMC *modulus(LuaString value, PMC *dest) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                "->P", &n);
 
@@ -689,7 +689,7 @@ Used to unarchive the number.
     }
 
     MULTI void i_modulus(LuaString value) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                 "->P", &n);
 
@@ -732,7 +732,7 @@ Used to unarchive the number.
     }
 
     MULTI PMC *pow(LuaString value, PMC *dest) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                 "->P", &n);
 
@@ -773,7 +773,7 @@ Used to unarchive the number.
     }
 
     MULTI void i_pow(LuaString value) {
-        PMC * const n;
+        PMC *n;
         Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
                 "->P", &n);
 
