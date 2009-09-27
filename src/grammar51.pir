@@ -460,9 +460,8 @@ and C<'1'> is coded as 49), the five literals below denote the same string:
     dec pos
     goto CONCAT
   L6:
-    $I0 = index "\n\r", $S0
-    if $I0 < 0 goto L8
-    $S0 = "\n"
+    if $S0 != "\r" goto L8
+    $S0 = ''
     goto CONCAT
   L8:
 
@@ -542,11 +541,10 @@ long bracket. Long comments are frequently used to disable code temporarily.
     dec pos
     goto CONCAT
   L6:
-    $I0 = index "\n\r", $S0
-    if $I0 < 0 goto L8
-#    $S0 = "\n"
-    goto CONCAT
-  L8:
+#    if $S0 != "\r" goto L8
+#    $S0 = ''
+#    goto CONCAT
+#  L8:
 
   CONCAT:
 #    concat literal, $S0
