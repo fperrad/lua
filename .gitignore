@@ -37,7 +37,6 @@ t/*.luac
 t/*.orig_out
 t/*.parrot_out
 t/*.pir
-t/pmc/*.pir
 
 Test/More.*
 

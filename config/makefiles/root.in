@@ -360,21 +360,33 @@ help:
 	@echo "  help:              Print this help message."
 	@echo ""
 
-test: build
+oldtest: build
 	$(PERL) -I$(LIB_DIR)/tools/lib t/harness
+
+pmctest: build
+	prove -f t/pmc/*.t
 
 export LUA_PATH=;;../src/?.lua
 export LUA_INIT=platform = { osname=[[@osname@]], intsize=@intsize@, longsize=@longsize@ }
 
-spectest : build
-#UNLESS(win32):	which parrot-lua
-	cd t && cd lua-TestMore && cd test_lua51 \
-	 && prove -f --exec=parrot-lua --jobs 1 *.t lib//*.t
+staging : build
+	$(MKPATH) t/lua-TestMore/test_lua51/lua/library
+	$(CP) lua//*.pbc t/lua-TestMore/test_lua51/lua
+	$(CP) lua/library//*.pbc t/lua-TestMore/test_lua51/lua/library
 
-smolder : build
-#UNLESS(win32):	which parrot-lua
+#spectest : staging
+#	cd t && cd lua-TestMore && cd test_lua51 \
+#	 && prove -f --exec="$(PARROT) ../../../lua.pbc" --jobs 1 *.t lib//*.t
+spectest : install
+	cd t && cd lua-TestMore && cd test_lua51 \
+	 && prove -f --exec=parrot-lua@exe@ --jobs 1 *.t lib//*.t
+
+#smolder : staging
+#	-cd t && cd lua-TestMore && cd test_lua51 \
+#	 && prove -f --archive=test_lua51.tar.gz --exec="$(PARROT) ../../../lua.pbc" --jobs 1 *.t
+smolder : install
 	-cd t && cd lua-TestMore && cd test_lua51 \
-	 && prove -f --archive=test_lua51.tar.gz --exec=parrot-lua --jobs 1 *.t
+	 && prove -f --archive=test_lua51.tar.gz --exec=parrot-lua@exe@ --jobs 1 *.t
 	curl -F architecture=@cpuarch@ \
 	     -F platform=@osname@ \
 	     -F revision=@revision@ \
@@ -480,7 +492,7 @@ win32-inno-installer: installable
 	$(PERL) -I$(LIB_DIR)/tools/lib $(LIB_DIR)/tools/dev/mk_inno_language.pl lua
 	iscc parrot-lua.iss
 
-testclean:
+oldtestclean:
 	$(RM_F) $(TEST_CLEANUPS)
 
 clean:
