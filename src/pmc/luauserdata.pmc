@@ -305,7 +305,7 @@ The C<==> operation. Compares reference (not in depth).
     METHOD PMC* getfenv() {
         PMC *retval = u_env(SELF);
 
-        if (PMC_IS_NULL(retval)
+        if (PMC_IS_NULL(retval))
             retval = pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);
