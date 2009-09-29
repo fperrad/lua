@@ -26,7 +26,7 @@ This implementation is based on C<Parrot::Coroutine>.
 static PMC* getcurrenv(PARROT_INTERP) {
     PMC *env = NULL;
     PMC * const sub = Parrot_pcc_get_sub(interp, CURRENT_CONTEXT(interp));
-    if (sub) {
+    if (sub && PMC_type(sub) == dynpmc_LuaFunction) {
         env = _LuaFunction_get_environment(interp, sub);
     }
     return env;
