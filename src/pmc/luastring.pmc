@@ -1052,7 +1052,7 @@ Throws an exception unless C<value> is a LuaString.
     METHOD PMC* get_metatable() {
         PMC *retval = _LuaString_get_metatable(INTERP);
 
-        if (!retval)
+        if (PMC_IS_NULL(retval))
             retval = pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);

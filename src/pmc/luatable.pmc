@@ -683,7 +683,7 @@ The C<==> operation. Compares reference (not in depth).
     METHOD PMC* get_metatable() {
         PMC *retval = _LuaTable_get_metatable(INTERP, SELF);
 
-        if (!retval)
+        if (PMC_IS_NULL(retval))
             retval = pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);

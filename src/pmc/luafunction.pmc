@@ -195,7 +195,7 @@ Return the string "function".
     METHOD PMC* getfenv() {
         PMC *retval = f_env(SELF);
 
-        if (!retval)
+        if (PMC_IS_NULL(retval))
             retval = pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);
