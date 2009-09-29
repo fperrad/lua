@@ -322,7 +322,7 @@ Used to unarchive the number.
     MULTI PMC *add(DEFAULT value, PMC *dest) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__add");
 
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
             if (PMC_IS_NULL(dest))
                 dest = pmc_new(INTERP, dynpmc_LuaNil);
@@ -364,9 +364,9 @@ Used to unarchive the number.
     MULTI void i_add(DEFAULT value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__add");
 
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
-            if (!SELF)
+            if (PMC_IS_NULL(SELF))
                 SELF = pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
@@ -408,7 +408,7 @@ Used to unarchive the number.
     MULTI PMC *subtract(DEFAULT value, PMC *dest) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__sub");
 
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
             if (PMC_IS_NULL(dest)) {
                 dest = pmc_new(INTERP, dynpmc_LuaNil);
@@ -450,9 +450,9 @@ Used to unarchive the number.
 
     MULTI void i_subtract(DEFAULT value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__sub");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
-            if (! SELF)
+            if (PMC_IS_NULL(SELF))
                 SELF = pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
@@ -493,7 +493,7 @@ Used to unarchive the number.
 
     MULTI PMC *multiply(DEFAULT value, PMC *dest) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__mul");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
             if (PMC_IS_NULL(dest))
                 dest = pmc_new(INTERP, dynpmc_LuaNil);
@@ -533,9 +533,9 @@ Used to unarchive the number.
 
     MULTI void i_multiply(DEFAULT value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__mul");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
-            if (! SELF)
+            if (PMC_IS_NULL(SELF))
                 SELF = pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
@@ -576,7 +576,7 @@ Used to unarchive the number.
 
     MULTI PMC *divide(DEFAULT value, PMC *dest) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__div");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
             if (PMC_IS_NULL(dest))
                 dest = pmc_new(INTERP, dynpmc_LuaNil);
@@ -617,9 +617,9 @@ Used to unarchive the number.
 
     MULTI void i_divide(DEFAULT value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__div");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
-            if (! SELF)
+            if (PMC_IS_NULL(SELF))
                 SELF = pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
@@ -661,7 +661,7 @@ Used to unarchive the number.
 
     MULTI PMC *modulus(DEFAULT value, PMC *dest) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__mod");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
             if (PMC_IS_NULL(dest))
                 dest = pmc_new(INTERP, dynpmc_LuaNil);
@@ -703,9 +703,9 @@ Used to unarchive the number.
 
     MULTI void i_modulus(DEFAULT value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__mod");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
-            if (! SELF)
+            if (PMC_IS_NULL(SELF))
                 SELF = pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
@@ -746,7 +746,7 @@ Used to unarchive the number.
 
     MULTI PMC *pow(DEFAULT value, PMC *dest) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__pow");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
             if (PMC_IS_NULL(dest))
                 dest = pmc_new(INTERP, dynpmc_LuaNil);
@@ -787,9 +787,9 @@ Used to unarchive the number.
 
     MULTI void i_pow(DEFAULT value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__pow");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
-            if (! SELF)
+            if (PMC_IS_NULL(SELF))
                 SELF = pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
@@ -859,7 +859,7 @@ Used to unarchive the number.
     MULTI PMC *concatenate(DEFAULT value, PMC *dest) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__concat");
 
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
 
             if (PMC_IS_NULL(dest))
@@ -894,10 +894,10 @@ Used to unarchive the number.
 
     MULTI void i_concatenate(DEFAULT value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, value, "__concat");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
 
-            if (! SELF)
+            if (PMC_IS_NULL(SELF))
                 SELF = pmc_new(INTERP, dynpmc_LuaNil);
 
             return;

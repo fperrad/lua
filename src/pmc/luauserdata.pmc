@@ -72,7 +72,9 @@ Initializes the userdata.
 
 */
     VTABLE void init() {
+        u_val(SELF) = PMCNULL;
         u_env(SELF) = getcurrenv(INTERP);
+        u_mt(SELF) = PMCNULL;
         PObj_custom_mark_destroy_SETALL(SELF);
     }
 
@@ -86,11 +88,11 @@ Marks the userdata as live.
 
 */
     VTABLE void mark() {
-        if (u_val(SELF))
+        if (!PMC_IS_NULL(u_val(SELF)))
             Parrot_gc_mark_PMC_alive(INTERP, u_val(SELF));
-        if (u_env(SELF))
+        if (!PMC_IS_NULL(u_env(SELF)))
             Parrot_gc_mark_PMC_alive(INTERP, u_env(SELF));
-        if (u_mt(SELF))
+        if (!PMC_IS_NULL(u_mt(SELF)))
             Parrot_gc_mark_PMC_alive(INTERP, u_mt(SELF));
     }
 
@@ -107,7 +109,7 @@ Call finalizer and free the userdata.
 #if 0
         PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__gc");
 
-        if (meth)
+        if (!PMC_IS_NULL(meth))
             (void)Parrot_runops_fromc_args(INTERP, meth, "vP", SELF);
 #endif
     }
@@ -203,7 +205,7 @@ The C<==> operation. Compares reference (not in depth).
 */
     MULTI INTVAL is_equal(LuaUserdata value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__eq");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             PMC * const retval = Parrot_runops_fromc_args(INTERP, meth, "PPP",
                                                           SELF, value);
             if (PMC_IS_NULL(retval))
@@ -229,30 +231,33 @@ The C<==> operation. Compares reference (not in depth).
     MULTI INTVAL cmp(LuaUserdata value) {
 #if 0
         PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__cmp");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             PMC *retval = Parrot_runops_fromc_args(INTERP, meth, "PPP",
                                                    SELF, value);
 
-            if (retval)
+            if (!PMC_IS_NULL(retval))
                 return (INTVAL)VTABLE_get_number(INTERP, retval);
         }
 #else
         PMC * const _lt = _LuaAny_find_meth(INTERP, SELF, "__lt");
 
-        if (_lt) {
+        if (!PMC_IS_NULL(_lt)) {
             PMC *retval = Parrot_runops_fromc_args(INTERP, _lt, "PPP",
                                                    SELF, value);
-            INTVAL r = retval ? VTABLE_get_bool(INTERP, retval) : (INTVAL)0;
+            INTVAL r = PMC_IS_NULL(retval) 
+                     ? (INTVAL)0
+                     : VTABLE_get_bool(INTERP, retval);
 
             if (r)
                 return (INTVAL)-1;
             else {
                 PMC * const _le = _LuaAny_find_meth(INTERP, SELF, "__le");
-                if (_le) {
+                if (!PMC_IS_NULL(_le)) {
                     retval = Parrot_runops_fromc_args(INTERP, _le, "PPP",
                                                       SELF, value);
-                    r = retval ?
-                        VTABLE_get_bool(INTERP, retval) : (INTVAL)0;
+                    r = PMC_IS_NULL(retval)
+                      ? (INTVAL)0
+                      : VTABLE_get_bool(INTERP, retval);
 
                     if (r)
                         return (INTVAL)0;
@@ -262,8 +267,9 @@ The C<==> operation. Compares reference (not in depth).
                 else {
                     retval = Parrot_runops_fromc_args(INTERP, _lt, "PPP",
                                                       value, SELF);
-                    r      = retval
-                        ? VTABLE_get_bool(INTERP, retval) : (INTVAL)0;
+                    r = PMC_IS_NULL(retval)
+                      ? (INTVAL)0
+                      : VTABLE_get_bool(INTERP, retval);
 
                     if (r)
                         return (INTVAL)1;
@@ -358,7 +364,7 @@ The C<==> operation. Compares reference (not in depth).
 */
     METHOD void set_metatable(PMC *meta) {
         if (dynpmc_LuaNil == PMC_type(meta))
-            u_mt(SELF) = NULL;
+            u_mt(SELF) = PMCNULL;
         else
             u_mt(SELF) = meta;
     }

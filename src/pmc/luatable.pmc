@@ -374,6 +374,7 @@ Initializes the instance.
 */
     VTABLE void init() {
         lua_new_table(INTERP, PARROT_LUATABLE(SELF));
+        t_mt(SELF) = PMCNULL;
         PObj_custom_mark_destroy_SETALL(SELF);
     }
 
@@ -390,7 +391,7 @@ Marks the hash as live.
         STRING *mode = NULL;
         PMC * const meta = t_mt(SELF);
 
-        if (meta) {
+        if (!PMC_IS_NULL(meta)) {
             PMC **m;
 #if 0
             PMC * const key = pmc_new(INTERP, dynpmc_LuaString);
@@ -407,7 +408,7 @@ Marks the hash as live.
 
         lua_mark_table(INTERP, PARROT_LUATABLE(SELF), mode);
 
-        if (meta)
+        if (!PMC_IS_NULL(meta))
             Parrot_gc_mark_PMC_alive(INTERP, meta);
     }
 
@@ -497,7 +498,7 @@ C<table> accessor.
             value = *pvalue;
         else {
             PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__index");
-            if (meth) {
+            if (!PMC_IS_NULL(meth)) {
                 if (dynpmc_LuaFunction == PMC_type(meth)) {
                     value = Parrot_runops_fromc_args(INTERP, meth, "PPP",
                                                  SELF, key);
@@ -525,7 +526,7 @@ C<table> mutator.
     VTABLE void set_pmc_keyed(PMC *key, PMC *value) {
         if (! lua_get(INTERP, PARROT_LUATABLE(SELF), key)) {
             PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__newindex");
-            if (meth) {
+            if (!PMC_IS_NULL(meth)) {
                 if (dynpmc_LuaFunction == PMC_type(meth)) {
                     Parrot_runops_fromc_args(INTERP, meth, "vPPP", SELF,
                             key, value);
@@ -594,7 +595,7 @@ The C<==> operation. Compares reference (not in depth).
 */
     MULTI INTVAL is_equal(LuaTable value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__eq");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             PMC * const retval = Parrot_runops_fromc_args(INTERP, meth, "PPP",
                                                           SELF, value);
 
@@ -621,36 +622,42 @@ The C<==> operation. Compares reference (not in depth).
     MULTI INTVAL cmp(LuaTable value) {
 #if 0
         PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__cmp");
-        if (meth) {
+        if (!PMC_IS_NULL(meth)) {
             PMC * const retval = Parrot_runops_fromc_args(INTERP, meth, "PPP",
                                                           SELF, value);
 
-            if (retval)
+            if (!PMC_IS_NULL(retval))
                 return (INTVAL)VTABLE_get_number(INTERP, retval);
         }
 #else
         PMC * const _lt = _LuaAny_find_meth(INTERP, SELF, "__lt");
 
-        if (_lt) {
+        if (!PMC_IS_NULL(_lt)) {
             PMC *retval = Parrot_runops_fromc_args(INTERP, _lt, "PPP",
                                                    SELF, value);
-            INTVAL r = retval ? VTABLE_get_bool(INTERP, retval) : (INTVAL)0;
+            INTVAL r = PMC_IS_NULL(retval) 
+                     ? (INTVAL)0
+                     : VTABLE_get_bool(INTERP, retval);
 
             if (r)
                 return (INTVAL)-1;
             else {
                 PMC * const _le = _LuaAny_find_meth(INTERP, SELF, "__le");
-                if (_le) {
+                if (!PMC_IS_NULL(_le)) {
                     retval = Parrot_runops_fromc_args(INTERP, _le, "PPP",
                                                       SELF, value);
-                    r = retval ? VTABLE_get_bool(INTERP, retval) : (INTVAL)0;
+                    r = PMC_IS_NULL(retval)
+                      ? (INTVAL)0
+                      : VTABLE_get_bool(INTERP, retval);
 
                     return (r) ? (INTVAL)0 : (INTVAL)1;
                 }
                 else {
                     retval = Parrot_runops_fromc_args(INTERP, _lt, "PPP",
                                                       value, SELF);
-                    r = retval ? VTABLE_get_bool(INTERP, retval) : (INTVAL)0;
+                    r = PMC_IS_NULL(retval) 
+                      ? (INTVAL)0
+                      : VTABLE_get_bool(INTERP, retval);
 
                     return (r) ? (INTVAL)1 : (INTVAL)0;
                 }
@@ -801,7 +808,7 @@ The C<==> operation. Compares reference (not in depth).
 */
     METHOD void set_metatable(PMC *meta) {
         if (dynpmc_LuaNil == PMC_type(meta))
-            t_mt(SELF) = NULL;
+            t_mt(SELF) = PMCNULL;
         else
             t_mt(SELF) = meta;
     }
