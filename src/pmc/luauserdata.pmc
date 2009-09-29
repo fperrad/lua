@@ -34,6 +34,7 @@ static PMC* curr_func(PARROT_INTERP) {
         PMC *cont;
         PMC *current_sub = Parrot_pcc_get_sub(interp, sub_ctx);
         if (!PMC_IS_NULL(current_sub)
+         && PMC_type(current_sub) == dynpmc_LuaFunction
          && _LuaFunction_get_environment(interp, current_sub))
             return current_sub;
         cont = Parrot_pcc_get_continuation(interp, sub_ctx);
