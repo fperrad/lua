@@ -365,8 +365,14 @@ oldtest: build
 pmctest: build
 	prove -f t/pmc/*.t
 
-export LUA_PATH=;;../src/?.lua
-export LUA_INIT=platform = { osname=[[@osname@]], intsize=@intsize@, longsize=@longsize@ }
+#IF(gmake_version):export LUA_PATH=;;../src/?.lua
+#IF(gmake_version):export LUA_INIT=platform = { osname=[[@osname@]], intsize=@intsize@, longsize=@longsize@ }
+#UNLESS(gmake_version):# before running test, modify your environment :
+#UNLESS(gmake_version):#  $ export LUA_PATH=";;../src/?.lua"
+#UNLESS(gmake_version):#  $ export LUA_INIT="platform = { osname=[[@osname@]], intsize=@intsize@, longsize=@longsize@ }"
+#UNLESS(gmake_version):# or
+#UNLESS(gmake_version):#  > set LUA_PATH=;;../src/?.lua
+#UNLESS(gmake_version):#  > set LUA_INIT=platform = { osname=[[@osname@]], intsize=@intsize@, longsize=@longsize@ }
 
 staging : build
 	$(MKPATH) t/lua-TestMore/test_lua51/lua/library
