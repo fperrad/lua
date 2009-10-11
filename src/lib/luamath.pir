@@ -69,6 +69,7 @@ atan
 atan2
 ceil
 cos
+cosh
 deg
 exp
 floor
@@ -85,8 +86,10 @@ rad
 random
 randomseed
 sin
+sinh
 sqrt
 tan
+tanh
 LIST
     lua_register($P1, _math, $P2)
 
@@ -200,6 +203,16 @@ LIST
     $N0 = cos $N1
     new res, 'LuaNumber'
     set res, $N0
+    .return (res)
+.end
+
+
+.sub 'cosh'
+    .param pmc x :optional
+    .param pmc extra :slurpy
+    .local pmc res
+    lua_checknumber(1, x)
+    res = x.'cosh'()
     .return (res)
 .end
 
@@ -455,6 +468,16 @@ LIST
 .end
 
 
+.sub 'sinh'
+    .param pmc x :optional
+    .param pmc extra :slurpy
+    .local pmc res
+    lua_checknumber(1, x)
+    res = x.'sinh'()
+    .return (res)
+.end
+
+
 .sub 'sqrt'
     .param pmc x :optional
     .param pmc extra :slurpy
@@ -475,6 +498,16 @@ LIST
     $N0 = tan $N1
     new res, 'LuaNumber'
     set res, $N0
+    .return (res)
+.end
+
+
+.sub 'tanh'
+    .param pmc x :optional
+    .param pmc extra :slurpy
+    .local pmc res
+    lua_checknumber(1, x)
+    res = x.'tanh'()
     .return (res)
 .end
 

@@ -987,6 +987,20 @@ Used to unarchive the number.
 
 /*
 
+=item C<PMC* cosh()>
+
+=cut
+
+*/
+    METHOD PMC* cosh() {
+        const FLOATVAL n = cosh(VTABLE_get_number(INTERP, SELF));
+        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        VTABLE_set_number_native(INTERP, retval, n);
+        RETURN(PMC *retval);
+    }
+
+/*
+
 =item C<PMC* erf()>
 
 =cut
@@ -1454,6 +1468,34 @@ Used to unarchive the number.
 */
     METHOD PMC* signbit() {
         const FLOATVAL n = signbit(VTABLE_get_number(INTERP, SELF));
+        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        VTABLE_set_number_native(INTERP, retval, n);
+        RETURN(PMC *retval);
+    }
+
+/*
+
+=item C<PMC* sinh()>
+
+=cut
+
+*/
+    METHOD PMC* sinh() {
+        const FLOATVAL n = sinh(VTABLE_get_number(INTERP, SELF));
+        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        VTABLE_set_number_native(INTERP, retval, n);
+        RETURN(PMC *retval);
+    }
+
+/*
+
+=item C<PMC* tanh()>
+
+=cut
+
+*/
+    METHOD PMC* tanh() {
+        const FLOATVAL n = tanh(VTABLE_get_number(INTERP, SELF));
         PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
