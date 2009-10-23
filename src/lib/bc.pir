@@ -82,6 +82,11 @@ LIST
     set $P1, '__mul'
     _bc[$P1] = $P0
 
+    set $P1, 'mod'
+    $P0 = _bc[$P1]
+    set $P1, '__mod'
+    _bc[$P1] = $P0
+
     set $P1, 'pow'
     $P0 = _bc[$P1]
     set $P1, '__pow'
@@ -375,7 +380,7 @@ LIST
     .param pmc x :optional
     .param pmc y :optional
     .param pmc extra :slurpy
-    .do2(mod, x, y)
+    .do2(cmod, x, y)
 .end
 
 
