@@ -114,15 +114,14 @@ LIST
     if $I0 goto L2
     $I0 = isa z, 'LuaString'
     if $I0 goto L2
-    goto L1
+  L1:
+    .tailcall lua_checkudata(narg, z, MYTYPE)
   L2:
     $N0 = lua_checknumber(1, z)
     new $P0, MYPMC
     $P0[0] = $N0
     # $P0[1] = 0.0
     .return ($P0)
-  L1:
-    .tailcall lua_checkudata(narg, z, MYTYPE)
 .end
 
 
