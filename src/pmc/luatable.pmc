@@ -500,8 +500,7 @@ C<table> accessor.
             PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__index");
             if (!PMC_IS_NULL(meth)) {
                 if (dynpmc_LuaFunction == PMC_type(meth)) {
-                    value = Parrot_runops_fromc_args(INTERP, meth, "PPP",
-                                                 SELF, key);
+                    Parrot_ext_call(INTERP, meth, "PiP->P", SELF, key, &value);
                 }
                 else
                     return VTABLE_get_pmc_keyed(INTERP, meth, key);
@@ -528,8 +527,7 @@ C<table> mutator.
             PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__newindex");
             if (!PMC_IS_NULL(meth)) {
                 if (dynpmc_LuaFunction == PMC_type(meth)) {
-                    Parrot_runops_fromc_args(INTERP, meth, "vPPP", SELF,
-                            key, value);
+                    Parrot_ext_call(INTERP, meth, "PiPP->", SELF, key, value);
                 }
                 else
                     VTABLE_set_pmc_keyed(INTERP, meth, key, value);
@@ -596,8 +594,8 @@ The C<==> operation. Compares reference (not in depth).
     MULTI INTVAL is_equal(LuaTable value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__eq");
         if (!PMC_IS_NULL(meth)) {
-            PMC * const retval = Parrot_runops_fromc_args(INTERP, meth, "PPP",
-                                                          SELF, value);
+            PMC * retval;
+            Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &retval);
 
             if (PMC_IS_NULL(retval))
                 return (INTVAL)0;
@@ -623,8 +621,8 @@ The C<==> operation. Compares reference (not in depth).
 #if 0
         PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__cmp");
         if (!PMC_IS_NULL(meth)) {
-            PMC * const retval = Parrot_runops_fromc_args(INTERP, meth, "PPP",
-                                                          SELF, value);
+            PMC * retval;
+            Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &retval);
 
             if (!PMC_IS_NULL(retval))
                 return (INTVAL)VTABLE_get_number(INTERP, retval);
@@ -633,9 +631,10 @@ The C<==> operation. Compares reference (not in depth).
         PMC * const _lt = _LuaAny_find_meth(INTERP, SELF, "__lt");
 
         if (!PMC_IS_NULL(_lt)) {
-            PMC *retval = Parrot_runops_fromc_args(INTERP, _lt, "PPP",
-                                                   SELF, value);
-            INTVAL r = PMC_IS_NULL(retval) 
+            PMC    *retval;
+            INTVAL  r;
+            Parrot_ext_call(INTERP, _lt, "PiP->P", SELF, value, &retval);
+            r = PMC_IS_NULL(retval)
                      ? (INTVAL)0
                      : VTABLE_get_bool(INTERP, retval);
 
@@ -644,8 +643,7 @@ The C<==> operation. Compares reference (not in depth).
             else {
                 PMC * const _le = _LuaAny_find_meth(INTERP, SELF, "__le");
                 if (!PMC_IS_NULL(_le)) {
-                    retval = Parrot_runops_fromc_args(INTERP, _le, "PPP",
-                                                      SELF, value);
+                    Parrot_ext_call(INTERP, _le, "PiP->P", SELF, value, &retval);
                     r = PMC_IS_NULL(retval)
                       ? (INTVAL)0
                       : VTABLE_get_bool(INTERP, retval);
@@ -653,9 +651,8 @@ The C<==> operation. Compares reference (not in depth).
                     return (r) ? (INTVAL)0 : (INTVAL)1;
                 }
                 else {
-                    retval = Parrot_runops_fromc_args(INTERP, _lt, "PPP",
-                                                      value, SELF);
-                    r = PMC_IS_NULL(retval) 
+                    Parrot_ext_call(INTERP, _lt, "PiP->P", value, SELF, &retval);
+                    r = PMC_IS_NULL(retval)
                       ? (INTVAL)0
                       : VTABLE_get_bool(INTERP, retval);
 

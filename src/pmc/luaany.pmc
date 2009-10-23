@@ -147,8 +147,8 @@ Throws an exception.
                 "attempt to index a %Ss value", SELF.name());
 
         if (dynpmc_LuaFunction == PMC_type(meth)) {
-            PMC * const retval = Parrot_runops_fromc_args(INTERP, meth, "PPP",
-                                                          SELF, key);
+            PMC * retval;
+            Parrot_ext_call(INTERP, meth, "PiP->P", SELF, key, &retval);
             if (PMC_IS_NULL(retval))
                 return pmc_new(INTERP, dynpmc_LuaNil);
 
@@ -175,8 +175,7 @@ Throws an exception.
                 "attempt to index a %Ss value", SELF.name());
 
         if (dynpmc_LuaFunction == PMC_type(meth)) {
-            Parrot_runops_fromc_args(INTERP, meth, "vPPP",
-                                     SELF, key, value);
+            Parrot_ext_call(INTERP, meth, "PiPP->", SELF, key, value);
         }
         else
             VTABLE_set_pmc_keyed(INTERP, meth, key, value);
@@ -200,7 +199,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        dest = Parrot_runops_fromc_args(INTERP, meth, "PP", SELF);
+        Parrot_ext_call(INTERP, meth, "Pi->P", SELF, &dest);
 
         if (PMC_IS_NULL(dest))
             return pmc_new(INTERP, dynpmc_LuaNil);
@@ -215,7 +214,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        SELF = Parrot_runops_fromc_args(INTERP, meth, "PP", SELF);
+        Parrot_ext_call(INTERP, meth, "Pi->P", SELF, &SELF);
 
         if (PMC_IS_NULL(SELF))
                 SELF = pmc_new(INTERP, dynpmc_LuaNil);
@@ -269,7 +268,7 @@ Throws an exception.
 
             /* fix me */
 #if 1
-        retval = Parrot_runops_fromc_args(INTERP, meth, "PP", SELF);
+        Parrot_ext_call(INTERP, meth, "Pi->P", SELF, &retval);
         if (PMC_IS_NULL(retval))
             retval = pmc_new(INTERP, dynpmc_LuaNil);
 #else
@@ -325,7 +324,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
             return pmc_new(INTERP, dynpmc_LuaNil);
@@ -340,7 +339,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
         if (PMC_IS_NULL(SELF))
             SELF = pmc_new(INTERP, dynpmc_LuaNil);
     }
@@ -351,7 +350,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
             return pmc_new(INTERP, dynpmc_LuaNil);
@@ -365,7 +364,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
         if (PMC_IS_NULL(SELF))
             SELF = pmc_new(INTERP, dynpmc_LuaNil);
@@ -378,7 +377,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
             return pmc_new(INTERP, dynpmc_LuaNil);
@@ -393,7 +392,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
         if (PMC_IS_NULL(SELF))
             SELF = pmc_new(INTERP, dynpmc_LuaNil);
@@ -406,7 +405,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
             return pmc_new(INTERP, dynpmc_LuaNil);
@@ -421,7 +420,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
         if (PMC_IS_NULL(SELF))
             SELF = pmc_new(INTERP, dynpmc_LuaNil);
@@ -434,7 +433,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
             return pmc_new(INTERP, dynpmc_LuaNil);
@@ -449,7 +448,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
         if (PMC_IS_NULL(SELF))
             SELF = pmc_new(INTERP, dynpmc_LuaNil);
@@ -462,7 +461,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
             return pmc_new(INTERP, dynpmc_LuaNil);
@@ -477,7 +476,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
 
-        SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
         if (PMC_IS_NULL(SELF))
             SELF = pmc_new(INTERP, dynpmc_LuaNil);
@@ -490,7 +489,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to concatenate a %Ss value", SELF.name());
 
-        dest = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
             return pmc_new(INTERP, dynpmc_LuaNil);
@@ -504,7 +503,7 @@ Throws an exception.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to concatenate a %Ss value", SELF.name());
 
-        SELF = Parrot_runops_fromc_args(INTERP, meth, "PPP", SELF, value);
+        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
         if (PMC_IS_NULL(SELF))
             SELF = pmc_new(INTERP, dynpmc_LuaNil);
@@ -584,7 +583,7 @@ Without shortcut like in Default PMC.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to get length of a %Ss value", SELF.name());
 
-        retval = Parrot_runops_fromc_args(INTERP, meth, "PP", SELF);
+        Parrot_ext_call(INTERP, meth, "Pi->P", SELF, &retval);
 
         if (PMC_IS_NULL(retval))
             retval = pmc_new(INTERP, dynpmc_LuaNil);
@@ -622,7 +621,7 @@ Common implementation (use C<__tostring> or C<get_string>).
         PMC *retval;
 
         if (!PMC_IS_NULL(meth)) {
-            retval = Parrot_runops_fromc_args(INTERP, meth, "PP", SELF);
+            Parrot_ext_call(INTERP, meth, "Pi->P", SELF, &retval);
 
             if (PMC_IS_NULL(retval))
                 retval = pmc_new(INTERP, dynpmc_LuaNil);
