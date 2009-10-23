@@ -23,7 +23,7 @@ Tests Lua C<thread> type
 
     .include 'test_more.pir'
 
-    plan(5)
+    plan(6)
 
     check_HLL()
     check_tostring()
@@ -62,7 +62,7 @@ Tests Lua C<thread> type
 
 .sub 'check__add'
     # attempt to perform arithmetic on a thread value
-    throws_like(<<'CODE', '^attempt', "check__add")
+    throws_like(<<'CODE', '^attempt', "check __add")
   .sub ''
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
