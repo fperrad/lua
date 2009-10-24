@@ -208,7 +208,7 @@ The C<==> operation. Compares reference (not in depth).
     MULTI INTVAL is_equal(LuaUserdata value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__eq");
         if (!PMC_IS_NULL(meth)) {
-            PMC * retval;
+            PMC * retval = PMCNULL;
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &retval);
             if (PMC_IS_NULL(retval))
                 return (INTVAL)0;
@@ -234,7 +234,7 @@ The C<==> operation. Compares reference (not in depth).
 #if 0
         PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__cmp");
         if (!PMC_IS_NULL(meth)) {
-            PMC * retval;
+            PMC * retval = PMCNULL;
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &retval);
 
             if (!PMC_IS_NULL(retval))
@@ -244,8 +244,8 @@ The C<==> operation. Compares reference (not in depth).
         PMC * const _lt = _LuaAny_find_meth(INTERP, SELF, "__lt");
 
         if (!PMC_IS_NULL(_lt)) {
-            PMC    *retval;
-            INTVAL  r;
+            INTVAL r;
+            PMC * retval = PMCNULL;
             Parrot_ext_call(INTERP, _lt, "PiP->P", SELF, value, &retval);
             r = PMC_IS_NULL(retval)
               ? (INTVAL)0
@@ -256,6 +256,7 @@ The C<==> operation. Compares reference (not in depth).
             else {
                 PMC * const _le = _LuaAny_find_meth(INTERP, SELF, "__le");
                 if (!PMC_IS_NULL(_le)) {
+                    retval = PMCNULL;
                     Parrot_ext_call(INTERP, _le, "PiP->P", SELF, value, &retval);
                     r = PMC_IS_NULL(retval)
                       ? (INTVAL)0
@@ -267,6 +268,7 @@ The C<==> operation. Compares reference (not in depth).
                         return (INTVAL)1;
                 }
                 else {
+                    retval = PMCNULL;
                     Parrot_ext_call(INTERP, _lt, "PiP->P", SELF, value, &retval);
                     r = PMC_IS_NULL(retval)
                       ? (INTVAL)0
