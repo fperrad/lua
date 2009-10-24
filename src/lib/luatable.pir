@@ -221,6 +221,10 @@ inserts C<x> at the end of table C<t>.
     .param pmc arg2 :optional
     .param pmc arg3 :optional
     .param pmc extra :slurpy
+    $I0 = extra
+    if $I0 == 0 goto L0
+    lua_error("wrong number of arguments to 'insert'")
+  L0:
     .local pmc value
     .local pmc idx
     .local int e
