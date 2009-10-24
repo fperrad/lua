@@ -10,6 +10,7 @@ installable_lua
 installable_luap
 
 *.tar.gz
+*.patch
 
 *.tmp
 *.sto
