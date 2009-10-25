@@ -384,21 +384,21 @@ staging : build
 #	 && prove -f --exec="$(PARROT) ../../../lua.pbc" --jobs 1 *.t lib//*.t
 spectest : install
 	cd t && cd lua-TestMore && cd test_lua51 \
-	 && prove -f --exec=parrot-lua@exe@ --jobs 1 *.t lib//*.t
+	 && prove -f --exec=parrot-lua --jobs 1 *.t lib//*.t
 
 #smolder : staging
 #	-cd t && cd lua-TestMore && cd test_lua51 \
 #	 && prove -f --archive=test_lua51.tar.gz --exec="$(PARROT) ../../../lua.pbc" --jobs 1 *.t
 smolder : install
 	-cd t && cd lua-TestMore && cd test_lua51 \
-	 && prove -f --archive=test_lua51.tar.gz --exec=parrot-lua@exe@ --jobs 1 *.t
+	 && prove -f --archive=test_lua51.tar.gz --exec=parrot-lua --jobs 1 *.t
 	curl -F architecture=@cpuarch@ \
 	     -F platform=@osname@ \
 	     -F revision=@revision@ \
 	     -F tags="@osname@, @archname@, parrot-lua, Lua 5.1 (on Parrot)" \
 	     -F comments=parrot-lua \
 	     -F report_file=@t//lua-TestMore//test_lua51//test_lua51.tar.gz \
-	        http:////smolder.plusthree.com/app/public_projects/process_add_report/12
+	        http:////smolder.plusthree.com//app//public_projects//process_add_report//12
 
 codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
 
