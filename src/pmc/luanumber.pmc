@@ -308,8 +308,8 @@ Used to unarchive the number.
 
     MULTI PMC *add(LuaString value, PMC *dest) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-                "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             return Parrot_LuaNumber_multi_add_LuaNumber_PMC(INTERP, SELF, n, dest);
@@ -350,8 +350,8 @@ Used to unarchive the number.
 
     MULTI void i_add(LuaString value) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-                "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             Parrot_LuaNumber_multi_i_add_LuaNumber(INTERP, SELF, n);
@@ -394,8 +394,8 @@ Used to unarchive the number.
 
     MULTI PMC *subtract(LuaString value, PMC *dest) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-                "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             return Parrot_LuaNumber_multi_subtract_LuaNumber_PMC(INTERP, SELF, n, dest);
@@ -437,8 +437,8 @@ Used to unarchive the number.
 
     MULTI void i_subtract(LuaString value) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-                "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             Parrot_LuaNumber_multi_i_subtract_LuaNumber(INTERP, SELF, n);
@@ -480,8 +480,8 @@ Used to unarchive the number.
 
     MULTI PMC *multiply(LuaString value, PMC *dest) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-                "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             return Parrot_LuaNumber_multi_multiply_LuaNumber_PMC(INTERP, SELF, n, dest);
@@ -520,8 +520,8 @@ Used to unarchive the number.
 
     MULTI void i_multiply(LuaString value) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-                "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             Parrot_LuaNumber_multi_i_multiply_LuaNumber(INTERP, SELF, n);
@@ -563,8 +563,8 @@ Used to unarchive the number.
 
     MULTI PMC *divide(LuaString value, PMC *dest) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-                "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             return Parrot_LuaNumber_multi_divide_LuaNumber_PMC(INTERP, SELF, n, dest);
@@ -604,8 +604,8 @@ Used to unarchive the number.
 
     MULTI void i_divide(LuaString value) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-                "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             Parrot_LuaNumber_multi_i_divide_LuaNumber(INTERP, SELF, n);
@@ -648,8 +648,8 @@ Used to unarchive the number.
 
     MULTI PMC *modulus(LuaString value, PMC *dest) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-               "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             return Parrot_LuaNumber_multi_modulus_LuaNumber_PMC(INTERP, SELF, n, dest);
@@ -690,8 +690,8 @@ Used to unarchive the number.
 
     MULTI void i_modulus(LuaString value) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-                "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             Parrot_LuaNumber_multi_i_modulus_LuaNumber(INTERP, SELF, n);
@@ -733,8 +733,8 @@ Used to unarchive the number.
 
     MULTI PMC *pow(LuaString value, PMC *dest) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-                "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             return Parrot_LuaNumber_multi_pow_LuaNumber_PMC(INTERP, SELF, n, dest);
@@ -774,8 +774,8 @@ Used to unarchive the number.
 
     MULTI void i_pow(LuaString value) {
         PMC *n;
-        Parrot_PCCINVOKE(INTERP, value, Parrot_str_new_constant(INTERP, "tonumber"),
-                "->P", &n);
+        Parrot_pcc_invoke_method_from_c_args(INTERP, value,
+            Parrot_str_new_constant(INTERP, "tonumber"), "->P", &n);
 
         if (PMC_type(n) == dynpmc_LuaNumber)
             Parrot_LuaNumber_multi_i_pow_LuaNumber(INTERP, SELF, n);
