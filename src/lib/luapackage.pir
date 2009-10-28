@@ -373,7 +373,7 @@ each option is a function to be applied over the module.
     inc $I0
     $I0 = index $S1, '.', $I0
     unless $I0 < 0 goto L5
-    dec $I1
+    inc $I1
     $S0 = substr $S1, 0, $I1
     # set _PACKAGE as package name (full module name minus last part)
     new $P0, 'LuaString'
