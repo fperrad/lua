@@ -472,12 +472,16 @@ any loader for the module, then C<require> signals an error.
     new $P0, 'LuaNil'
     $P0 = $P1(modname)  # run loaded module
     $I0 = isa $P0, 'LuaNil'
-    unless $I0 goto L7
+    if $I0 goto L7
+    _LOADED[modname] = $P0
+  L7:
+    $P0 = _LOADED[modname]
+    unless $P0 == sentinel goto L8
     # use true as result
     new $P0, 'LuaBoolean'
     set $P0, 1
-  L7:
     _LOADED[modname] = $P0
+  L8:
     .return ($P0)
 .end
 
