@@ -714,13 +714,9 @@ transform past (Lua::Grammar::primary_expression) :language('PIR') {
     source = getattribute $P1, '$.target'
     pos = $P1.'from'()
     line = source.'lineof'(pos)
-    .local pmc meth, obj
     key = tree.'get'('key', $P1, 'Lua::Grammar::Name')
-    $P2 = get_hll_global ['PAST'], 'Var'
-    meth = $P2.'new'(past, key, 'node'=>node, 'scope'=>'keyed')
-    obj = clone past
     $P2 = get_hll_global ['PAST'], 'Op'
-    past = $P2.'new'(meth, obj, args :flat, 'node'=>node, 'pasttype'=>'call')
+    past = $P2.'new'(past, key, args :flat, 'node'=>node, 'pasttype'=>'callmethod')
     goto L2
   L4:
     $P2 = get_hll_global ['PAST'], 'Op'

@@ -173,7 +173,10 @@ transform cond (PAST;Op) :language('PIR') {
 
 transform post (PAST;Op) :language('PIR') {
     $S0 = node.'pasttype'()
-    unless $S0 == 'call' goto L1
+    if $S0 == 'call' goto L1
+    if $S0 == 'callmethod' goto L1
+    .tailcall tree.'get'($S0, node)
+  L1:
     .local pmc post
     post = tree.'get'($S0, node)
     $P0 = post.'pop'()
@@ -184,8 +187,6 @@ transform post (PAST;Op) :language('PIR') {
     post.'push'($P0)
     post.'result'(result)
     .return (post)
-  L1:
-    .tailcall tree.'get'($S0, node)
 }
 
 
@@ -254,15 +255,17 @@ transform call (PAST;Op) :language('PIR') {
     .local pmc arglist, it, cpost
     new arglist, 'ResizableStringArray'
     it = node.'iterator'()
-    .local int first
-    first = 1
+    $P0 = shift it
+    $P1 = tree.'get'('post', $P0)
+    ops.'push'($P1)
+    $S0 = $P1.'result'()
+    push arglist, $S0
   L1:
     unless it goto L2
     $P0 = shift it
     cpost = tree.'get'('post', $P0)
     ops.'push'(cpost)
     $S0 = cpost.'result'()
-    if first goto L3
     if it goto L3
     ($I0, $P0) = cpost.'has_call_in_last_op'()
     unless $I0 goto L3
@@ -271,7 +274,54 @@ transform call (PAST;Op) :language('PIR') {
     $P0.'result'($S1)
     $S0 .= ' :flat'
   L3:
-    first = 0
+    push arglist, $S0
+    goto L1
+  L2:
+    ops.'push_pirop'('call', arglist :flat, 'node'=>node, 'result'=>'')
+    null $P0
+    set_hll_global ['Lua';'POST'], '$?environ', $P0
+    .return (ops)
+}
+
+
+transform callmethod (PAST;Op) :language('PIR') {
+    .local pmc ops
+    $P0 = get_hll_global ['POST'], 'Ops'
+    ops = $P0.'new'('node'=>node)
+    .local pmc arglist, it, obj, cpost
+    new arglist, 'ResizableStringArray'
+    it = node.'iterator'()
+    $P0 = shift it
+    obj = tree.'get'('post', $P0)
+    ops.'push'(obj)
+    $P0 = shift it
+    $P1 = tree.'get'('post', $P0)
+    ops.'push'($P1)
+    .local string key
+    key = obj.'result'()
+    key .= '['
+    $S0 = $P1.'result'()
+    key .= $S0
+    key .= ']'
+    $S0 = ops.'unique'('$P')
+    ops.'push_pirop'('set', $S0, key, 'result'=>$S0)
+    push arglist, $S0
+    $S0 = obj.'result'()
+    push arglist, $S0
+  L1:
+    unless it goto L2
+    $P0 = shift it
+    cpost = tree.'get'('post', $P0)
+    ops.'push'(cpost)
+    $S0 = cpost.'result'()
+    if it goto L3
+    ($I0, $P0) = cpost.'has_call_in_last_op'()
+    unless $I0 goto L3
+    $S1 = '(' . $S0
+    $S1 .= ' :slurpy)'
+    $P0.'result'($S1)
+    $S0 .= ' :flat'
+  L3:
     push arglist, $S0
     goto L1
   L2:
