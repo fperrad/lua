@@ -246,7 +246,7 @@ CAUTION: don't used it in an exception handler, but lua_x_error & rethrow.
     new $P1, 'LuaString'
   L1:
     $I1 = index fname, '.'
-    $I2 = $I2
+    $I2 = $I1
     unless $I1 < 0 goto L2
     $I2 = length fname
   L2:
@@ -267,6 +267,7 @@ CAUTION: don't used it in an exception handler, but lua_x_error & rethrow.
     if $I1 < 0 goto L5
     inc $I1
     fname = substr fname, $I1
+    t = $P0
     goto L1
   L5:
     .return ($P0)
