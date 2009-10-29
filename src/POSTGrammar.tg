@@ -116,9 +116,10 @@ PIRCODE
     onload = $P0.'new'('name'=>'&on_require', 'pirflags'=>':anon :load')
     $P0 = find_caller_lex '$?FILES'
     $S1 = mkfuncname($P0)
+    $S1 = onload.'escape'($S1)
     onload.'push_pirop'('inline', $S0, $S1, 'inline'=><<'PIRCODE')
     .const "Sub" entry = "%0"
-    set_hll_global "%1", entry
+    set_hll_global %1, entry
 PIRCODE
     start.'push'(onload)
     start.'push'(post)
