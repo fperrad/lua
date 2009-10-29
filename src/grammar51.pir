@@ -439,8 +439,9 @@ and C<'1'> is coded as 49), the five literals below denote the same string:
     $S0 = substr target, pos, 1
     if $S0 != '[' goto L4
     inc pos
-    $S0 = substr target, pos, 1
-    if $S0 != '[' goto L5
+    ($I0, $I1) = _skip_sep(target, pos, '[')
+    if $I1 != sep goto L5
+    if sep != 0 goto L5
     inc pos
     mob.'to'(pos)
     lexerror(mob, "nesting of [[...]] is deprecated")
@@ -520,8 +521,9 @@ long bracket. Long comments are frequently used to disable code temporarily.
     $S0 = substr target, pos, 1
     if $S0 != '[' goto L4
     inc pos
-    $S0 = substr target, pos, 1
-    if $S0 != '[' goto L5
+    ($I0, $I1) = _skip_sep(target, pos, '[')
+    if $I1 != sep goto L5
+    if sep != 0 goto L5
     inc pos
     mob.'to'(pos)
     lexerror(mob, "nesting of [[...]] is deprecated")
