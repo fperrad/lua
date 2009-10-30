@@ -244,6 +244,10 @@ $(LIBPATH)/luabytecode_gen.pir: $(LIBPATH)/luabytecode.rules src/build/translato
 	$(PERL) src/build/translator.pl $(LIBPATH)/luabytecode.rules \
             --output $(LIBPATH)/luabytecode_gen.pir
 
+t/lua-TestMore/src/Test/More.lua:
+	git submodule init t/lua-TestMore
+	git submodule update
+
 Test/More.pir: t/lua-TestMore/src/Test/More.lua
 	-$(MKPATH) Test
 	-$(CP) t/lua-TestMore/src/Test/More.lua Test/More.lua
