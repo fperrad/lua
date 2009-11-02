@@ -155,12 +155,46 @@ the current function, if a reasonable name can be found, and
 C<debug.getinfo(print)> returns a table with all available information about
 the C<print> function.
 
-NOT YET IMPLEMENTED.
+STILL INCOMPLETE.
 
 =cut
 
 .sub 'getinfo'
-    not_implemented()
+    .param pmc func :optional
+    .param pmc what :optional
+    .param pmc extra :slurpy
+    $S2 = lua_optstring(2, what, 'flnSu')
+    $I0 = isa func, 'LuaNumber'
+    unless $I0 goto L1
+    $I1 = func
+    $P0 = getinterp
+    push_eh _handler
+    func = $P0['sub'; $I1]
+    pop_eh
+    goto L2
+  L1:
+    $I0 = isa func, 'LuaFunction'
+    if $I0 goto L2
+    lua_argerror(1, "function or level expected")
+  L2:
+    .local pmc res
+    res = new 'LuaTable'
+    $P1 = new 'LuaString'
+    # S : source, short_src, linedefined, lastlinedefined, what
+    # l : currentline
+    # u : nups
+    # n : name, namewhat
+    # L : activelines
+    # f : func
+    $I0 = index $S2, 'f'
+    if $I0 < 0 goto L3
+    set $P1, 'func'
+    res[$P1] = func
+  L3:
+    .return (res)
+  _handler:
+    res = new 'LuaNil'
+    .return (res)
 .end
 
 
