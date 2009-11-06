@@ -383,9 +383,13 @@ staging : build
 	$(CP) lua//*.pbc t/lua-TestMore/test_lua51/lua
 	$(CP) lua/library//*.pbc t/lua-TestMore/test_lua51/lua/library
 
-spectest : staging
+test : staging
 	cd t && cd lua-TestMore && cd test_lua51 \
 	 && prove -f --exec="$(PARROT) ../../../lua.pbc" --jobs 1 *.t lib//*.t
+
+spectest : staging
+	cd t && cd lua-TestMore && cd test_lua51 \
+	 && prove -f --exec="$(PARROT) ../../../lua.pbc" --jobs 1 *.t
 
 smolder : staging
 	-cd t && cd lua-TestMore && cd test_lua51 \
