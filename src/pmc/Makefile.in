@@ -140,7 +140,7 @@ install:
 uninstall:
 	$(RM_F) $(INSTALL_DIR)/$(LUA_GROUP)$(LOAD_EXT)
 
-Makefile: ../../config/makefiles/pmc.in
+Makefile: Makefile.in
 	cd ../.. && $(PARROT) Configure.pir
 
 clean:

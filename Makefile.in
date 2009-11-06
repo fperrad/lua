@@ -87,7 +87,7 @@ GEN_PBC := \
 LUA_GROUP := $(PMC_DIR)/lua_group$(LOAD_EXT)
 
 PMC_DEPS := \
- config/makefiles/pmc.in \
+ $(PMC_DIR)/Makefile.in \
  $(PMC_DIR)/lua.pmc \
  $(PMC_DIR)/luaany.pmc \
  $(PMC_DIR)/luaboolean.pmc \
@@ -333,7 +333,7 @@ installable_lua@exe@: lua.pbc
 installable_luap@exe@: luap.pbc
 	$(PBC_TO_EXE) luap.pbc --install
 
-Makefile: config/makefiles/root.in
+Makefile: Makefile.in
 	$(PARROT) Configure.pir
 
 help:
@@ -401,7 +401,7 @@ smolder : staging
 codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
 
 T_C     = src//pmc//*.pmc src//pmc//lua_private.h
-T_MAKE  = config//makefiles//root.in config//makefiles//pmc.in
+T_MAKE  = Makefile.in src//pmc//Makefile.in
 T_PERL  = Configure.pl t//harness t//*.t t//Parrot//Test//*.pm \
           src//build//*.pl src//yapp//Lua//*.pm
 T_PIR   = *.pir src//lua51.pir src//grammar51.pir src//lib//*.pir t//pmc//*.t
