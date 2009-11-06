@@ -334,7 +334,7 @@ installable_luap@exe@: luap.pbc
 	$(PBC_TO_EXE) luap.pbc --install
 
 Makefile: config/makefiles/root.in
-	$(PERL) Configure.pl
+	$(PARROT) Configure.pir
 
 help:
 	@echo ""
