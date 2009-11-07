@@ -295,6 +295,7 @@ staging : build
 	$(MKPATH) t/lua-TestMore/test_lua51/lua/library
 	$(CP) lua//*.pbc t/lua-TestMore/test_lua51/lua
 	$(CP) lua/library//*.pbc t/lua-TestMore/test_lua51/lua/library
+	$(CP) lua//*$(LOAD_EXT) $(LIB_DIR)/dynext
 
 test : staging
 	cd t && cd lua-TestMore && cd test_lua51 \

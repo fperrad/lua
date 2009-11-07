@@ -12,6 +12,7 @@ LIB_DIR       := @libdir@$(VERSION)
 ## Setup some commands
 PERL          := @perl@
 CP            := @cp@
+MKPATH        := @mkpath@
 RM_F          := @rm_f@
 RM_RF         := @rm_rf@
 PARROT        := $(BIN_DIR)/parrot@exe@
@@ -110,9 +111,9 @@ uuid.pbc: uuid.pir
 zlib.pbc: zlib.pir
 	-$(PARROT) --output=zlib.pbc zlib.pir
 
-install: installable
+install:
 	-$(MKPATH) $(LIB_DIR)/languages/lua/library
-	$(CP) lua/library/*.pbc $(LIB_DIR)/languages/lua/library
+	$(CP) *.pbc $(LIB_DIR)/languages/lua/library
 
 uninstall:
 	$(RM_RF) $(LIB_DIR)/languages/lua/library
