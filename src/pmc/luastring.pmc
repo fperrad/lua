@@ -56,29 +56,6 @@ Initializes the string.
 
 /*
 
-=item C<PMC* instantiate_str(STRING *rep, INTVAL flags)>
-
-Allow :
-
-    .const .LuaString s = "Hello World!"
-
-=cut
-
-*/
-    VTABLE PMC* instantiate_str(STRING *rep, INTVAL flags) {
-        PMC *res;
-        const INTVAL type = PMC_type(SELF);
-        if (flags & PObj_constant_FLAG)
-            res = constant_pmc_new(INTERP, type);
-        else
-            res = pmc_new(INTERP, type);
-
-        SET_ATTR_str_val(INTERP, res, rep);
-        return res;
-    }
-
-/*
-
 =item C<void mark()>
 
 Marks the string as live.

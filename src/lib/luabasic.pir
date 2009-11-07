@@ -251,7 +251,8 @@ default for C<f> is 1.
     .param pmc extra :slurpy
     .local pmc res
     if null f goto L1
-    .const 'LuaNumber' zero = '0'
+    .local pmc zero
+    zero = box 0
     if f == zero goto L2
   L1:
     f = getfunc(f, 1)
@@ -313,8 +314,8 @@ Otherwise, returns the metatable of the given object.
     if res goto L1
     .return (res)
   L1:
-    .local pmc prot
-    .const 'LuaString' mt = '__metatable'
+    .local pmc mt, prot
+    mt = box '__metatable'
     prot = res.'rawget'(mt)
     unless prot goto L2
     .return (prot)
@@ -345,7 +346,8 @@ See C<next> for the caveats of modifying the table during its traversal.
     unless null i goto L1
     .local pmc _G
     _G = get_hll_global '_G'
-    .const 'LuaString' key_ipairs = 'ipairs'
+    .local pmc key_ipairs
+    key_ipairs = box 'ipairs'
     .local pmc ipairs
     ipairs = _G.'rawget'(key_ipairs)
     .local pmc zero
@@ -498,7 +500,8 @@ See C<next> for the caveats of modifying the table during its traversal.
     lua_checktype(1, t, 'table')
     .local pmc _G
     _G = get_hll_global '_G'
-    .const 'LuaString' key_next = 'next'
+    .local pmc key_next
+    key_next = box 'next'
     .local pmc next
     next = _G.'rawget'(key_next)
     .local pmc nil
@@ -705,7 +708,8 @@ STILL INCOMPLETE.
     .param pmc f :optional
     .param pmc table :optional
     .param pmc extra :slurpy
-    .const 'LuaNumber' zero = '0'
+    .local pmc zero
+    zero = box 0
     lua_checktype(2, table, 'table')
     unless f == zero goto L1
     # change environment of current thread
@@ -750,8 +754,8 @@ This function returns C<table>.
     .local pmc meta
     meta = table.'get_metatable'()
     unless meta goto L3
-    .local pmc prot
-    .const 'LuaString' mt = '__metatable'
+    .local pmc mt, prot
+    mt = box '__metatable'
     prot = meta.'rawget'(mt)
     unless prot goto L3
     lua_error("cannot change a protected metatable")

@@ -21,10 +21,9 @@ Tests C<LuaNil> PMC
 .sub 'main' :main
     .include 'test_more.pir'
 
-    plan(9)
+    plan(7)
 
     check_HLL()
-    check_HLL_const()
     check_tostring()
     check_tonumber()
 .end
@@ -34,13 +33,6 @@ Tests C<LuaNil> PMC
     $S0 = $P0
     is($S0, 'nil', "check HLL")
     isa_ok($P0, 'LuaNil')
-.end
-
-.sub 'check_HLL_const'
-    .const 'LuaNil' K = 'dummy'
-    $S0 = K
-    is($S0, 'nil', "check HLL & .const")
-    isa_ok(K, 'LuaNil')
 .end
 
 .sub 'check_tostring'

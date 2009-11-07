@@ -889,7 +889,8 @@ transform key (PAST;Val) :language('PIR') {
     ops_const = subpost.'ops_const'()
     $S0 = 'k_' . name
     $S1 = ops_const.'escape'(name)
-    $P0 = ops_const.'push_pirop'('inline', $S0, $S1, 'inline'=>'    .const "LuaString" %0 = %1')
+    $P0 = ops_const.'push_pirop'('.local pmc', $S0)
+    $P0 = ops_const.'push_pirop'('box', $S0, $S1)
     storage_const[name] = $S0
   L1:
     .local pmc ops
@@ -1097,7 +1098,8 @@ PIRCODE
     ops_const = subpost.'ops_const'()
     $S0 = 'k_' . name
     $S1 = ops_const.'escape'(name)
-    $P0 = ops_const.'push_pirop'('inline', $S0, $S1, 'inline'=>'    .const "LuaString" %0 = %1')
+    $P0 = ops_const.'push_pirop'('.local pmc', $S0)
+    $P0 = ops_const.'push_pirop'('box', $S0, $S1)
     storage_const[name] = $S0
   L5:
     $P0 = get_hll_global ['POST'], 'Ops'

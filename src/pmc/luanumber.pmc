@@ -50,31 +50,6 @@ Initializes the number to zero.
 
 /*
 
-=item C<PMC *instantiate_str(STRING *rep, INTVAL flags)>
-
-Return a LuaNumber PMC created from a string (Implementation
-is based on instantiate_str() from Integer PMC).
-
-Allow :
-
-    .const .LuaNumber n = "12.34"
-
-=cut
-
-*/
-    VTABLE PMC *instantiate_str(STRING *rep, INTVAL flags) {
-        const INTVAL type = PMC_type(SELF);
-        PMC * const res =
-            (flags & PObj_constant_FLAG)
-                ? constant_pmc_new(INTERP, type)
-                : pmc_new(INTERP, type);
-        const FLOATVAL fv = Parrot_str_to_num(INTERP, rep);
-        SET_ATTR_fv(INTERP, res, fv);
-        return res;
-    }
-
-/*
-
 =item C<STRING* name()>
 
 Return the string "number".

@@ -21,10 +21,9 @@ Tests C<LuaBoolean> PMC
 .sub 'main' :main
     .include 'test_more.pir'
 
-    plan(9)
+    plan(7)
 
     check_HLL()
-    check_HLL_const()
     check_tostring()
     check_tonumber()
 .end
@@ -35,13 +34,6 @@ Tests C<LuaBoolean> PMC
     $S0 = $P0
     is($S0, 'true', "check HLL")
     isa_ok($P0, 'LuaBoolean')
-.end
-
-.sub 'check_HLL_const'
-    .const 'LuaBoolean' K = '1'
-    $S0 = K
-    is($S0, 'true', "check HLL & .const")
-    isa_ok(K, 'LuaBoolean')
 .end
 
 .sub 'check_tostring'

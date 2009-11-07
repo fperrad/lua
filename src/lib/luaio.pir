@@ -89,7 +89,8 @@ LIST
     .param pmc fct
     .local pmc env
     new env, 'LuaTable'
-    .const 'LuaString' key = '__close'
+    .local pmc key
+    key = box '__close'
     env[key] = fct
     .return (env)
 .end
@@ -262,7 +263,8 @@ LIST
     mt = file.'get_metatable'()
     .local pmc _lua__REGISTRY
     _lua__REGISTRY = get_hll_global '_REGISTRY'
-    .const 'LuaString' key = 'FileHandle'
+    .local pmc key
+    key = box 'FileHandle'
     mt_file = _lua__REGISTRY[key]
     unless mt == mt_file goto L1
     res = getattribute file, 'data'
@@ -285,7 +287,8 @@ LIST
     .param pmc file
     .local pmc env
     env = file.'getfenv'()
-    .const 'LuaString' key = '__close'
+    .local pmc key
+    key = box '__close'
     $P0 = env[key]
     .tailcall $P0(file)
 .end
@@ -348,7 +351,8 @@ Equivalent to C<file:flush> over the default output file.
 .sub 'flush'
     .param pmc extra :slurpy
     .local pmc file
-    .const 'LuaString' key = 'flush'
+    .local pmc key
+    key = box 'flush'
     file = getiofile(IO_OUTPUT)
     $P0 = file[key]
     .tailcall $P0(file)
@@ -424,7 +428,8 @@ input file. In this case it does not close the file when the loop ends.
     .local pmc file
     .local pmc f
     unless null filename goto L1
-    .const 'LuaString' key = 'lines'
+    .local pmc key
+    key = box 'lines'
     file = getiofile(IO_INPUT)
     $P0 = file[key]
     .tailcall $P0(file)
@@ -597,7 +602,8 @@ Equivalent to C<io.input():read>.
 .sub 'read'
     .param pmc argv :slurpy
     .local pmc file
-    .const 'LuaString' key = 'read'
+    .local pmc key
+    key = box 'read'
     file = getiofile(IO_INPUT)
     $P0 = file[key]
     .tailcall $P0(file, argv :flat)
@@ -654,7 +660,8 @@ handle, and B<nil> if C<obj> is not a file handle.
     mt = obj.'get_metatable'()
     .local pmc _lua__REGISTRY
     _lua__REGISTRY = get_hll_global '_REGISTRY'
-    .const 'LuaString' key = 'FileHandle'
+    .local pmc key
+    key = box 'FileHandle'
     mt_file = _lua__REGISTRY[key]
     if mt == mt_file goto L1
     new res, 'LuaNil'
@@ -680,8 +687,8 @@ Equivalent to C<io.output():write>.
 
 .sub 'write'
     .param pmc argv :slurpy
-    .local pmc file
-    .const 'LuaString' key = 'write'
+    .local pmc key, file
+    key = box 'write'
     file = getiofile(IO_OUTPUT)
     $P0 = file[key]
     .tailcall $P0(file, argv :flat)

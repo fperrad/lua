@@ -99,7 +99,8 @@ Tests C<LuaFunction> PMC
     $P0 = get_hll_global ['basic'], 'luaopen_basic'
     $P0()
     $P1 = get_hll_global '_G'
-    .const 'LuaString' k_print = 'print'
+    .local pmc k_print
+    k_print = box 'print'
     $P2 = $P1[k_print]
     isa_ok($P2, 'LuaFunction', "load from pbc")
 #    $P2($P2)
@@ -109,7 +110,8 @@ Tests C<LuaFunction> PMC
     load_bytecode 'lua/lua.pbc'
     lua_openlibs()
     $P1 = get_hll_global '_G'
-    .const 'LuaString' k_print = 'print'
+    .local pmc k_print
+    k_print = box 'print'
     $P2 = $P1[k_print]
     isa_ok($P2, 'LuaFunction', "load from pbc")
 #    $P2($P2)

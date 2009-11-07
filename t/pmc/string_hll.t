@@ -21,12 +21,10 @@ Tests C<LuaString> PMC
 .sub 'main' :main
     .include 'test_more.pir'
 
-    plan(20)
+    plan(16)
 
     check_HLL()
     check_HLL_autoboxing()
-    check_HLL_const()
-    check_empty_string()
     check_box()
     check_is_equal()
     check_tostring()
@@ -51,20 +49,6 @@ Tests C<LuaString> PMC
 
 .sub 'fct' :anon
     .return ("simple string")
-.end
-
-.sub 'check_HLL_const'
-    .const 'LuaString' K = "simple string"
-    $S0 = K
-    is($S0, "simple string", "check HLL & .const")
-    isa_ok(K, 'LuaString')
-.end
-
-.sub 'check_empty_string'
-    .const 'LuaString' K = ''
-    $S0 = K
-    is($S0, '', "check empty string")
-    isa_ok(K, 'LuaString')
 .end
 
 .sub 'check_box'

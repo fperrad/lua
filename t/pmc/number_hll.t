@@ -21,11 +21,10 @@ Tests C<LuaNumber> PMC
 .sub 'main' :main
     .include 'test_more.pir'
 
-    plan(16)
+    plan(14)
 
     check_HLL()
     check_HLL_autoboxing()
-    check_HLL_const()
     check_box_float()
     check_box_integer()
     check_tostring()
@@ -49,13 +48,6 @@ Tests C<LuaNumber> PMC
 
 .sub 'fct' :anon
     .return (3.14)
-.end
-
-.sub 'check_HLL_const'
-    .const 'LuaNumber' K = '3.14'
-    $N0 = K
-    is($N0, 3.14, "check HLL & .const")
-    isa_ok(K, 'LuaNumber')
 .end
 
 .sub 'check_box_float'
