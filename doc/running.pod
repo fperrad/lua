@@ -30,7 +30,7 @@ Retrieve Lua
 
 Configure & build Lua
 
-  perl Configure.pl
+  parrot Configure.pir
   make
 
 =head2 Running the Test Suite
