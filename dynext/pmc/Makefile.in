@@ -70,7 +70,7 @@ OBJS := \
   luauserdata$(O)
 
 CLEANUPS := \
-  "*$(LOAD_EXT)" \
+  "../*$(LOAD_EXT)" \
   "*$(O)" \
   "*.c" \
   "pmc_*.h" \
