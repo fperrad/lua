@@ -3,6 +3,7 @@
 
 # values from parrot_config
 VERSION_DIR   := @versiondir@
+BIN_DIR       := @bindir@
 INCLUDE_DIR   := @includedir@$(VERSION_DIR)
 LIB_DIR       := @libdir@$(VERSION_DIR)
 SRC_DIR       := @srcdir@$(VERSION_DIR)
@@ -28,6 +29,7 @@ CC_OUT        := @cc_o_out@
 LD_OUT        := @ld_out@
 #IF(parrot_is_shared):LIBPARROT     := @inst_libparrot_ldflags@
 #ELSE:LIBPARROT     :=
+PARROT        := $(BIN_DIR)/parrot@exe@
 
 PMC2C_INCLUDES  := --include $(SRC_DIR) --include $(SRC_DIR)/pmc
 PMC2C           := $(PERL) $(LIB_DIR)/tools/build/pmc2c.pl
