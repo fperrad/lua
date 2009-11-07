@@ -17,6 +17,7 @@ O             := @o@
 
 # Various paths
 PMC_DIR       := src/pmc
+LUALIB_DIR    := lua/library
 LIBPATH       := src/lib
 
 ## Setup some commands
@@ -114,7 +115,6 @@ BUILD_CLEANUPS := \
   man \
   "*.pbc" \
   "lua/*.pbc" \
-  "lua/library/*.pbc" \
   "$(LIBPATH)/*.pbc" \
   $(GEN_PIR) \
   gl.lua \
@@ -134,28 +134,8 @@ TEST_CLEANUPS := \
   "t/*.orig_out" \
   "t/*.parrot_out"
 
-build: build_core \
- Test/More.pbc \
- lua/library/_helpers.pbc \
- lua/library/alarm.pbc \
- lua/library/base64.pbc \
- lua/library/bc.pbc \
- lua/library/bit.pbc \
- lua/library/bitlib.pbc \
- lua/library/complex.pbc \
-#IF(has_opengl): lua/library/gl.pbc \
-#IF(has_opengl): lua/library/gl_binding.pbc \
-#IF(has_opengl): lua/library/glut.pbc \
- lua/library/lfs.pbc \
- lua/library/lpeg.pbc \
- lua/library/markdown.pbc \
- lua/library/mathx.pbc \
-#IF(has_crypto): lua/library/md5.pbc \
- lua/library/random.pbc \
-#IF(has_crypto): lua/library/sha1.pbc \
- lua/library/struct.pbc \
- lua/library/uuid.pbc \
- lua/library/zlib.pbc
+build: build_core Test/More.pbc
+	$(MAKE) $(LUALIB_DIR)
 
 build_core: \
  $(LUA_GROUP) \
@@ -256,71 +236,6 @@ Test/More.pir: t/lua-TestMore/src/Test/More.lua
 Test/More.pbc: Test/More.pir
 	-$(PARROT) --output=Test/More.pbc Test/More.pir
 	-$(CP) Test/More.pbc t/lua-TestMore/src/Test/More.pbc
-
-lua/library/_helpers.pbc: $(LIBPATH)/_helpers.pir
-	$(PARROT) --output=lua/library/_helpers.pbc $(LIBPATH)/_helpers.pir
-
-lua/library/alarm.pbc: $(LIBPATH)/alarm.pir
-	-$(PARROT) --output=lua/library/alarm.pbc $(LIBPATH)/alarm.pir
-
-lua/library/base64.pbc: $(LIBPATH)/base64.pir
-	-$(PARROT) --output=lua/library/base64.pbc $(LIBPATH)/base64.pir
-
-lua/library/bc.pbc: $(LIBPATH)/bc.pir
-	-$(PARROT) --output=lua/library/bc.pbc $(LIBPATH)/bc.pir
-
-lua/library/bit.pbc: $(LIBPATH)/bit.pir
-	-$(PARROT) --output=lua/library/bit.pbc $(LIBPATH)/bit.pir
-
-lua/library/bitlib.pbc: $(LIBPATH)/bitlib.pir
-	-$(PARROT) --output=lua/library/bitlib.pbc $(LIBPATH)/bitlib.pir
-
-lua/library/complex.pbc: $(LIBPATH)/complex.pir
-	-$(PARROT) --output=lua/library/complex.pbc $(LIBPATH)/complex.pir
-
-#IF(has_opengl):$(LIBPATH)/gl.pir: $(LIBPATH)/gl.lua
-#IF(has_opengl):	-$(CP) $(LIBPATH)/gl.lua gl.lua
-#IF(has_opengl):	-$(PARROT) luap.pir --target=pir gl.lua > $(LIBPATH)/gl.pir
-#IF(has_opengl):
-#IF(has_opengl):lua/library/gl.pbc: $(LIBPATH)/gl.pir
-#IF(has_opengl):	-$(PARROT) --output=lua/library/gl.pbc $(LIBPATH)/gl.pir
-#IF(has_opengl):
-#IF(has_opengl):lua/library/gl_binding.pbc: $(LIBPATH)/gl_binding.pir
-#IF(has_opengl):	-$(PARROT) --output=lua/library/gl_binding.pbc $(LIBPATH)/gl_binding.pir
-#IF(has_opengl):
-#IF(has_opengl):lua/library/glut.pbc: $(LIBPATH)/glut.pir
-#IF(has_opengl):	-$(PARROT) --output=lua/library/glut.pbc $(LIBPATH)/glut.pir
-
-lua/library/lfs.pbc: $(LIBPATH)/lfs.pir
-	-$(PARROT) --output=lua/library/lfs.pbc $(LIBPATH)/lfs.pir
-
-lua/library/lpeg.pbc: $(LIBPATH)/lpeg.pir
-	-$(PARROT) --output=lua/library/lpeg.pbc $(LIBPATH)/lpeg.pir
-
-lua/library/markdown.pbc: $(LIBPATH)/markdown.pir
-	-$(PARROT) --output=lua/library/markdown.pbc $(LIBPATH)/markdown.pir
-
-lua/library/mathx.pbc: $(LIBPATH)/mathx.pir
-	-$(PARROT) --output=lua/library/mathx.pbc $(LIBPATH)/mathx.pir
-
-#IF(has_crypto):lua/library/md5.pbc: $(LIBPATH)/md5.pir
-#IF(has_crypto):	-$(PARROT) --output=lua/library/md5.pbc $(LIBPATH)/md5.pir
-
-lua/library/random.pbc: $(LIBPATH)/random.pir
-	-$(PARROT) --output=lua/library/random.pbc $(LIBPATH)/random.pir
-
-#IF(has_crypto):lua/library/sha1.pbc: $(LIBPATH)/md5.pir
-#IF(has_crypto):	$(PERL) -pe "s|md5|sha1|g; s|MD5|SHA1|g" $(LIBPATH)/md5.pir > $(LIBPATH)/sha1.pir
-#IF(has_crypto):	-$(PARROT) --output=lua/library/sha1.pbc $(LIBPATH)/sha1.pir
-
-lua/library/struct.pbc: $(LIBPATH)/struct.pir
-	-$(PARROT) --output=lua/library/struct.pbc $(LIBPATH)/struct.pir
-
-lua/library/uuid.pbc: $(LIBPATH)/uuid.pir
-	-$(PARROT) --output=lua/library/uuid.pbc $(LIBPATH)/uuid.pir
-
-lua/library/zlib.pbc: $(LIBPATH)/zlib.pir
-	-$(PARROT) --output=lua/library/zlib.pbc $(LIBPATH)/zlib.pir
 
 src/yapp/Lua/parser.pm: src/yapp/Lua/lua51.yp
 	yapp -v -m Lua::parser -o src/yapp/Lua/parser.pm src/yapp/Lua/lua51.yp
@@ -470,16 +385,16 @@ install: installable
 	$(CHMOD) 0755 $(BIN_DIR)/parrot-luap@exe@
 	-$(MKPATH) $(LIB_DIR)/languages/lua
 	$(CP) lua/*.pbc $(LIB_DIR)/languages/lua
-	-$(MKPATH) $(LIB_DIR)/languages/lua/library
-	$(CP) lua/library/*.pbc $(LIB_DIR)/languages/lua/library
 	-$(MKPATH) $(MANDIR)/man1
 	pod2man lua.pir > $(MANDIR)/man1/parrot-lua.1
 	pod2man luap.pir > $(MANDIR)/man1/parrot-luap.1
 	-$(MKPATH) $(DOC_DIR)/languages/lua
 	$(CP) $(DOCS) $(DOC_DIR)/languages/lua
 	$(CP) doc/*.pod $(DOC_DIR)/languages/lua
+	$(MAKE) $(LUALIB_DIR) install
 
 uninstall:
+	$(MAKE) $(LUALIB_DIR) uninstall
 	$(MAKE) $(PMC_DIR) uninstall
 	$(RM_F) $(BIN_DIR)/parrot-lua@exe@
 	$(RM_F) $(BIN_DIR)/parrot-luap@exe@
@@ -504,10 +419,12 @@ oldtestclean:
 
 clean:
 	$(MAKE) $(PMC_DIR) clean
+	$(MAKE) $(LUALIB_DIR) clean
 	$(RM_RF) $(TEST_CLEANUPS) $(BUILD_CLEANUPS)
 
 realclean:
 	$(MAKE) $(PMC_DIR) realclean
+	$(MAKE) $(LUALIB_DIR) realclean
 	$(RM_RF) $(TEST_CLEANUPS) $(BUILD_CLEANUPS) Makefile
 
 distclean: realclean
