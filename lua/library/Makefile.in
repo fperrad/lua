@@ -11,6 +11,7 @@ LIB_DIR       := @libdir@$(VERSION)
 
 ## Setup some commands
 PERL          := @perl@
+CP            := @cp@
 RM_F          := @rm_f@
 RM_RF         := @rm_rf@
 PARROT        := $(BIN_DIR)/parrot@exe@
@@ -65,7 +66,9 @@ complex.pbc: complex.pir
 	-$(PARROT) --output=complex.pbc complex.pir
 
 #IF(has_opengl):gl.pir: gl.lua
-#IF(has_opengl):	-$(PARROT) luap.pir --target=pir gl.lua > gl.pir
+#IF(has_opengl):	$(CP) gl.lua ../../gl.lua
+#IF(has_opengl):	-cd ../.. && $(PARROT) luap.pir --target=pir gl.lua > gl.pir
+#IF(has_opengl):	$(CP) ../../gl.pir gl.pir
 #IF(has_opengl):
 #IF(has_opengl):gl.pbc: gl.pir
 #IF(has_opengl):	-$(PARROT) --output=gl.pbc gl.pir
