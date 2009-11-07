@@ -94,8 +94,8 @@ Tests C<LuaFunction> PMC
 .end
 
 .sub 'load_from_pbc_1'
-    load_bytecode 'src/lib/luaaux.pbc'
-    load_bytecode 'src/lib/luabasic.pbc'
+    load_bytecode 'lua/lib/luaaux.pbc'
+    load_bytecode 'lua/lib/luabasic.pbc'
     $P0 = get_hll_global ['basic'], 'luaopen_basic'
     $P0()
     $P1 = get_hll_global '_G'

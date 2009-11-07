@@ -26,11 +26,11 @@ dynext/pmc/*.o
 dynext/pmc/*.obj
 dynext/pmc/*.pdb
 
+lua/*_gen.pir
+lua/lib/luabytecode_gen.pir
+
 lua/library/gl.pir
 lua/library/sha1.pir
-
-src/*_gen.pir
-src/lib/luabytecode_gen.pir
 
 t/*.lua
 t/*.luac
