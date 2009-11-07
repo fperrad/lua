@@ -511,7 +511,7 @@ PIRCODE
 .end
 
 
-.include 'src/lib/luabytecode_gen.pir'
+.include 'lua/lib/luabytecode_gen.pir'
 
 # Local Variables:
 #   mode: pir

@@ -18,7 +18,7 @@ O             := @o@
 # Various paths
 PMC_DIR       := dynext/pmc
 LUALIB_DIR    := lua/library
-LIBPATH       := src/lib
+LIBPATH       := lua/lib
 
 ## Setup some commands
 MAKE          := @make_c@
@@ -69,14 +69,12 @@ LIB_PBCS := \
  $(LIBPATH)/luabytecode.pbc
 
 GEN_PIR := \
- src/lua51_testlex_gen.pir \
- src/dumplex_gen.pir \
- src/lua51_gen.pir \
- src/PASTGrammar_gen.pir \
- src/POSTGrammar_gen.pir \
+ lua/lua51_testlex_gen.pir \
+ lua/dumplex_gen.pir \
+ lua/lua51_gen.pir \
+ lua/PASTGrammar_gen.pir \
+ lua/POSTGrammar_gen.pir \
  $(LIBPATH)/More.pir \
-#IF(has_opengl): $(LIBPATH)/gl.pir \
-#IF(has_crypto): $(LIBPATH)/sha1.pir \
  $(LIBPATH)/luabytecode_gen.pir
 
 GEN_PBC := \
@@ -85,7 +83,7 @@ GEN_PBC := \
  luap.pbc \
  lua/luad.pbc
 
-LUA_GROUP := $(PMC_DIR)/lua_group$(LOAD_EXT)
+LUA_GROUP := dynext/lua_group$(LOAD_EXT)
 
 PMC_DEPS := \
  $(PMC_DIR)/Makefile.in \
@@ -102,11 +100,11 @@ PMC_DEPS := \
  $(PMC_DIR)/luauserdata.pmc
 
 SOURCES := \
-  src/lua51.pir \
-  src/grammar51.pir \
-  src/lua51_gen.pir \
-  src/PASTGrammar_gen.pir \
-  src/POSTGrammar_gen.pir \
+  lua/lua51.pir \
+  lua/grammar51.pir \
+  lua/lua51_gen.pir \
+  lua/PASTGrammar_gen.pir \
+  lua/POSTGrammar_gen.pir \
   $(LIB_SRCS)
 
 DOCS := README
@@ -142,29 +140,29 @@ build_core: \
  $(LIB_PBCS) \
  $(LIBPATH)/luaperl.pbc \
  $(GEN_PBC) \
- src/lua51_testlex_gen.pir \
- src/dumplex_gen.pir \
+ lua/lua51_testlex_gen.pir \
+ lua/dumplex_gen.pir \
  src/yapp/Lua/parser.pm
 
 all: build installable
 
-src/lua51_testlex_gen.pir: src/lua51_testlex.pg
-	$(PGE) --output=src/lua51_testlex_gen.pir src/lua51_testlex.pg
+lua/lua51_testlex_gen.pir: lua/lua51_testlex.pg
+	$(PGE) --output=lua/lua51_testlex_gen.pir lua/lua51_testlex.pg
 
-src/dumplex_gen.pir: src/dumplex.tg
-	$(TGE) --output=src/dumplex_gen.pir src/dumplex.tg
+lua/dumplex_gen.pir: lua/dumplex.tg
+	$(TGE) --output=lua/dumplex_gen.pir lua/dumplex.tg
 
-src/lua51_gen.pir: src/lua51.pg
-	$(PGE) --output=src/lua51_gen.pir src/lua51.pg
+lua/lua51_gen.pir: lua/lua51.pg
+	$(PGE) --output=lua/lua51_gen.pir lua/lua51.pg
 
-src/PASTGrammar_gen.pir: src/PASTGrammar.tg
-	$(TGE) --output=src/PASTGrammar_gen.pir src/PASTGrammar.tg
+lua/PASTGrammar_gen.pir: lua/PASTGrammar.tg
+	$(TGE) --output=lua/PASTGrammar_gen.pir lua/PASTGrammar.tg
 
-src/POSTGrammar_gen.pir: src/POSTGrammar.tg
-	$(TGE) --output=src/POSTGrammar_gen.pir src/POSTGrammar.tg
+lua/POSTGrammar_gen.pir: lua/POSTGrammar.tg
+	$(TGE) --output=lua/POSTGrammar_gen.pir lua/POSTGrammar.tg
 
 lua/lua.pbc: $(SOURCES)
-	$(PARROT) $(PARROT_ARGS) -o lua/lua.pbc src/lua51.pir
+	$(PARROT) $(PARROT_ARGS) -o lua/lua.pbc lua/lua51.pir
 
 lua.pbc: lua.pir
 	$(PARROT) $(PARROT_ARGS) -o lua.pbc lua.pir
@@ -220,8 +218,8 @@ $(LIBPATH)/luadebug.pbc: $(LIBPATH)/luadebug.pir
 $(LIBPATH)/luabytecode.pbc: $(LIBPATH)/luabytecode.pir $(LIBPATH)/luabytecode_gen.pir
 	-$(PARROT) --output=$(LIBPATH)/luabytecode.pbc $(LIBPATH)/luabytecode.pir
 
-$(LIBPATH)/luabytecode_gen.pir: $(LIBPATH)/luabytecode.rules src/build/translator.pl
-	$(PERL) src/build/translator.pl $(LIBPATH)/luabytecode.rules \
+$(LIBPATH)/luabytecode_gen.pir: $(LIBPATH)/luabytecode.rules build/translator.pl
+	$(PERL) build/translator.pl $(LIBPATH)/luabytecode.rules \
             --output $(LIBPATH)/luabytecode_gen.pir
 
 t/lua-TestMore/src/Test/More.lua:
@@ -322,8 +320,8 @@ codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
 T_C     = dynext//pmc//*.pmc dynext//pmc//lua_private.h
 T_MAKE  = Makefile.in dynext//pmc//Makefile.in lua//library//Makefile.in
 T_PERL  = Configure.pl t//harness t//*.t t//Parrot//Test//*.pm \
-          src//build//*.pl src//yapp//Lua//*.pm
-T_PIR   = *.pir src//lua51.pir src//grammar51.pir src//lib//*.pir lua//library//*.pir t//pmc//*.t
+          build//*.pl src//yapp//Lua//*.pm
+T_PIR   = *.pir lua//lua51.pir lua//grammar51.pir lua//lib//*.pir lua//library//*.pir t//pmc//*.t
 T_POD   = doc//*.pod
 
 codetest-c:

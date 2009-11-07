@@ -282,27 +282,27 @@ used in F<languages/lua/src/POSTGrammar.tg>
     $P0 = shift self
 .end
 
-.include 'src/grammar51.pir'
-.include 'src/lua51_gen.pir'
-.include 'src/PASTGrammar_gen.pir'
-.include 'src/POSTGrammar_gen.pir'
-.include 'src/lib/luaregex.pir'
+.include 'lua/grammar51.pir'
+.include 'lua/lua51_gen.pir'
+.include 'lua/PASTGrammar_gen.pir'
+.include 'lua/POSTGrammar_gen.pir'
+.include 'lua/lib/luaregex.pir'
 
 .HLL 'lua'
 .loadlib 'lua_group'
 
-.include 'src/lib/luaaux.pir'
-.include 'src/lib/luastring.pir'
-.include 'src/lib/luabasic.pir'
-.include 'src/lib/luacoroutine.pir'
-.include 'src/lib/luapackage.pir'
-.include 'src/lib/luatable.pir'
-.include 'src/lib/luamath.pir'
-.include 'src/lib/luaio.pir'
-.include 'src/lib/luafile.pir'
-.include 'src/lib/luaos.pir'
-.include 'src/lib/luadebug.pir'
-.include 'src/lib/luabytecode.pir'
+.include 'lua/lib/luaaux.pir'
+.include 'lua/lib/luastring.pir'
+.include 'lua/lib/luabasic.pir'
+.include 'lua/lib/luacoroutine.pir'
+.include 'lua/lib/luapackage.pir'
+.include 'lua/lib/luatable.pir'
+.include 'lua/lib/luamath.pir'
+.include 'lua/lib/luaio.pir'
+.include 'lua/lib/luafile.pir'
+.include 'lua/lib/luaos.pir'
+.include 'lua/lib/luadebug.pir'
+.include 'lua/lib/luabytecode.pir'
 
 =back
 

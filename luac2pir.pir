@@ -99,7 +99,7 @@ luad
     rethrow e
 .end
 
-.include 'src/lib/luabytecode.pir'
+.include 'lua/lib/luabytecode.pir'
 
 
 # Local Variables:
