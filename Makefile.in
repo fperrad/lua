@@ -16,7 +16,7 @@ LOAD_EXT      := @load_ext@
 O             := @o@
 
 # Various paths
-PMC_DIR       := src/pmc
+PMC_DIR       := dynext/pmc
 LUALIB_DIR    := lua/library
 LIBPATH       := src/lib
 
@@ -319,11 +319,11 @@ smolder : staging
 
 codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
 
-T_C     = src//pmc//*.pmc src//pmc//lua_private.h
-T_MAKE  = Makefile.in src//pmc//Makefile.in
+T_C     = dynext//pmc//*.pmc dynext//pmc//lua_private.h
+T_MAKE  = Makefile.in dynext//pmc//Makefile.in lua//library//Makefile.in
 T_PERL  = Configure.pl t//harness t//*.t t//Parrot//Test//*.pm \
           src//build//*.pl src//yapp//Lua//*.pm
-T_PIR   = *.pir src//lua51.pir src//grammar51.pir src//lib//*.pir t//pmc//*.t
+T_PIR   = *.pir src//lua51.pir src//grammar51.pir src//lib//*.pir lua//library//*.pir t//pmc//*.t
 T_POD   = doc//*.pod
 
 codetest-c:

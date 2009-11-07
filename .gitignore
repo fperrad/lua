@@ -16,21 +16,21 @@ installable_luap
 *.sto
 man
 
+dynext/*.dll
+dynext/*.so
+dynext/pmc/*.bundle
+dynext/pmc/*.c
+dynext/pmc/*.dump
+dynext/pmc/*.h
+dynext/pmc/*.o
+dynext/pmc/*.obj
+dynext/pmc/*.pdb
+
 lua/library/gl.pir
 lua/library/sha1.pir
 
 src/*_gen.pir
 src/lib/luabytecode_gen.pir
-
-src/pmc/*.bundle
-src/pmc/*.c
-src/pmc/*.dll
-src/pmc/*.dump
-src/pmc/*.h
-src/pmc/*.o
-src/pmc/*.obj
-src/pmc/*.pdb
-src/pmc/*.so
 
 t/*.lua
 t/*.luac

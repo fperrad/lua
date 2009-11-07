@@ -20,7 +20,7 @@
     # Here, do the job
     push_eh _handler
     genfile('Makefile.in', 'Makefile', config)
-    genfile('src/pmc/Makefile.in', 'src/pmc/Makefile', config)
+    genfile('dynext/pmc/Makefile.in', 'dynext/pmc/Makefile', config)
     genfile('lua/library/Makefile.in', 'lua/library/Makefile', config)
     pop_eh
 

@@ -7,9 +7,7 @@ INCLUDE_DIR   := @includedir@$(VERSION_DIR)
 LIB_DIR       := @libdir@$(VERSION_DIR)
 SRC_DIR       := @srcdir@$(VERSION_DIR)
 TOOLS_DIR     := @libdir@$(VERSION_DIR)/tools/lib
-STAGING_DIR   := ../../dynext
-#INSTALL_DIR   := $(LIB_DIR)/languages/lua/dynext
-INSTALL_DIR   := $(LIB_DIR)/dynext
+INSTALL_DIR   := $(LIB_DIR)/languages/lua/dynext
 
 # Set up extensions
 LOAD_EXT      := @load_ext@
@@ -18,7 +16,7 @@ O             := @o@
 # Setup some commands
 PERL          := @perl@
 RM_F          := @rm_f@
-MKPATH  := @mkpath@
+MKPATH        := @mkpath@
 CHMOD         := @chmod@
 CP            := @cp@
 CC            := @cc@ -c
@@ -84,7 +82,7 @@ CLEANUPS := \
   $(STAGING_DIR)/$(LUA_GROUP)$(LOAD_EXT)
 
 
-all: staging install
+all: linklibs
 
 generate: $(PMC_SOURCES)
 	$(PMC2CD) lua.pmc
@@ -126,16 +124,12 @@ compile: generate
 	$(CC) $(CC_OUT) lib-$(LUA_GROUP)$(O) $(INCLUDES) $(CFLAGS) $(LUA_GROUP).c
 
 linklibs: compile
-	$(LD) $(LD_OUT)$(LUA_GROUP)$(LOAD_EXT) $(OBJS) $(LINKARGS)
-
-staging: linklibs
-#IF(cygwin or hpux):	CHMOD 0775 "*$(LOAD_EXT)"
-	$(CP) "*$(LOAD_EXT)" $(STAGING_DIR)
+	$(LD) $(LD_OUT)../$(LUA_GROUP)$(LOAD_EXT) $(OBJS) $(LINKARGS)
 
 install:
 	$(MKPATH) $(INSTALL_DIR)
-#IF(cygwin or hpux):	CHMOD 0775 "*$(LOAD_EXT)"
-	$(CP) "*$(LOAD_EXT)" $(INSTALL_DIR)
+#IF(cygwin or hpux):	CHMOD 0775 "../*$(LOAD_EXT)"
+	$(CP) "../*$(LOAD_EXT)" $(INSTALL_DIR)
 
 uninstall:
 	$(RM_F) $(INSTALL_DIR)/$(LUA_GROUP)$(LOAD_EXT)
