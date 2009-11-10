@@ -25,8 +25,17 @@ No Configure step, no Makefile generated.
     .const 'Sub' prebuild = 'prebuild'
     register_step_before('build', prebuild)
 
+    .const 'Sub' liblua_build_pir_lua = 'liblua_build_pir_lua'
+    register_step_after('build', liblua_build_pir_lua)
+
+    .const 'Sub' liblua_build_pbc_pir = 'liblua_build_pbc_pir'
+    register_step_after('build', liblua_build_pbc_pir)
+
     .const 'Sub' clean = 'clean'
     register_step_before('clean', clean)
+
+    .const 'Sub' liblua_clean = 'liblua_clean'
+    register_step_after('clean', liblua_clean)
 
     .const 'Sub' testclean = 'testclean'
     register_step_after('test', testclean)
@@ -98,27 +107,33 @@ SOURCES
     $P5['lua.pbc'] = 'lua.pir'
     $P5['luap.pbc'] = 'luap.pir'
     $P5['lua/luad.pbc'] = 'luad.pir'
-    $P5['lua/library/_helpers.pbc'] = 'lua/library/_helpers.pir'
-    $P5['lua/library/alarm.pbc'] = 'lua/library/alarm.pir'
-    $P5['lua/library/base64.pbc'] = 'lua/library/base64.pir'
-    $P5['lua/library/bc.pbc'] = 'lua/library/bc.pir'
-    $P5['lua/library/bit.pbc'] = 'lua/library/bit.pir'
-    $P5['lua/library/bitlib.pbc'] = 'lua/library/bitlib.pir'
-    $P5['lua/library/complex.pbc'] = 'lua/library/complex.pir'
-#    $P5['lua/library/gl.pbc'] = 'lua/library/gl.pir' # gl.lua
-    $P5['lua/library/gl_binding.pbc'] = 'lua/library/gl_binding.pir'
-    $P5['lua/library/glut.pbc'] = 'lua/library/glut.pir'
-    $P5['lua/library/lfs.pbc'] = 'lua/library/lfs.pir'
-    $P5['lua/library/lpeg.pbc'] = 'lua/library/lpeg.pir'
-    $P5['lua/library/markdown.pbc'] = 'lua/library/markdown.pir'
-    $P5['lua/library/mathx.pbc'] = 'lua/library/mathx.pir'
-    $P5['lua/library/md5.pbc'] = 'lua/library/md5.pir'
-    $P5['lua/library/random.pbc'] = 'lua/library/random.pir'
-    $P5['lua/library/sha1.pbc'] = 'lua/library/sha1.pir'
-    $P5['lua/library/struct.pbc'] = 'lua/library/struct.pir'
-    $P5['lua/library/uuid.pbc'] = 'lua/library/uuid.pir'
-    $P5['lua/library/zlib.pbc'] = 'lua/library/zlib.pir'
     $P0['pbc_pir'] = $P5
+
+    $P9 = new 'Hash'
+    $P9['lua/library/_helpers.pbc'] = 'lua/library/_helpers.pir'
+    $P9['lua/library/alarm.pbc'] = 'lua/library/alarm.pir'
+    $P9['lua/library/base64.pbc'] = 'lua/library/base64.pir'
+    $P9['lua/library/bc.pbc'] = 'lua/library/bc.pir'
+    $P9['lua/library/bit.pbc'] = 'lua/library/bit.pir'
+    $P9['lua/library/bitlib.pbc'] = 'lua/library/bitlib.pir'
+    $P9['lua/library/complex.pbc'] = 'lua/library/complex.pir'
+    $P9['lua/library/gl.pbc'] = 'lua/library/gl.pir'
+    $P9['lua/library/gl_binding.pbc'] = 'lua/library/gl_binding.pir'
+    $P9['lua/library/glut.pbc'] = 'lua/library/glut.pir'
+    $P9['lua/library/lfs.pbc'] = 'lua/library/lfs.pir'
+    $P9['lua/library/lpeg.pbc'] = 'lua/library/lpeg.pir'
+    $P9['lua/library/markdown.pbc'] = 'lua/library/markdown.pir'
+    $P9['lua/library/mathx.pbc'] = 'lua/library/mathx.pir'
+    $P9['lua/library/md5.pbc'] = 'lua/library/md5.pir'
+    $P9['lua/library/random.pbc'] = 'lua/library/random.pir'
+    $P9['lua/library/sha1.pbc'] = 'lua/library/sha1.pir'
+    $P9['lua/library/struct.pbc'] = 'lua/library/struct.pir'
+    $P9['lua/library/uuid.pbc'] = 'lua/library/uuid.pir'
+    $P9['lua/library/zlib.pbc'] = 'lua/library/zlib.pir'
+    $P0['liblua__pbc_pir'] = $P9
+    $P10 = new 'Hash'
+    $P10['lua/library/gl.pir'] = 'lua/library/gl.lua'
+    $P0['liblua__pir_lua'] = $P10
 
     $P7 = new 'Hash'
     $P7['parrot-lua'] = 'lua.pbc'
@@ -136,6 +151,7 @@ lua/library/bc.pbc
 lua/library/bit.pbc
 lua/library/bitlib.pbc
 lua/library/complex.pbc
+lua/library/gl.pbc
 lua/library/gl_binding.pbc
 lua/library/glut.pbc
 lua/library/lfs.pbc
@@ -173,6 +189,43 @@ LIBS
   L2:
 .end
 
+.sub 'liblua_build_pir_lua' :anon
+    .param pmc kv :slurpy :named
+    .local pmc hash
+    hash = kv['liblua__pir_lua']
+    $P0 = iter hash
+  L1:
+    unless $P0 goto L2
+    .local string pir, lua
+    pir = shift $P0
+    lua = hash[pir]
+    $I0 = newer(pir, lua)
+    if $I0 goto L1
+    .local string cmd
+    cmd = get_parrot()
+    cmd .= " luap.pir --target=pir "
+    cmd .= lua
+    cmd .= " > "
+    cmd .= pir
+    system(cmd)
+    goto L1
+  L2:
+.end
+
+.sub 'liblua_build_pbc_pir' :anon
+    .param pmc kv :slurpy :named
+    $P0 = kv['liblua__pbc_pir']
+    build_pbc_pir($P0)
+.end
+
+.sub 'liblua_clean' :anon
+    .param pmc kv :slurpy :named
+    $P0 = kv['liblua__pbc_pir']
+    clean_key($P0)
+    $P0 = kv['liblua__pir_lua']
+    clean_key($P0)
+.end
+
 .sub 'clean' :anon
     .param pmc kv :slurpy :named
     unlink('lua/lib/luabytecode_gen.pir')
@@ -184,7 +237,7 @@ LIBS
     system("perl -MExtUtils::Command -e rm_f t/*.lua t/*.parrot_out")
 .end
 
-.sub 'pmctest'
+.sub 'pmctest' :anon
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
     .local string cmd
@@ -195,7 +248,7 @@ LIBS
     system(cmd)
 .end
 
-.sub 'spectest'
+.sub 'spectest' :anon
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
 
@@ -216,7 +269,7 @@ LIBS
     chdir(current_dir)
 .end
 
-.sub 'sanity'
+.sub 'sanity' :anon
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
 
