@@ -162,10 +162,6 @@ CODE
 -100
 OUT
 
-TODO:
-{
-    local $TODO = 'pb with tail call ?';
-
 language_output_is( 'lua', <<'CODE', <<'OUT', 'multiple inheritance' );
 -- look up for 'k' in list of tables 'plist'
 local function search (k, plist)
@@ -225,7 +221,6 @@ CODE
 Paul
 100
 OUT
-}
 
 language_output_is( 'lua', <<'CODE', <<'OUT', 'multiple inheritance (patched)' );
 -- look up for 'k' in list of tables 'plist'
