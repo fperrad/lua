@@ -25,11 +25,8 @@ No Configure step, no Makefile generated.
     .const 'Sub' prebuild = 'prebuild'
     register_step_before('build', prebuild)
 
-    .const 'Sub' liblua_build_pir_lua = 'liblua_build_pir_lua'
-    register_step_after('build', liblua_build_pir_lua)
-
-    .const 'Sub' liblua_build_pbc_pir = 'liblua_build_pbc_pir'
-    register_step_after('build', liblua_build_pbc_pir)
+    .const 'Sub' liblua_build = 'liblua_build'
+    register_step_after('build', liblua_build)
 
     .const 'Sub' clean = 'clean'
     register_step_before('clean', clean)
@@ -43,11 +40,17 @@ No Configure step, no Makefile generated.
     .const 'Sub' pmctest = 'pmctest'
     register_step('pmctest', pmctest)
 
+    .const 'Sub' staging = 'staging'
+    register_step('staging', staging)
+
     .const 'Sub' sanity = 'sanity'
     register_step('sanity', sanity)
 
     .const 'Sub' spectest = 'spectest'
     register_step('spectest', spectest)
+
+    .const 'Sub' smolder = 'smolder'
+    register_step('smolder', smolder)
 
     # build
     $P0 = new 'Hash'
@@ -130,9 +133,11 @@ SOURCES
     $P9['lua/library/struct.pbc'] = 'lua/library/struct.pir'
     $P9['lua/library/uuid.pbc'] = 'lua/library/uuid.pir'
     $P9['lua/library/zlib.pbc'] = 'lua/library/zlib.pir'
+    $P9['t/lua-TestMore/src/Test/More.pbc'] = 't/lua-TestMore/src/Test/More.pir'
     $P0['liblua__pbc_pir'] = $P9
     $P10 = new 'Hash'
     $P10['lua/library/gl.pir'] = 'lua/library/gl.lua'
+    $P10['t/lua-TestMore/src/Test/More.pir'] = 't/lua-TestMore/src/Test/More.lua'
     $P0['liblua__pir_lua'] = $P10
 
     $P7 = new 'Hash'
@@ -167,6 +172,7 @@ lua/library/zlib.pbc
 LIBS
     $S0 = pop $P8
     $P0['inst_lang'] = $P8
+
     .tailcall setup(args :flat, $P0 :flat :named)
 .end
 
@@ -189,10 +195,22 @@ LIBS
   L2:
 .end
 
-.sub 'liblua_build_pir_lua' :anon
+.sub 'clean' :anon
     .param pmc kv :slurpy :named
-    .local pmc hash
-    hash = kv['liblua__pir_lua']
+    unlink('lua/lib/luabytecode_gen.pir')
+    unlink('lua/library/sha1.pir')
+.end
+
+.sub 'liblua_build' :anon
+    .param pmc kv :slurpy :named
+    $P0 = kv['liblua__pir_lua']
+    build_pir_lua($P0)
+    $P0 = kv['liblua__pbc_pir']
+    build_pbc_pir($P0)
+.end
+
+.sub 'build_pir_lua' :anon
+    .param pmc hash
     $P0 = iter hash
   L1:
     unless $P0 goto L2
@@ -212,12 +230,6 @@ LIBS
   L2:
 .end
 
-.sub 'liblua_build_pbc_pir' :anon
-    .param pmc kv :slurpy :named
-    $P0 = kv['liblua__pbc_pir']
-    build_pbc_pir($P0)
-.end
-
 .sub 'liblua_clean' :anon
     .param pmc kv :slurpy :named
     $P0 = kv['liblua__pbc_pir']
@@ -226,20 +238,15 @@ LIBS
     clean_key($P0)
 .end
 
-.sub 'clean' :anon
-    .param pmc kv :slurpy :named
-    unlink('lua/lib/luabytecode_gen.pir')
-    unlink('lua/library/sha1.pir')
-.end
-
 .sub 'testclean' :anon
     .param pmc kv :slurpy :named
-    system("perl -MExtUtils::Command -e rm_f t/*.lua t/*.parrot_out")
+    system("perl -MExtUtils::Command -e rm_f t/*.lua t/*.parrot_out t/*.luac")
 .end
 
 .sub 'pmctest' :anon
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
+
     .local string cmd
     cmd = "prove --exec="
     $S0 = get_parrot()
@@ -248,30 +255,10 @@ LIBS
     system(cmd)
 .end
 
-.sub 'spectest' :anon
-    .param pmc kv :slurpy :named
-    run_step('build', kv :flat :named)
-
-    .local string current_dir
-    current_dir = cwd()
-    chdir('t/lua-TestMore/test_lua51')
-
-    setenv('LUA_PATH', ";;..\src\?.lua")
-    setenv('LUA_INIT', "platform = { osname=[[MSWin32]], intsize=4, longsize=4 }")
-
-    .local string cmd
-    cmd = "prove --exec=\""
-    $S0 = get_parrot()
-    cmd .= $S0
-    cmd .= " ../../../lua.pbc\" *.t"
-    system(cmd)
-
-    chdir(current_dir)
-.end
-
 .sub 'sanity' :anon
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
+    run_step('staging', kv :flat :named)
 
     .local string current_dir
     current_dir = cwd()
@@ -287,6 +274,81 @@ LIBS
     chdir(current_dir)
 .end
 
+.sub 'spectest' :anon
+    .param pmc kv :slurpy :named
+    run_step('build', kv :flat :named)
+    run_step('staging', kv :flat :named)
+
+    .local string current_dir
+    current_dir = cwd()
+    chdir('t/lua-TestMore/test_lua51')
+
+    setenv('LUA_PATH', ";;../src/?.lua")
+    setenv('LUA_INIT', "platform = { osname=[[MSWin32]], intsize=4, longsize=4 }")
+
+    .local string cmd
+    cmd = "prove --exec=\""
+    $S0 = get_parrot()
+    cmd .= $S0
+    cmd .= " ../../../lua.pbc\" *.t"
+    system(cmd)
+
+    chdir(current_dir)
+.end
+
+.sub 'smolder' :anon
+    .param pmc kv :slurpy :named
+    run_step('build', kv :flat :named)
+    run_step('staging', kv :flat :named)
+
+    .local string current_dir
+    current_dir = cwd()
+    chdir('t/lua-TestMore/test_lua51')
+
+    setenv('LUA_PATH', ";;../src/?.lua")
+    setenv('LUA_INIT', "platform = { osname=[[MSWin32]], intsize=4, longsize=4 }")
+
+    .local string cmd
+    cmd = "prove --archive=test_lua51.tar.gz --exec=\""
+    $S0 = get_parrot()
+    cmd .= $S0
+    cmd .= " ../../../lua.pbc\" *.t"
+    system(cmd)
+
+    .local pmc config
+    config = get_config()
+    cmd = "curl -F architecture="
+    $S0 = config['cpuarch']
+    cmd .= $S0
+    cmd .= " -F platform="
+    $S0 = config['osname']
+    cmd .= $S0
+    cmd .= " -F revision="
+    $S0 = config['revision']
+    cmd .= $S0
+    cmd .= " -F tags=\""
+    $S0 = config['osname']
+    cmd .= $S0
+    cmd .= ", "
+    $S0 = config['archname']
+    cmd .= $S0
+    cmd .= ", parrot-lua, Lua 5.1 (on Parrot)\""
+    cmd .= " -F comments=parrot-lua"
+    cmd .= " -F report_file=@test_lua51.tar.gz"
+    cmd .= "  http://smolder.plusthree.com/app/public_projects/process_add_report/12"
+    system(cmd)
+
+    chdir(current_dir)
+.end
+
+.sub 'staging' :anon
+    .param pmc kv :slurpy :named
+    system("perl -MExtUtils::Command -e mkpath t/lua-TestMore/test_lua51/lua/library")
+    system("perl -MExtUtils::Command -e cp lua/*.pbc t/lua-TestMore/test_lua51/lua")
+    system("perl -MExtUtils::Command -e cp lua/library//*.pbc t/lua-TestMore/test_lua51/lua/library")
+    $P0 = kv['dynpmc']
+    install_dynpmc($P0)
+.end
 
 # Local Variables:
 #   mode: pir
