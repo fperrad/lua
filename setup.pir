@@ -52,8 +52,8 @@ No Configure step, no Makefile generated.
     .const 'Sub' smolder = 'smolder'
     register_step('smolder', smolder)
 
-    # build
     $P0 = new 'Hash'
+    # build
     $P1 = new 'Hash'
     $P2 = split "\n", <<'SOURCES'
 dynext/pmc/lua.pmc
@@ -143,7 +143,7 @@ SOURCES
     $P7 = new 'Hash'
     $P7['parrot-lua'] = 'lua.pbc'
     $P7['parrot-luap'] = 'luap.pbc'
-    $P0['exe_pbc'] = $P7
+    $P0['installable_pbc'] = $P7
 
     # install
     $P8 = split "\n", <<'LIBS'
