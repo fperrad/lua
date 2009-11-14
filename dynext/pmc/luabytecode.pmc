@@ -55,15 +55,15 @@ static const char header_ref[LUAC_HEADERSIZE] = {
 };
 
 static PMC * LuaBytecode_PMC;
-static const char * bytecode;
+static char * bytecode;
 static UINTVAL maxi;
 static const char *fp;
 
 static void _init(Interp *interp, STRING *str)
 {
-    bytecode = Parrot_string_cstring(interp, str);
+    bytecode = Parrot_str_to_cstring(interp, str);
     maxi     = Parrot_str_byte_length(interp, str);
-    fp       = (const char *)bytecode;
+    fp       = bytecode;
 }
 
 
@@ -381,6 +381,7 @@ Loads Lua 5.1 VM bytecode.
         _load_header(INTERP, script);
         VTABLE_set_attr_str(INTERP, script,
           Parrot_str_new_constant(INTERP, "top"), _load_function(INTERP));
+        Parrot_free_cstring(bytecode);
 
         RETURN(PMC *script);
     }
