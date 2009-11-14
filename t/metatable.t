@@ -498,10 +498,7 @@ false
 true
 OUT
 
-TODO: {
-    local $TODO = 'fix me (luaany.pmc:invoke)';
-
-    language_output_is( 'lua', <<'CODE', <<'OUT', 'cplx __call (without args)' );
+language_output_is( 'lua', <<'CODE', <<'OUT', 'cplx __call (without args)' );
 Cplx = {}
 Cplx.mt = {}
 
@@ -534,7 +531,7 @@ Cplx.__call (2,0)
 true
 OUT
 
-    language_output_is( 'lua', <<'CODE', <<'OUT', 'cplx __call (with args)' );
+language_output_is( 'lua', <<'CODE', <<'OUT', 'cplx __call (with args)' );
 Cplx = {}
 Cplx.mt = {}
 
@@ -555,7 +552,7 @@ function Cplx.mt.__tostring (c)
 end
 
 function Cplx.mt.__call (obj, ...)
-    print("Cplx.__call " .. tostring(obj) .. ", " .. table.concat(arg, ", "))
+    print("Cplx.__call " .. tostring(obj) .. ", " .. table.concat({...}, ", "))
     return true
 end
 
@@ -565,12 +562,11 @@ c1("a")
 r = c1("a", "b", "c")
 print(r)
 CODE
-Cplx.__call (2,0),
+Cplx.__call (2,0), 
 Cplx.__call (2,0), a
 Cplx.__call (2,0), a, b, c
 true
 OUT
-}
 
 language_output_is( 'lua', <<'CODE', <<'OUT', 'table-access' );
 -- create a namespace
