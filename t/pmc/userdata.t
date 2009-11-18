@@ -62,7 +62,7 @@ Tests C<userdata> type
 
 .sub 'check_get_bool'
     $P0 = new 'LuaUserdata'
-    $P1 = new 'Array'
+    $P1 = new 'FileHandle'
     setattribute $P0, 'data', $P1
     $I0 = istrue $P0
     is($I0, 1, "check get_bool")
@@ -70,7 +70,7 @@ Tests C<userdata> type
 
 .sub 'check_logical_not'
     $P0 = new 'LuaUserdata'
-    $P1 = new 'Array'
+    $P1 = new 'FileHandle'
     setattribute $P0, 'data', $P1
     $P2 = not $P0
     isa_ok($P2, 'LuaBoolean', "check logical_not")

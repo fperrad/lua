@@ -1126,7 +1126,7 @@ Used to unarchive the number.
         const FLOATVAL _y  = frexp(VTABLE_get_number(INTERP, SELF), &_e);
         PMC * const y      = pmc_new(INTERP, dynpmc_LuaNumber);
         PMC * const expn   = pmc_new(INTERP, dynpmc_LuaNumber);
-        PMC * const retval = pmc_new(INTERP, enum_class_Array);
+        PMC * const retval = pmc_new(INTERP, enum_class_FixedPMCArray);
 
         VTABLE_set_number_native(INTERP, y, _y);
         VTABLE_set_integer_native(INTERP, expn, _e);
@@ -1305,7 +1305,7 @@ Used to unarchive the number.
         const FLOATVAL _y  = modf(VTABLE_get_number(INTERP, SELF), &_d);
         PMC * const y      = pmc_new(INTERP, dynpmc_LuaNumber);
         PMC * const d      = pmc_new(INTERP, dynpmc_LuaNumber);
-        PMC * const retval = pmc_new(INTERP, enum_class_Array);
+        PMC * const retval = pmc_new(INTERP, enum_class_FixedPMCArray);
 
         VTABLE_set_number_native(INTERP, y, _y);
         VTABLE_set_number_native(INTERP, d, _d);

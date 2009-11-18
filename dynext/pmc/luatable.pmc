@@ -730,7 +730,7 @@ The C<==> operation. Compares reference (not in depth).
         Node * const n = lua_next(INTERP, PARROT_LUATABLE(SELF), index);
 
         if (n) {
-            PMC * const retval = pmc_new(INTERP, enum_class_Array);
+            PMC * const retval = pmc_new(INTERP, enum_class_FixedPMCArray);
             VTABLE_set_integer_native(INTERP, retval, 2);
             VTABLE_set_pmc_keyed_int(INTERP, retval, 0, n->key);
             VTABLE_set_pmc_keyed_int(INTERP, retval, 1, n->val);

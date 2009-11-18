@@ -30,14 +30,14 @@ Tests C<userdata> type
 
 .sub 'check_HLL'
     $P0 = new 'LuaUserdata'
-    $P1 = new 'Array'
+    $P1 = new 'FileHandle'
     setattribute $P0, 'data', $P1
     isa_ok($P0, 'LuaUserdata', "check HLL")
 .end
 
 .sub 'check_tostring'
     $P0 = new 'LuaUserdata'
-    $P1 = new 'Array'
+    $P1 = new 'FileHandle'
     setattribute $P0, 'data', $P1
     $S0 = $P0
     like($S0, '^userdata: <[0..9A..Fa..f]>*', "check tostring")
@@ -49,7 +49,7 @@ Tests C<userdata> type
 
 .sub 'check_tonumber'
     $P0 = new 'LuaUserdata'
-    $P1 = new 'Array'
+    $P1 = new 'FileHandle'
     setattribute $P0, 'data', $P1
     $P2 = $P0.'tonumber'()
     isa_ok($P2, 'LuaNil', "check tonumber")
