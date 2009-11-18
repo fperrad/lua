@@ -40,9 +40,6 @@ No Configure step, no Makefile generated.
     .const 'Sub' pmctest = 'pmctest'
     register_step('pmctest', pmctest)
 
-    .const 'Sub' staging = 'staging'
-    register_step('staging', staging)
-
     .const 'Sub' sanity = 'sanity'
     register_step('sanity', sanity)
 
@@ -133,11 +130,11 @@ SOURCES
     $P9['lua/library/struct.pbc'] = 'lua/library/struct.pir'
     $P9['lua/library/uuid.pbc'] = 'lua/library/uuid.pir'
     $P9['lua/library/zlib.pbc'] = 'lua/library/zlib.pir'
-    $P9['t/lua-TestMore/src/Test/More.pbc'] = 't/lua-TestMore/src/Test/More.pir'
+    $P9['Test/More.pbc'] = 'Test/More.pir'
     $P0['liblua__pbc_pir'] = $P9
     $P10 = new 'Hash'
     $P10['lua/library/gl.pir'] = 'lua/library/gl.lua'
-    $P10['t/lua-TestMore/src/Test/More.pir'] = 't/lua-TestMore/src/Test/More.lua'
+    $P10['Test/More.pir'] = 'Test/More.lua'
     $P0['liblua__pir_lua'] = $P10
 
     $P7 = new 'Hash'
@@ -193,6 +190,11 @@ LIBS
     cmd = 'perl -pe "s|md5|sha1|g; s|MD5|SHA1|g" lua/library/md5.pir > lua/library/sha1.pir'
     system(cmd)
   L2:
+
+    $I0 = newer('Test/More.lua', 't/lua-TestMore/src/Test/More.lua')
+    if $I0 goto L3
+    cp('t/lua-TestMore/src/Test/More.lua', 'Test/More.lua')
+  L3:
 .end
 
 .sub 'clean' :anon
@@ -258,30 +260,18 @@ LIBS
 .sub 'sanity' :anon
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
-    run_step('staging', kv :flat :named)
-
-    .local string current_dir
-    current_dir = cwd()
-    chdir('t/lua-TestMore/test_lua51')
 
     .local string cmd
     cmd = "prove --exec=\""
     $S0 = get_parrot()
     cmd .= $S0
-    cmd .= " ../../../lua.pbc\" 0*.t"
+    cmd .= " lua.pbc\" t/lua-TestMore/test_lua51/0*.t"
     system(cmd)
-
-    chdir(current_dir)
 .end
 
 .sub 'spectest' :anon
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
-    run_step('staging', kv :flat :named)
-
-    .local string current_dir
-    current_dir = cwd()
-    chdir('t/lua-TestMore/test_lua51')
 
     setenv('LUA_PATH', ";;../src/?.lua")
     setenv('LUA_INIT', "platform = { osname=[[MSWin32]], intsize=4, longsize=4 }")
@@ -290,20 +280,13 @@ LIBS
     cmd = "prove --exec=\""
     $S0 = get_parrot()
     cmd .= $S0
-    cmd .= " ../../../lua.pbc\" *.t"
+    cmd .= " lua.pbc\" t/lua-TestMore/test_lua51/*.t"
     system(cmd)
-
-    chdir(current_dir)
 .end
 
 .sub 'smolder' :anon
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
-    run_step('staging', kv :flat :named)
-
-    .local string current_dir
-    current_dir = cwd()
-    chdir('t/lua-TestMore/test_lua51')
 
     setenv('LUA_PATH', ";;../src/?.lua")
     setenv('LUA_INIT', "platform = { osname=[[MSWin32]], intsize=4, longsize=4 }")
@@ -312,7 +295,7 @@ LIBS
     cmd = "prove --archive=test_lua51.tar.gz --exec=\""
     $S0 = get_parrot()
     cmd .= $S0
-    cmd .= " ../../../lua.pbc\" *.t"
+    cmd .= " lua.pbc\" t/lua-TestMore/test_lua51/*.t"
     system(cmd)
 
     .local pmc config
@@ -334,20 +317,9 @@ LIBS
     cmd .= $S0
     cmd .= ", parrot-lua, Lua 5.1 (on Parrot)\""
     cmd .= " -F comments=parrot-lua"
-    cmd .= " -F report_file=@test_lua51.tar.gz"
+    cmd .= " -F report_file=@t/lua-TestMore/test_lua51/test_lua51.tar.gz"
     cmd .= "  http://smolder.plusthree.com/app/public_projects/process_add_report/12"
     system(cmd)
-
-    chdir(current_dir)
-.end
-
-.sub 'staging' :anon
-    .param pmc kv :slurpy :named
-    system("perl -MExtUtils::Command -e mkpath t/lua-TestMore/test_lua51/lua/library")
-    system("perl -MExtUtils::Command -e cp lua/*.pbc t/lua-TestMore/test_lua51/lua")
-    system("perl -MExtUtils::Command -e cp lua/library//*.pbc t/lua-TestMore/test_lua51/lua/library")
-    $P0 = kv['dynpmc']
-    install_dynpmc($P0)
 .end
 
 # Local Variables:
