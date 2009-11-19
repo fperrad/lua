@@ -144,6 +144,12 @@ LIBS
     system(cmd)
   L1:
 
+    $I0 = file_exists('t/lua-TestMore/src/Test/More.lua')
+    if $I0 goto L2
+    system('git submodule init t/lua-TestMore')
+    system('git submodule update')
+  L2:
+
     $I0 = newer('Test/More.lua', 't/lua-TestMore/src/Test/More.lua')
     if $I0 goto L3
     install('t/lua-TestMore/src/Test/More.lua', 'Test/More.lua', 0)
