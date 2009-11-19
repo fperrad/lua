@@ -17,7 +17,6 @@ O             := @o@
 
 # Various paths
 PMC_DIR       := dynext/pmc
-LUALIB_DIR    := lua/library
 LIBPATH       := lua/lib
 
 ## Setup some commands
@@ -133,7 +132,6 @@ TEST_CLEANUPS := \
   "t/*.parrot_out"
 
 build: build_core Test/More.pbc
-	$(MAKE) $(LUALIB_DIR)
 
 build_core: \
  $(LUA_GROUP) \
@@ -315,10 +313,10 @@ smolder :
 codetest: codetest-c codetest-make codetest-perl codetest-pir codetest-pod
 
 T_C     = dynext//pmc//*.pmc dynext//pmc//lua_private.h
-T_MAKE  = Makefile.in dynext//pmc//Makefile.in lua//library//Makefile.in
+T_MAKE  = Makefile.in dynext//pmc//Makefile.in
 T_PERL  = Configure.pl t//harness t//*.t t//Parrot//Test//*.pm \
           build//*.pl src//yapp//Lua//*.pm
-T_PIR   = *.pir lua//lua51.pir lua//grammar51.pir lua//lib//*.pir lua//library//*.pir t//pmc//*.t
+T_PIR   = *.pir lua//lua51.pir lua//grammar51.pir lua//lib//*.pir t//pmc//*.t
 T_POD   = doc//*.pod
 
 codetest-c:
@@ -386,10 +384,8 @@ install: installable
 	-$(MKPATH) $(DOC_DIR)/languages/lua
 	$(CP) $(DOCS) $(DOC_DIR)/languages/lua
 	$(CP) doc/*.pod $(DOC_DIR)/languages/lua
-	$(MAKE) $(LUALIB_DIR) install
 
 uninstall:
-	$(MAKE) $(LUALIB_DIR) uninstall
 	$(MAKE) $(PMC_DIR) uninstall
 	$(RM_F) $(BIN_DIR)/parrot-lua@exe@
 	$(RM_F) $(BIN_DIR)/parrot-luap@exe@
@@ -414,12 +410,10 @@ oldtestclean:
 
 clean:
 	$(MAKE) $(PMC_DIR) clean
-	$(MAKE) $(LUALIB_DIR) clean
 	$(RM_RF) $(TEST_CLEANUPS) $(BUILD_CLEANUPS)
 
 realclean:
 	$(MAKE) $(PMC_DIR) realclean
-	$(MAKE) $(LUALIB_DIR) realclean
 	$(RM_RF) $(TEST_CLEANUPS) $(BUILD_CLEANUPS) Makefile
 
 distclean: realclean

@@ -110,30 +110,9 @@ SOURCES
     $P0['pbc_pir'] = $P5
 
     $P9 = new 'Hash'
-    $P9['lua/library/_helpers.pbc'] = 'lua/library/_helpers.pir'
-    $P9['lua/library/alarm.pbc'] = 'lua/library/alarm.pir'
-    $P9['lua/library/base64.pbc'] = 'lua/library/base64.pir'
-    $P9['lua/library/bc.pbc'] = 'lua/library/bc.pir'
-    $P9['lua/library/bit.pbc'] = 'lua/library/bit.pir'
-    $P9['lua/library/bitlib.pbc'] = 'lua/library/bitlib.pir'
-    $P9['lua/library/complex.pbc'] = 'lua/library/complex.pir'
-    $P9['lua/library/gl.pbc'] = 'lua/library/gl.pir'
-    $P9['lua/library/gl_binding.pbc'] = 'lua/library/gl_binding.pir'
-    $P9['lua/library/glut.pbc'] = 'lua/library/glut.pir'
-    $P9['lua/library/lfs.pbc'] = 'lua/library/lfs.pir'
-    $P9['lua/library/lpeg.pbc'] = 'lua/library/lpeg.pir'
-    $P9['lua/library/markdown.pbc'] = 'lua/library/markdown.pir'
-    $P9['lua/library/mathx.pbc'] = 'lua/library/mathx.pir'
-    $P9['lua/library/md5.pbc'] = 'lua/library/md5.pir'
-    $P9['lua/library/random.pbc'] = 'lua/library/random.pir'
-    $P9['lua/library/sha1.pbc'] = 'lua/library/sha1.pir'
-    $P9['lua/library/struct.pbc'] = 'lua/library/struct.pir'
-    $P9['lua/library/uuid.pbc'] = 'lua/library/uuid.pir'
-    $P9['lua/library/zlib.pbc'] = 'lua/library/zlib.pir'
     $P9['Test/More.pbc'] = 'Test/More.pir'
     $P0['liblua__pbc_pir'] = $P9
     $P10 = new 'Hash'
-    $P10['lua/library/gl.pir'] = 'lua/library/gl.lua'
     $P10['Test/More.pir'] = 'Test/More.lua'
     $P0['liblua__pir_lua'] = $P10
 
@@ -146,26 +125,6 @@ SOURCES
     $P8 = split "\n", <<'LIBS'
 lua/lua.pbc
 lua/luad.pbc
-lua/library/_helpers.pbc
-lua/library/alarm.pbc
-lua/library/base64.pbc
-lua/library/bc.pbc
-lua/library/bit.pbc
-lua/library/bitlib.pbc
-lua/library/complex.pbc
-lua/library/gl.pbc
-lua/library/gl_binding.pbc
-lua/library/glut.pbc
-lua/library/lfs.pbc
-lua/library/lpeg.pbc
-lua/library/markdown.pbc
-lua/library/mathx.pbc
-lua/library/md5.pbc
-lua/library/random.pbc
-lua/library/sha1.pbc
-lua/library/struct.pbc
-lua/library/uuid.pbc
-lua/library/zlib.pbc
 LIBS
     $S0 = pop $P8
     $P0['inst_lang'] = $P8
@@ -185,22 +144,15 @@ LIBS
     system(cmd)
   L1:
 
-    $I0 = newer('lua/library/sha1.pir', 'lua/library/md5.pir')
-    if $I0 goto L2
-    cmd = 'perl -pe "s|md5|sha1|g; s|MD5|SHA1|g" lua/library/md5.pir > lua/library/sha1.pir'
-    system(cmd)
-  L2:
-
     $I0 = newer('Test/More.lua', 't/lua-TestMore/src/Test/More.lua')
     if $I0 goto L3
-    cp('t/lua-TestMore/src/Test/More.lua', 'Test/More.lua')
+    install('t/lua-TestMore/src/Test/More.lua', 'Test/More.lua', 0)
   L3:
 .end
 
 .sub 'clean' :anon
     .param pmc kv :slurpy :named
     unlink('lua/lib/luabytecode_gen.pir')
-    unlink('lua/library/sha1.pir')
 .end
 
 .sub 'liblua_build' :anon

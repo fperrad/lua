@@ -21,7 +21,6 @@
     push_eh _handler
     genfile('Makefile.in', 'Makefile', config)
     genfile('dynext/pmc/Makefile.in', 'dynext/pmc/Makefile', config)
-    genfile('lua/library/Makefile.in', 'lua/library/Makefile', config)
     pop_eh
 
     # Give the user a hint of next action
