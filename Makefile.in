@@ -233,7 +233,6 @@ Test/More.pir: t/lua-TestMore/src/Test/More.lua
 
 Test/More.pbc: Test/More.pir
 	-$(PARROT) --output=Test/More.pbc Test/More.pir
-	-$(CP) Test/More.pbc t/lua-TestMore/src/Test/More.pbc
 
 src/yapp/Lua/parser.pm: src/yapp/Lua/lua51.yp
 	yapp -v -m Lua::parser -o src/yapp/Lua/parser.pm src/yapp/Lua/lua51.yp
@@ -291,23 +290,20 @@ pmctest: build
 #UNLESS(gmake_version):#  > set LUA_PATH=;;../src/?.lua
 #UNLESS(gmake_version):#  > set LUA_INIT=platform = { osname=[[@osname@]], intsize=@intsize@, longsize=@longsize@ }
 
-staging : build
-	$(MKPATH) t/lua-TestMore/test_lua51/lua/library
-	$(CP) lua//*.pbc t/lua-TestMore/test_lua51/lua
-	$(CP) lua/library//*.pbc t/lua-TestMore/test_lua51/lua/library
-	$(CP) lua//*$(LOAD_EXT) $(LIB_DIR)/dynext
+.PHONY : test
 
-test : staging
-	cd t && cd lua-TestMore && cd test_lua51 \
-	 && prove -f --exec="$(PARROT) ../../../lua.pbc" --jobs 1 *.t lib//*.t
+test :
+	prove -f --exec="$(PARROT) lua.pbc" --jobs 1 \
+	    t/lua-TestMore/test_lua51//*.t \
+	    t/lua-TestMore/test_lua51/lib//*.t
 
-spectest : staging
-	cd t && cd lua-TestMore && cd test_lua51 \
-	 && prove -f --exec="$(PARROT) ../../../lua.pbc" --jobs 1 *.t
+spectest :
+	prove -f --exec="$(PARROT) lua.pbc" --jobs 1 \
+	    t/lua-TestMore/test_lua51//*.t \
 
-smolder : staging
-	-cd t && cd lua-TestMore && cd test_lua51 \
-	 && prove -f --archive=test_lua51.tar.gz --exec="$(PARROT) ../../../lua.pbc" --jobs 1 *.t
+smolder :
+	-prove -f --archive=test_lua51.tar.gz --exec="$(PARROT) lua.pbc" --jobs 1 \
+	    t/lua-TestMore/test_lua51//*.t \
 	curl -F architecture=@cpuarch@ \
 	     -F platform=@osname@ \
 	     -F revision=@revision@ \
