@@ -159,6 +159,7 @@ LIBS
 .sub 'clean' :anon
     .param pmc kv :slurpy :named
     unlink('lua/lib/luabytecode_gen.pir')
+    unlink('Test/More.lua')
 .end
 
 .sub 'liblua_build' :anon
