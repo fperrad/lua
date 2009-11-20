@@ -1,0 +1,52 @@
+{
+    "meta-spec"    : {
+        "version"  : 1,
+        "uri"      : "https://trac.parrot.org/parrot/wiki/ModuleEcosystem"
+    },
+    "general"      : {
+        "name"     : "lua",
+        "abstract" : "Lua on Parrot",
+        "authority": "http://github.com/fperrad",
+        "version"  : "HEAD",
+        "license"  : {
+            "type" : "Artistic License 2.0",
+            "uri"  : "http://www.perlfoundation.org/artistic_license_2_0"
+        },
+        "copyright_holder" : "Parrot Foundation",
+        "generated_by"     : "Francois Perrad <francois.perrad@gadz.org>",
+        "keywords"         : ["lua"],
+        "description"      : "Lua 5.1 on Parrot"
+    },
+    "instructions" : {
+        "fetch"    : {
+            "type" : "repository"
+        },
+        "build"    : {
+            "type" : "parrot_setup"
+        },
+        "test"     : {
+            "type" : "parrot_setup"
+        },
+        "install"  : {
+            "type" : "parrot_setup"
+        }
+    },
+    "dependency-info"  : {
+        "provides"     : ["lua"],
+        "requires"     : {
+            "fetch"    : ["git"],
+            "build"    : [],
+            "test"     : ["perl5"],
+            "install"  : [],
+            "runtime"  : []
+        }
+    },
+    "resources"            : {
+        "repository"       : {
+             "type"        : "git",
+             "checkout_uri": "git://github.com/fperrad/lua.git",
+             "browser_uri" : "http://github.com/fperrad/lua",
+             "project_uri" : "http://github.com/fperrad/lua"
+        }
+    }
+}
