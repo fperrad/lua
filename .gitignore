@@ -32,11 +32,10 @@ lua/lib/luabytecode_gen.pir
 lua/library/gl.pir
 lua/library/sha1.pir
 
-t/*.lua
-t/*.luac
-t/*.orig_out
-t/*.parrot_out
-t/*.pir
+lexico.lua
+luad.lua
+luad.luac
+test_lex.lua
 
 Test/More.*
 
