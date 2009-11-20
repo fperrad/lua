@@ -46,15 +46,13 @@ No Configure step, no Makefile generated.
     .const 'Sub' set_LUA_INIT = 'set_LUA_INIT'
     register_step('set_LUA_INIT', set_LUA_INIT)
     register_step_before('test', set_LUA_INIT)
+    register_step_before('smoke', set_LUA_INIT)
 
     .const 'Sub' sanity = 'sanity'
     register_step('sanity', sanity)
 
     .const 'Sub' spectest = 'spectest'
     register_step('spectest', spectest)
-
-    .const 'Sub' smolder = 'smolder'
-    register_step('smolder', smolder)
 
     $P0 = new 'Hash'
     # build
@@ -132,6 +130,13 @@ SOURCES
     $S0 = get_parrot()
     $P0['prove_exec'] = $S0
     $P0['prove_files'] = 't/pmc/*.t t/*.t'
+
+    # smoke
+    $P0['prove_archive'] = 'test_lua51.tar.gz'
+    $P0['smolder_url'] = 'http://smolder.plusthree.com/app/public_projects/process_add_report/12'
+    $P0['smolder_comments'] = 'parrot-lua'
+    $S0 = get_tags()
+    $P0['smolder_tags'] = $S0
 
     # install
     $P8 = split ' ', 'lua/lua.pbc lua/luad.pbc'
@@ -259,40 +264,16 @@ SOURCES
     system(cmd)
 .end
 
-.sub 'smolder' :anon
-    .param pmc kv :slurpy :named
-    run_step('build', kv :flat :named)
-    run_step('set_LUA_INIT', kv :flat :named)
-
-    .local string cmd
-    cmd = "prove --archive=test_lua51.tar.gz --exec=\""
-    $S0 = get_parrot()
-    cmd .= $S0
-    cmd .= " lua.pbc\" t/lua-TestMore/test_lua51/*.t"
-    system(cmd)
-
+.sub 'get_tags'
+    .local string tags
     .local pmc config
     config = get_config()
-    cmd = "curl -F architecture="
-    $S0 = config['cpuarch']
-    cmd .= $S0
-    cmd .= " -F platform="
-    $S0 = config['osname']
-    cmd .= $S0
-    cmd .= " -F revision="
-    $S0 = config['revision']
-    cmd .= $S0
-    cmd .= " -F tags=\""
-    $S0 = config['osname']
-    cmd .= $S0
-    cmd .= ", "
+    tags = config['osname']
+    tags .= ", "
     $S0 = config['archname']
-    cmd .= $S0
-    cmd .= ", parrot-lua, Lua 5.1 (on Parrot)\""
-    cmd .= " -F comments=parrot-lua"
-    cmd .= " -F report_file=@t/lua-TestMore/test_lua51/test_lua51.tar.gz"
-    cmd .= "  http://smolder.plusthree.com/app/public_projects/process_add_report/12"
-    system(cmd)
+    tags .= $S0
+    tags .= ", parrot-lua, Lua 5.1 (on Parrot)"
+    .return (tags)
 .end
 
 .sub 'set_LUA_INIT' :anon
