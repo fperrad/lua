@@ -1,4 +1,4 @@
-#! perl
+#! /usr/local/bin/parrot
 # Copyright (C) 2008-2009, Parrot Foundation.
 # $Id$
 
@@ -6,38 +6,134 @@
 
 =head2 Synopsis
 
-    % perl t/luad.t
+    % parrot t/luad.t
 
 =head2 Description
 
 Tests Lua Disassembler
-(implemented in F<languages/lua/luad.pir>).
+(implemented in F<luad.pir>).
 
 See : A No-Frills Introduction to Lua 5.1 VM Instructions
 by Kein-Hong Man
 
 =cut
 
-use strict;
-use warnings;
-use FindBin;
-use lib "$FindBin::Bin/../../../lib", "$FindBin::Bin";
+.sub 'main' :main
+    .include 'test_more.pir'
 
-use Parrot::Test;
-use Test::More;
+    $P0 = open 'luac -v', 'rp'
+    $S0 = readline $P0
+    close $P0
+    $S0 = substr $S0, 0, 7
+    if $S0 == "Lua 5.1" goto L1
+    # skip_all("luac no available")
+    print "1..0"
+    print " # SKIP "
+    print "luac no available"
+    end
+  L1:
+    plan(58)
 
-if (`luac -v` =~ /^Lua 5.1/) {
-    plan tests => 58;
-}
-else {
-    plan skip_all => "luac no available";
-}
+    test_loading_constants_1()
+    test_loading_constants_2()
+    test_loading_constants_3()
+    test_loading_constants_4()
+    test_loading_constants_5()
+    test_loading_constants_6()
+    test_upvalues_and_globals_1()
+    test_upvalues_and_globals_2()
+    test_table_instructions()
+    test_arithmetic_and_string_instructions_1()
+    test_arithmetic_and_string_instructions_2()
+    test_arithmetic_and_string_instructions_3()
+    test_arithmetic_and_string_instructions_4()
+    test_arithmetic_and_string_instructions_5()
+    test_arithmetic_and_string_instructions_6()
+    test_arithmetic_and_string_instructions_7()
+    test_arithmetic_and_string_instructions_8()
+    test_arithmetic_and_string_instructions_9()
+    test_jumps_and_calls_1()
+    test_jumps_and_calls_2()
+    test_jumps_and_calls_3()
+    test_jumps_and_calls_4()
+    test_jumps_and_calls_5()
+    test_jumps_and_calls_6()
+    test_jumps_and_calls_7()
+    test_jumps_and_calls_8()
+    test_jumps_and_calls_9()
+    test_jumps_and_calls_10()
+    test_jumps_and_calls_11()
+    test_jumps_and_calls_12()
+    test_jumps_and_calls_13()
+    test_jumps_and_calls_14()
+    test_relational_and_logic_instructions_1()
+    test_relational_and_logic_instructions_2()
+    test_relational_and_logic_instructions_3()
+    test_relational_and_logic_instructions_4()
+    test_relational_and_logic_instructions_5()
+    test_relational_and_logic_instructions_6()
+    test_relational_and_logic_instructions_7()
+    test_relational_and_logic_instructions_8()
+    test_relational_and_logic_instructions_9()
+    test_relational_and_logic_instructions_10()
+    test_relational_and_logic_instructions_11()
+    test_loop_instructions_1()
+    test_loop_instructions_2()
+    test_loop_instructions_3()
+    test_loop_instructions_4()
+    test_loop_instructions_5()
+    test_table_creation_1()
+    test_table_creation_2()
+    test_table_creation_3()
+    test_table_creation_4()
+    test_table_creation_5()
+    test_table_creation_6()
+    test_closures_and_closing_1()
+    test_closures_and_closing_2()
+    test_closures_and_closing_3()
+    test_closures_and_closing_4()
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'loading constants' );
+.sub 'luad' :anon
+    .param string code
+    spew('luad.lua', code)
+    $I0 = spawnw 'luac -o luad.luac luad.lua'
+    $P0 = open 'parrot lua/luad.pbc luad.luac', 'rp'
+    $S0 = $P0.'readall'()
+    close $P0
+    .return ($S0)
+.end
+
+.sub 'spew' :anon
+    .param string filename
+    .param string content
+    $P0 = new 'FileHandle'
+    push_eh _handler
+    $P0.'open'(filename, 'w')
+    pop_eh
+    $P0.'puts'(content)
+    $P0.'close'()
+    .return ()
+  _handler:
+    .local pmc e
+    .get_results (e)
+    $S0 = "Can't open '"
+    $S0 .= filename
+    $S0 .= "' ("
+    $S1 = err
+    $S0 .= $S1
+    $S0 .= ")\n"
+    e = $S0
+    rethrow e
+.end
+
+.sub 'test_loading_constants_1'
+    $S0 = luad(<<'CODE')
 local a,b = 10;
 b = a
 CODE
-; source chunk: luad_1.luac
+    is($S0, <<'OUT', "loading constants")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -52,11 +148,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'loading constants' );
+.sub 'test_loading_constants_2'
+    $S0 = luad(<<'CODE')
 local a,b,c,d,e = nil, nil, 0
 CODE
-; source chunk: luad_2.luac
+    is($S0, <<'OUT', "loading constants")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 5 stacks
@@ -73,12 +172,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'loading constants' );
+.sub 'test_loading_constants_3'
+    $S0 = luad(<<'CODE')
 local a,b,d,e
 local c=0
 CODE
-; source chunk: luad_3.luac
+    is($S0, <<'OUT', "loading constants")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 5 stacks
@@ -94,11 +196,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'loading constants' );
+.sub 'test_loading_constants_4'
+    $S0 = luad(<<'CODE')
 local a,b,c,d = 3, "foo", 3, "foo"
 CODE
-; source chunk: luad_4.luac
+    is($S0, <<'OUT', "loading constants")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 4 stacks
@@ -117,11 +222,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'loading constants' );
+.sub 'test_loading_constants_5'
+    $S0 = luad(<<'CODE')
 local a,b = true, false
 CODE
-; source chunk: luad_5.luac
+    is($S0, <<'OUT', "loading constants")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -134,11 +242,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'loading constants' );
+.sub 'test_loading_constants_6'
+    $S0 = luad(<<'CODE')
 local a = 5 > 2
 CODE
-; source chunk: luad_6.luac
+    is($S0, <<'OUT', "loading constants")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -154,12 +265,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'upvalues and globals' );
+.sub 'test_upvalues_and_globals_1'
+    $S0 = luad(<<'CODE')
 a = 40;
 local b = a
 CODE
-; source chunk: luad_7.luac
+    is($S0, <<'OUT', "upvalues and globals")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -174,15 +288,18 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'upvalues and globals' );
+.sub 'test_upvalues_and_globals_2'
+    $S0 = luad(<<'CODE')
 local a;
 function b()
   a = 1
   return a
 end
 CODE
-; source chunk: luad_8.luac
+    is($S0, <<'OUT', "upvalues and globals")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -209,13 +326,16 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'table instructions' );
+.sub 'test_table_instructions'
+    $S0 = luad(<<'CODE')
 local p = {};
 p[1] = "foo";
 return p["bar"]
 CODE
-; source chunk: luad_9.luac
+    is($S0, <<'OUT', "table instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -232,12 +352,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'arithmetic and string instructions' );
+.sub 'test_arithmetic_and_string_instructions_1'
+    $S0 = luad(<<'CODE')
 local a,b = 2,4;
 a = a + 4 * b - a / 2 ^ b % 3
 CODE
-; source chunk: luad_10.luac
+    is($S0, <<'OUT', "arithmetic and string instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 4 stacks
@@ -259,13 +382,16 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'arithmetic and string instructions' );
+.sub 'test_arithmetic_and_string_instructions_2'
+    $S0 = luad(<<'CODE')
 local a = 4 + 7 + b;
 a = b + 4 * 7;
 a = b + 4 + 7
 CODE
-; source chunk: luad_11.luac
+    is($S0, <<'OUT', "arithmetic and string instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -287,11 +413,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'arithmetic and string instructions' );
+.sub 'test_arithmetic_and_string_instructions_3'
+    $S0 = luad(<<'CODE')
 local a = b + (4 + 7)
 CODE
-; source chunk: luad_12.luac
+    is($S0, <<'OUT', "arithmetic and string instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -305,12 +434,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'arithmetic and string instructions' );
+.sub 'test_arithmetic_and_string_instructions_4'
+    $S0 = luad(<<'CODE')
 local a = 1 / 0;
 local b = 1 + "1"
 CODE
-; source chunk: luad_13.luac
+    is($S0, <<'OUT', "arithmetic and string instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -326,12 +458,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'arithmetic and string instructions' );
+.sub 'test_arithmetic_and_string_instructions_5'
+    $S0 = luad(<<'CODE')
 local p,q = 10,false;
 q,p = -p,not q
 CODE
-; source chunk: luad_14.luac
+    is($S0, <<'OUT', "arithmetic and string instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -348,11 +483,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'arithmetic and string instructions' );
+.sub 'test_arithmetic_and_string_instructions_6'
+    $S0 = luad(<<'CODE')
 local a = - (7 / 4)
 CODE
-; source chunk: luad_15.luac
+    is($S0, <<'OUT', "arithmetic and string instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -364,13 +502,16 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'arithmetic and string instructions' );
+.sub 'test_arithmetic_and_string_instructions_7'
+    $S0 = luad(<<'CODE')
 local a,b;
 a = #b;
 a= #"foo"
 CODE
-; source chunk: luad_16.luac
+    is($S0, <<'OUT', "arithmetic and string instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -385,12 +526,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'arithmetic and string instructions' );
+.sub 'test_arithmetic_and_string_instructions_8'
+    $S0 = luad(<<'CODE')
 local x,y = "foo","bar";
 return x..y..x..y
 CODE
-; source chunk: luad_17.luac
+    is($S0, <<'OUT', "arithmetic and string instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 6 stacks
@@ -411,11 +555,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'arithmetic and string instructions' );
+.sub 'test_arithmetic_and_string_instructions_9'
+    $S0 = luad(<<'CODE')
 local a = "foo".."bar".."baz"
 CODE
-; source chunk: luad_18.luac
+    is($S0, <<'OUT', "arithmetic and string instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -432,12 +579,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_1'
+    $S0 = luad(<<'CODE')
 local m, n;
 return m >= n
 CODE
-; source chunk: luad_19.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -453,11 +603,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_2'
+    $S0 = luad(<<'CODE')
 z()
 CODE
-; source chunk: luad_20.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -469,11 +622,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_3'
+    $S0 = luad(<<'CODE')
 z(1,2,3)
 CODE
-; source chunk: luad_21.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 4 stacks
@@ -491,11 +647,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_4'
+    $S0 = luad(<<'CODE')
 local p,q,r,s = z(y())
 CODE
-; source chunk: luad_22.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 4 stacks
@@ -514,11 +673,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_5'
+    $S0 = luad(<<'CODE')
 print(string.char(64))
 CODE
-; source chunk: luad_23.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -537,12 +699,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_6'
+    $S0 = luad(<<'CODE')
 local e,f,g;
 return f,g
 CODE
-; source chunk: luad_24.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 5 stacks
@@ -557,11 +722,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_7'
+    $S0 = luad(<<'CODE')
 return x("foo", "bar")
 CODE
-; source chunk: luad_25.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -578,11 +746,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_8'
+    $S0 = luad(<<'CODE')
 local a,b,c = ...
 CODE
-; source chunk: luad_26.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -595,13 +766,16 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_9'
+    $S0 = luad(<<'CODE')
 local a = function(...)
   local a,b,c = ...
 end
 CODE
-; source chunk: luad_27.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -624,12 +798,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_10'
+    $S0 = luad(<<'CODE')
 local a;
 a(...)
 CODE
-; source chunk: luad_28.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -642,11 +819,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_11'
+    $S0 = luad(<<'CODE')
 local a = {...}
 CODE
-; source chunk: luad_29.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -659,11 +839,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_12'
+    $S0 = luad(<<'CODE')
 return ...
 CODE
-; source chunk: luad_30.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -674,11 +857,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_13'
+    $S0 = luad(<<'CODE')
 foo:bar("baz")
 CODE
-; source chunk: luad_31.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -694,11 +880,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'jumps and calls' );
+.sub 'test_jumps_and_calls_14'
+    $S0 = luad(<<'CODE')
 foo.bar(foo, "baz")
 CODE
-; source chunk: luad_32.luac
+    is($S0, <<'OUT', "jumps and calls")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -715,12 +904,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'relational and logic instructions' );
+.sub 'test_relational_and_logic_instructions_1'
+    $S0 = luad(<<'CODE')
 local x,y;
 return x ~= y
 CODE
-; source chunk: luad_33.luac
+    is($S0, <<'OUT', "relational and logic instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -736,8 +928,10 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'relational and logic instructions' );
+.sub 'test_relational_and_logic_instructions_2'
+    $S0 = luad(<<'CODE')
 local x,y;
 if x ~= y then
   return "foo"
@@ -745,7 +939,8 @@ else
   return "bar"
 end
 CODE
-; source chunk: luad_34.luac
+    is($S0, <<'OUT', "relational and logic instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -765,8 +960,10 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'relational and logic instructions' );
+.sub 'test_relational_and_logic_instructions_3'
+    $S0 = luad(<<'CODE')
 if 8 > 9 then
   return 8
 elseif 5 >= 4 then
@@ -775,7 +972,8 @@ else
   return 9
 end
 CODE
-; source chunk: luad_35.luac
+    is($S0, <<'OUT', "relational and logic instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -800,12 +998,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'relational and logic instructions' );
+.sub 'test_relational_and_logic_instructions_4'
+    $S0 = luad(<<'CODE')
 local a,b,c;
 c = a and b
 CODE
-; source chunk: luad_36.luac
+    is($S0, <<'OUT', "relational and logic instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -820,12 +1021,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'relational and logic instructions' );
+.sub 'test_relational_and_logic_instructions_5'
+    $S0 = luad(<<'CODE')
 local a,b;
 a = a and b
 CODE
-; source chunk: luad_37.luac
+    is($S0, <<'OUT', "relational and logic instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -839,12 +1043,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'relational and logic instructions' );
+.sub 'test_relational_and_logic_instructions_6'
+    $S0 = luad(<<'CODE')
 local a,b,c;
 c = a or b
 CODE
-; source chunk: luad_38.luac
+    is($S0, <<'OUT', "relational and logic instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -859,12 +1066,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'relational and logic instructions' );
+.sub 'test_relational_and_logic_instructions_7'
+    $S0 = luad(<<'CODE')
 local a,b;
 a = a or b
 CODE
-; source chunk: luad_39.luac
+    is($S0, <<'OUT', "relational and logic instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -878,14 +1088,17 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'relational and logic instructions' );
+.sub 'test_relational_and_logic_instructions_8'
+    $S0 = luad(<<'CODE')
 local a,b,c;
 if a > b and a > c then
   return a
 end
 CODE
-; source chunk: luad_40.luac
+    is($S0, <<'OUT', "relational and logic instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -902,11 +1115,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'relational and logic instructions' );
+.sub 'test_relational_and_logic_instructions_9'
+    $S0 = luad(<<'CODE')
 if Done then return end
 CODE
-; source chunk: luad_41.luac
+    is($S0, <<'OUT', "relational and logic instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -920,11 +1136,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'relational and logic instructions' );
+.sub 'test_relational_and_logic_instructions_10'
+    $S0 = luad(<<'CODE')
 if Found and match then return end
 CODE
-; source chunk: luad_42.luac
+    is($S0, <<'OUT', "relational and logic instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -942,12 +1161,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'relational and logic instructions' );
+.sub 'test_relational_and_logic_instructions_11'
+    $S0 = luad(<<'CODE')
 local a,b,c;
 a = a and b or c
 CODE
-; source chunk: luad_43.luac
+    is($S0, <<'OUT', "relational and logic instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -964,14 +1186,17 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'loop instructions' );
+.sub 'test_loop_instructions_1'
+    $S0 = luad(<<'CODE')
 local a = 0;
 for i = 1,100,5 do
   a = a + i
 end
 CODE
-; source chunk: luad_44.luac
+    is($S0, <<'OUT', "loop instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 5 stacks
@@ -996,13 +1221,16 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'loop instructions' );
+.sub 'test_loop_instructions_2'
+    $S0 = luad(<<'CODE')
 for i = 10,1,-1 do
   if i == 5 then break end
 end
 CODE
-; source chunk: luad_45.luac
+    is($S0, <<'OUT', "loop instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 4 stacks
@@ -1027,13 +1255,16 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'loop instructions' );
+.sub 'test_loop_instructions_3'
+    $S0 = luad(<<'CODE')
 for i,v in pairs(t) do
   print(i,v)
 end
 CODE
-; source chunk: luad_46.luac
+    is($S0, <<'OUT', "loop instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 8 stacks
@@ -1060,12 +1291,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'loop instructions' );
+.sub 'test_loop_instructions_4'
+    $S0 = luad(<<'CODE')
 local a = 0;
 repeat a = a + 1 until a == 10
 CODE
-; source chunk: luad_47.luac
+    is($S0, <<'OUT', "loop instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -1082,14 +1316,17 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'loop instructions' );
+.sub 'test_loop_instructions_5'
+    $S0 = luad(<<'CODE')
 local a = 1;
 while a < 10 do
   a = a + 1
 end
 CODE
-; source chunk: luad_48.luac
+    is($S0, <<'OUT', "loop instructions")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -1106,11 +1343,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'table creation' );
+
+.sub 'test_table_creation_1'
+    $S0 = luad(<<'CODE')
 local q = {}
 CODE
-; source chunk: luad_49.luac
+    is($S0, <<'OUT', "table creation")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -1121,11 +1362,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'table creation' );
+.sub 'test_table_creation_2'
+    $S0 = luad(<<'CODE')
 local q = {1,2,3,4,5,}
 CODE
-; source chunk: luad_50.luac
+    is($S0, <<'OUT', "table creation")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 6 stacks
@@ -1147,13 +1391,16 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'table creation' );
+.sub 'test_table_creation_3'
+    $S0 = luad(<<'CODE')
 local q = {1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,
   1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,
   1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,}
 CODE
-; source chunk: luad_51.luac
+    is($S0, <<'OUT', "table creation")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 51 stacks
@@ -1231,11 +1478,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'table creation' );
+.sub 'test_table_creation_4'
+    $S0 = luad(<<'CODE')
 local q = {a=1,b=2,c=3,d=4,e=5,f=6,g=7,h=8,}
 CODE
-; source chunk: luad_52.luac
+    is($S0, <<'OUT', "table creation")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -1270,11 +1520,14 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'table creation' );
+.sub 'test_table_creation_5'
+    $S0 = luad(<<'CODE')
 return {1,2,3,a=1,b=2,c=3,foo()}
 CODE
-; source chunk: luad_53.luac
+    is($S0, <<'OUT', "table creation")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 5 stacks
@@ -1301,12 +1554,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'table creation' );
+.sub 'test_table_creation_6'
+    $S0 = luad(<<'CODE')
 local a;
 return {a(), a(), a()}
 CODE
-; source chunk: luad_54.luac
+    is($S0, <<'OUT', "table creation")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 5 stacks
@@ -1325,12 +1581,15 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'closures and closing' );
+.sub 'test_closures_and_closing_1'
+    $S0 = luad(<<'CODE')
 local u;
 function p() return u end
 CODE
-; source chunk: luad_55.luac
+    is($S0, <<'OUT', "closures and closing")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -1354,15 +1613,18 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'closures and closing' );
+.sub 'test_closures_and_closing_2'
+    $S0 = luad(<<'CODE')
 local m
 function p()
   local n
   function q() return m,n end
 end
 CODE
-; source chunk: luad_56.luac
+    is($S0, <<'OUT', "closures and closing")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -1402,14 +1664,17 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'closures and closing' );
+.sub 'test_closures_and_closing_3'
+    $S0 = luad(<<'CODE')
 do
   local p,q
   r = function() return p,q end
 end
 CODE
-; source chunk: luad_57.luac
+    is($S0, <<'OUT', "closures and closing")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 3 stacks
@@ -1438,8 +1703,10 @@ CODE
 ; end of function
 
 OUT
+.end
 
-language_output_is( 'Luad', <<'CODE', <<'OUT', 'closures and closing' );
+.sub 'test_closures_and_closing_4'
+    $S0 = luad(<<'CODE')
 do
   local p
   while true do
@@ -1448,7 +1715,8 @@ do
   end
 end
 CODE
-; source chunk: luad_58.luac
+    is($S0, <<'OUT', "closures and closing")
+; source chunk: luad.luac
 
 ; function [0] definition (level 1)
 ; 0 upvalues, 0 params, 2 stacks
@@ -1475,11 +1743,10 @@ CODE
 ; end of function
 
 OUT
-
+.end
 
 # Local Variables:
-#   mode: cperl
-#   cperl-indent-level: 4
+#   mode: pir
 #   fill-column: 100
 # End:
-# vim: expandtab shiftwidth=4:
+# vim: expandtab shiftwidth=4 ft=pir:

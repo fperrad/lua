@@ -1,4 +1,4 @@
-#! perl
+#! /usr/local/bin/parrot
 # Copyright (C) 2006-2009, Parrot Foundation.
 # $Id$
 
@@ -6,7 +6,7 @@
 
 =head2 Synopsis
 
-    % perl t/lexico.t
+    % parrot t/lexico.t
 
 =head2 Description
 
@@ -15,15 +15,50 @@ L<http://www.lua.org/manual/5.1/manual.html#2.1>.
 
 =cut
 
-use strict;
-use warnings;
-use FindBin;
-use lib "$FindBin::Bin/../../../lib", "$FindBin::Bin";
+.sub 'main' :main
+    .include 'test_more.pir'
 
-use Parrot::Test tests => 3;
-use Test::More;
+    plan(3)
 
-language_output_is( 'lua', <<'CODE', <<'OUT', 'string' );
+    test_string()
+    test_number()
+    test_escape_character()
+.end
+
+.sub 'lexico' :anon
+    .param string code
+    spew('lexico.lua', code)
+    $P0 = open 'parrot lua.pbc lexico.lua', 'rp'
+    $S0 = $P0.'readall'()
+    close $P0
+    .return ($S0)
+.end
+
+.sub 'spew' :anon
+    .param string filename
+    .param string content
+    $P0 = new 'FileHandle'
+    push_eh _handler
+    $P0.'open'(filename, 'w')
+    pop_eh
+    $P0.'puts'(content)
+    $P0.'close'()
+    .return ()
+  _handler:
+    .local pmc e
+    .get_results (e)
+    $S0 = "Can't open '"
+    $S0 .= filename
+    $S0 .= "' ("
+    $S1 = err
+    $S0 .= $S1
+    $S0 .= ")\n"
+    e = $S0
+    rethrow e
+.end
+
+.sub 'test_string'
+    $S0 = lexico(<<'CODE')
 print 'alo\n123"'
 print "alo\n123\""
 print '\97lo\10\04923"'
@@ -36,6 +71,7 @@ print [==[
 alo
 123"]==]
 CODE
+    is($S0, <<'OUT', "string")
 alo
 123"
 alo
@@ -49,8 +85,10 @@ alo
 alo
 123"
 OUT
+.end
 
-language_output_is( 'lua', <<'CODE', <<'OUT', 'number' );
+.sub 'test_number'
+    $S0 = lexico(<<'CODE')
 print(3)
 print(3.0)
 print(3.1416)
@@ -59,6 +97,7 @@ print(0.31416E1)
 print(0xff)
 print(0x56)
 CODE
+    is($S0, <<'OUT', "number")
 3
 3
 3.1416
@@ -67,20 +106,22 @@ CODE
 255
 86
 OUT
+.end
 
-language_output_is( 'lua', <<'CODE', <<'OUT', 'escape character' );
+.sub 'test_escape_character'
+    $S0 = lexico(<<'CODE')
 print("\n")
 print("\"")
 CODE
+    is($S0, <<'OUT', "escape character")
 
 
 "
 OUT
+.end
 
 # Local Variables:
-#   mode: cperl
-#   cperl-indent-level: 4
+#   mode: pir
 #   fill-column: 100
 # End:
-# vim: expandtab shiftwidth=4:
-
+# vim: expandtab shiftwidth=4 ft=pir:

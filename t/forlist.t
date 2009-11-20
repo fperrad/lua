@@ -1,104 +1,25 @@
-#! perl
-# Copyright (C) 2006-2009, Parrot Foundation.
+#! /usr/local/bin/parrot
+# Copyright (C) 2009, Parrot Foundation.
 # $Id$
 
 =head1 Lua for statement
 
 =head2 Synopsis
 
-    % perl t/forlist.t
+    % parrot t/forlist.t
 
 =head2 Description
 
-See "Lua 5.1 Reference Manual", section 2.4.5 "For Statement",
-L<http://www.lua.org/manual/5.1/manual.html#2.4.5>.
-
-See "Programming in Lua", section 4.3 "Control Structures".
+Wrapper for t/lua-TestMore/test_lua51/015-forlist.t
 
 =cut
 
-use strict;
-use warnings;
-use FindBin;
-use lib "$FindBin::Bin/../../../lib", "$FindBin::Bin";
-
-use Parrot::Test tests => 6;
-use Test::More;
-
-language_output_is( 'lua', <<'CODE', <<'OUT', 'for ipairs' );
-a = {"Sunday", "Monday", "Tuesday"}
-
-for i, v in ipairs(a) do
-    print(i, v)
-end
-CODE
-1	Sunday
-2	Monday
-3	Tuesday
-OUT
-
-language_output_is( 'lua', <<'CODE', <<'OUT', 'for ipairs (hash)' );
-t = {a=10, b=100}
-
-for i, v in ipairs(t) do
-    print(i, v)
-end
-CODE
-OUT
-
-language_output_is( 'lua', <<'CODE', <<'OUT', 'for pairs' );
-a = {"Sunday", "Monday", "Tuesday"}
-
-for k in pairs(a) do
-    print(k)
-end
-CODE
-1
-2
-3
-OUT
-
-language_output_like( 'lua', <<'CODE', <<'OUT', 'for pairs (hash)' );
-t = {a=10, b=100}
-
-for k in pairs(t) do
-    print(k)
-end
-CODE
-/^(a\nb|b\na)$/
-OUT
-
-language_output_is( 'lua', <<'CODE', <<'OUT', 'for break' );
-a = {"Sunday", "Monday", "Tuesday"}
-
-for i, v in ipairs(a) do
-    print(i, v)
-    if v == "Monday" then break end
-end
-CODE
-1	Sunday
-2	Monday
-OUT
-
-TODO: {
-    local $TODO = 'upvalues';
-
-language_output_is( 'lua', <<'CODE', <<'OUT', 'for & upval' );
-local a = {[1]=2, [2]=4, [3]=8}
-local b = {}
-for i, v in pairs(a) do
-    b[i] = function () return v end
-end
-print(b[1](), b[2](), b[3]())
-CODE
-2	4	8
-OUT
-}
+.sub 'main'
+    $I0 = spawnw 'parrot lua.pbc t/lua-TestMore/test_lua51/015-forlist.t'
+.end
 
 # Local Variables:
-#   mode: cperl
-#   cperl-indent-level: 4
+#   mode: pir
 #   fill-column: 100
 # End:
-# vim: expandtab shiftwidth=4:
-
+# vim: expandtab shiftwidth=4 ft=pir:

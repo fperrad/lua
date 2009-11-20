@@ -22,6 +22,9 @@ No Configure step, no Makefile generated.
     $S0 = shift args
     load_bytecode 'distutils.pbc'
 
+    .const 'Sub' update = 'update'
+    register_step_after('update', update)
+
     .const 'Sub' prebuild = 'prebuild'
     register_step_before('build', prebuild)
 
@@ -121,15 +124,21 @@ SOURCES
     $P7['parrot-luap'] = 'luap.pbc'
     $P0['installable_pbc'] = $P7
 
+    # test
+    $S0 = get_parrot()
+    $P0['prove_exec'] = $S0
+    $P0['prove_files'] = 't/pmc/*.t t/*.t'
+
     # install
-    $P8 = split "\n", <<'LIBS'
-lua/lua.pbc
-lua/luad.pbc
-LIBS
-    $S0 = pop $P8
+    $P8 = split ' ', 'lua/lua.pbc lua/luad.pbc'
     $P0['inst_lang'] = $P8
 
     .tailcall setup(args :flat, $P0 :flat :named)
+.end
+
+.sub 'update' :anon
+    .param pmc kv :slurpy :named
+    system('git submodule update')
 .end
 
 .sub 'prebuild' :anon
@@ -152,7 +161,7 @@ LIBS
 
     $I0 = newer('Test/More.lua', 't/lua-TestMore/src/Test/More.lua')
     if $I0 goto L3
-    install('t/lua-TestMore/src/Test/More.lua', 'Test/More.lua', 0)
+    install('t/lua-TestMore/src/Test/More.lua', 'Test/More.lua')
   L3:
 .end
 
@@ -232,7 +241,6 @@ LIBS
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
 
-    setenv('LUA_PATH', ";;../src/?.lua")
     setenv('LUA_INIT', "platform = { osname=[[MSWin32]], intsize=4, longsize=4 }")
 
     .local string cmd
@@ -247,7 +255,6 @@ LIBS
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
 
-    setenv('LUA_PATH', ";;../src/?.lua")
     setenv('LUA_INIT', "platform = { osname=[[MSWin32]], intsize=4, longsize=4 }")
 
     .local string cmd

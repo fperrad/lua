@@ -1,4 +1,4 @@
-#! perl
+#! /usr/local/bin/parrot
 # Copyright (C) 2007-2009, Parrot Foundation.
 # $Id$
 
@@ -6,7 +6,7 @@
 
 =head2 Synopsis
 
-    % perl t/test-from-lua.t
+    % parrot t/test-from-lua.t
 
 =head2 Description
 
@@ -38,157 +38,133 @@ Here is a one-line summary of each program:
 
 =cut
 
-use strict;
-use warnings;
-use FindBin;
-use lib "$FindBin::Bin/../../../lib", "$FindBin::Bin";
+.sub 'main' :main
+    .include 'test_more.pir'
 
-use Parrot::Test tests => 12;
-use Test::More;
-use Parrot::Test::Lua;
+    plan(6)
 
-my $test_prog = Parrot::Test::Lua::get_test_prog();
-my $code;
-my $out;
-my $in;
+    test_bisect()
+    test_cf()
+    test_factorial()
+    test_fibfor()
+    test_sieve()
+    test_sort()
+.end
 
+.sub 'lua' :anon
+    .param string filename
+    .local string cmd
+    cmd = "parrot lua.pbc " . filename
+    $P0 = open cmd, 'rp'
+    $S0 = $P0.'readall'()
+    close $P0
+    .return ($S0)
+.end
+
+.sub 'slurp' :anon
+    .param string filename
+    $P0 = new 'FileHandle'
+    push_eh _handler
+    $S0 = $P0.'readall'(filename)
+    pop_eh
+    $P0 = split "\r\n", $S0 # hack from win32
+    $S1 = join "\n", $P0
+    .return ($S1)
+  _handler:
+    .local pmc e
+    .get_results (e)
+    $S0 = "Can't open '"
+    $S0 .= filename
+    $S0 .= "' ("
+    $S1 = err
+    $S0 .= $S1
+    $S0 .= ")\n"
+    e = $S0
+    rethrow e
+.end
 
 #
 #   bisect.lua
 #       bisection method for solving non-linear equations
 #
 
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/bisect.lua" );
-if ($^O =~ /Win32/) {
-    $out = Parrot::Test::slurp_file( "$FindBin::Bin/test/bisect-output-win32.txt" );
-    language_output_is( 'lua', $code, $out, 'bisect', todo => 'floating point format' );
-}
-else {
-    $out = Parrot::Test::slurp_file( "$FindBin::Bin/test/bisect-output-unix.txt" );
-    language_output_is( 'lua', $code, $out, 'bisect' );
-}
+.include 'iglobals.pasm'
+
+.sub 'test_bisect'
+    .local pmc config
+    $P0 = getinterp
+    config = $P0[.IGLOBALS_CONFIG_HASH]
+    .local string osname
+    osname = config['osname']
+    $S0 = lua('t/test/bisect.lua')
+    unless osname == 'MSWin32' goto L1
+    $S1 = slurp('t/test/bisect-output-win32.txt')
+    $I0 = $S0 == $S1
+    todo($I0, "bisect", "floating point format")
+    goto L2
+  L1:
+    $S1 = slurp('t/test/bisect-output-unix.txt')
+    is($S0, $S1, "bisect")
+  L2:
+.end
 
 #
 #   cf.lua
 #       temperature conversion table (celsius to farenheit)
 #
 
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/cf.lua" );
-$out = Parrot::Test::slurp_file( "$FindBin::Bin/test/cf-output.txt" );
-language_output_is( 'lua', $code, $out, 'cf' );
-
-#
-#   echo.lua
-#       echo command line arguments
-#
-
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/echo.lua" );
-language_output_like( 'lua', $code, << 'OUTPUT', 'echo', params => 'arg1 arg2' );
-/^
-0\t.*languages.lua.t.test-from-lua_3\.(lua|pir|luac\.pir)\n
-1\targ1\n
-2\targ2\n
-/x
-OUTPUT
+.sub 'test_cf'
+    $S0 = lua('t/test/cf.lua')
+    $S1 = slurp('t/test/cf-output.txt')
+    is($S0, $S1, "cf")
+.end
 
 #
 #   factorial.lua
 #       factorial without recursion
 #
 
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/factorial.lua" );
-$out = Parrot::Test::slurp_file( "$FindBin::Bin/test/factorial-output.txt" );
-language_output_is( 'lua', $code, $out, 'factorial' );
-
-#
-#   fib.lua
-#       fibonacci function with cache
-#
-
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/fib.lua" );
-language_output_like( 'lua', $code, << 'OUTPUT', 'fib' );
-/^
-\tn\tvalue\ttime\tevals\n
-plain\t24\t46368\t\d+(\.\d+)?\t150049\n
-cached\t24\t46368\t\d+(\.\d+)?\t25\n
-/x
-OUTPUT
+.sub 'test_factorial'
+    $S0 = lua('t/test/factorial.lua')
+    $S1 = slurp('t/test/factorial-output.txt')
+    is($S0, $S1, "factorial")
+.end
 
 #
 #   fibfor.lua
 #       fibonacci numbers with coroutines and generators
 #
 
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/fibfor.lua" );
-$out = Parrot::Test::slurp_file( "$FindBin::Bin/test/fibfor-output.txt" );
-language_output_is( 'lua', $code, $out, 'fibfor' );
-
-#
-#   hello.lua
-#       the first program in every language
-#
-
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/hello.lua" );
-language_output_like( 'lua', $code, << 'OUTPUT', 'hello' );
-/^Hello world, from Lua 5\.1( \(on Parrot\))?!/
-OUTPUT
-
-#
-#   life.lua
-#       Conway's Game of Life
-#
-
-SKIP:
-{
-    skip('uses too much memory with default runcore', 1) unless ($test_prog eq 'lua');
-
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/life.lua" );
-$out = Parrot::Test::slurp_file( "$FindBin::Bin/test/life-output.txt" );
-language_output_is( 'lua', $code, $out, 'life' );
-}
-
-#
-#   printf.lua
-#       an implementation of printf
-#
-
-$ENV{USER} = "user";
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/printf.lua" );
-language_output_like( 'lua', $code, << 'OUTPUT', 'printf' );
-/^Hello user from Lua 5\.1( \(on Parrot\))? on /
-OUTPUT
-
-#
-#   readonly.lua
-#       make global variables readonly
-#
-
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/readonly.lua" );
-language_output_like( 'lua', $code, << 'OUTPUT', 'readonly' );
-/^[^:]+: (\w:)?[^:]+:\d+: cannot redefine global variable `y'\nstack traceback:\n/
-OUTPUT
+.sub 'test_fibfor'
+    $S0 = lua('t/test/fibfor.lua')
+    $S1 = slurp('t/test/fibfor-output.txt')
+    is($S0, $S1, "fibfor")
+.end
 
 #
 #   sieve.lua
 #       the sieve of of Eratosthenes programmed with coroutines
 #
 
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/sieve.lua" );
-$out = Parrot::Test::slurp_file( "$FindBin::Bin/test/sieve-output.txt" );
-language_output_is( 'lua', $code, $out, 'sieve' );
+.sub 'test_sieve'
+    $S0 = lua('t/test/sieve.lua')
+    $S1 = slurp('t/test/sieve-output.txt')
+    is($S0, $S1, "sieve")
+.end
 
 #
 #   sort.lua
 #       two implementations of a sort function
 #
 
-$code = Parrot::Test::slurp_file( "$FindBin::Bin/test/sort.lua" );
-$out = Parrot::Test::slurp_file( "$FindBin::Bin/test/sort-output.txt" );
-language_output_is( 'lua', $code, $out, 'sort' );
+.sub 'test_sort'
+    $S0 = lua('t/test/sort.lua')
+    $S1 = slurp('t/test/sort-output.txt')
+    is($S0, $S1, "sort")
+.end
 
 # Local Variables:
-#   mode: cperl
-#   cperl-indent-level: 4
+#   mode: pir
 #   fill-column: 100
 # End:
-# vim: expandtab shiftwidth=4:
+# vim: expandtab shiftwidth=4 ft=pir:
