@@ -92,6 +92,11 @@ by Kein-Hong Man
     test_closures_and_closing_2()
     test_closures_and_closing_3()
     test_closures_and_closing_4()
+
+    # clean up
+    $P0 = new 'OS'
+    $P0.'rm'('luad.lua')
+    $P0.'rm'('luad.luac')
 .end
 
 .sub 'luad' :anon

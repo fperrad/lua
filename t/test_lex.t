@@ -46,6 +46,10 @@ L<http://www.lua.org/manual/5.1/manual.html#2.1>.
     test_syntax_error()
     test_shebang()
     test_shebang_misplaced()
+
+    # clean up
+    $P0 = new 'OS'
+    $P0.'rm'('test_lex.lua')
 .end
 
 .sub 'lua_lex' :anon

@@ -23,6 +23,10 @@ L<http://www.lua.org/manual/5.1/manual.html#2.1>.
     test_string()
     test_number()
     test_escape_character()
+
+    # clean up
+    $P0 = new 'OS'
+    $P0.'rm'('lexico.lua')
 .end
 
 .sub 'lexico' :anon

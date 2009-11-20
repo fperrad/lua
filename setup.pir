@@ -37,9 +37,6 @@ No Configure step, no Makefile generated.
     .const 'Sub' liblua_clean = 'liblua_clean'
     register_step_after('clean', liblua_clean)
 
-    .const 'Sub' testclean = 'testclean'
-    register_step_after('test', testclean)
-
     .const 'Sub' pmctest = 'pmctest'
     register_step('pmctest', pmctest)
 
@@ -220,11 +217,6 @@ SOURCES
     clean_key($P0)
     $P0 = kv['liblua__pir_lua']
     clean_key($P0)
-.end
-
-.sub 'testclean' :anon
-    .param pmc kv :slurpy :named
-    system("perl -MExtUtils::Command -e rm_f t/*.lua t/*.parrot_out t/*.luac")
 .end
 
 .sub 'pmctest' :anon

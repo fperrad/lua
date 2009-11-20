@@ -29,9 +29,6 @@ dynext/pmc/*.pdb
 lua/*_gen.pir
 lua/lib/luabytecode_gen.pir
 
-lua/library/gl.pir
-lua/library/sha1.pir
-
 lexico.lua
 luad.lua
 luad.luac
