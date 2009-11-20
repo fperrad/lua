@@ -43,6 +43,10 @@ No Configure step, no Makefile generated.
     .const 'Sub' pmctest = 'pmctest'
     register_step('pmctest', pmctest)
 
+    .const 'Sub' set_LUA_INIT = 'set_LUA_INIT'
+    register_step('set_LUA_INIT', set_LUA_INIT)
+    register_step_before('test', set_LUA_INIT)
+
     .const 'Sub' sanity = 'sanity'
     register_step('sanity', sanity)
 
@@ -163,6 +167,11 @@ SOURCES
     if $I0 goto L3
     install('t/lua-TestMore/src/Test/More.lua', 'Test/More.lua')
   L3:
+
+    # tests not yet converted
+    unlink('t/standalone.t')
+    unlink('t/shootout.t')
+    unlink('t/tables.t')
 .end
 
 .sub 'clean' :anon
@@ -240,8 +249,7 @@ SOURCES
 .sub 'spectest' :anon
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
-
-    setenv('LUA_INIT', "platform = { osname=[[MSWin32]], intsize=4, longsize=4 }")
+    run_step('set_LUA_INIT', kv :flat :named)
 
     .local string cmd
     cmd = "prove --exec=\""
@@ -254,8 +262,7 @@ SOURCES
 .sub 'smolder' :anon
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
-
-    setenv('LUA_INIT', "platform = { osname=[[MSWin32]], intsize=4, longsize=4 }")
+    run_step('set_LUA_INIT', kv :flat :named)
 
     .local string cmd
     cmd = "prove --archive=test_lua51.tar.gz --exec=\""
@@ -287,6 +294,25 @@ SOURCES
     cmd .= "  http://smolder.plusthree.com/app/public_projects/process_add_report/12"
     system(cmd)
 .end
+
+.sub 'set_LUA_INIT' :anon
+    .param pmc kv :slurpy :named
+    .local pmc config
+    config = get_config()
+    .local string value
+    value = "platform = { osname=[["
+    $S0 = config['osname']
+    value .= $S0
+    value .= "]], intsize="
+    $S0 = config['intsize']
+    value .= $S0
+    value .= ", longsize="
+    $S0 = config['longsize']
+    value .= $S0
+    value .= " }"
+    setenv('LUA_INIT', value)
+.end
+
 
 # Local Variables:
 #   mode: pir
