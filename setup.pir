@@ -112,10 +112,10 @@ SOURCES
     $P0['pbc_pir'] = $P5
 
     $P9 = new 'Hash'
-    $P9['Test/More.pbc'] = 'Test/More.pir'
+    $P9['lua/library/Test/More.pbc'] = 'lua/library/Test/More.pir'
     $P0['liblua__pbc_pir'] = $P9
     $P10 = new 'Hash'
-    $P10['Test/More.pir'] = 'Test/More.lua'
+    $P10['lua/library/Test/More.pir'] = 'lua/library/Test/More.lua'
     $P0['liblua__pir_lua'] = $P10
 
     $P7 = new 'Hash'
@@ -165,9 +165,9 @@ SOURCES
     system('git submodule update')
   L2:
 
-    $I0 = newer('Test/More.lua', 't/lua-TestMore/src/Test/More.lua')
+    $I0 = newer('lua/library/Test/More.lua', 't/lua-TestMore/src/Test/More.lua')
     if $I0 goto L3
-    install('t/lua-TestMore/src/Test/More.lua', 'Test/More.lua')
+    install('t/lua-TestMore/src/Test/More.lua', 'lua/library/Test/More.lua')
   L3:
 
     # tests not yet converted
@@ -179,7 +179,7 @@ SOURCES
 .sub 'clean' :anon
     .param pmc kv :slurpy :named
     unlink('lua/lib/luabytecode_gen.pir')
-    unlink('Test/More.lua')
+    unlink('lua/library/Test/More.lua')
 .end
 
 .sub 'liblua_build' :anon

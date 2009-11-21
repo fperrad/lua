@@ -701,6 +701,12 @@ This function only loads the chunk; it does not run it.
     .local string funcname
     funcname = mkfuncname(modname)
     ($P0, $S0) = loadfunc(pbcname, funcname)
+    if null $P0 goto L5
+    .return ($P0)
+  L5:
+    $S0 = 'lua.library.' . modname
+    funcname = mkfuncname($S0)
+    ($P0, $S0) = loadfunc(pbcname, funcname)
     if null $P0 goto L3
     .return ($P0)
   L3:
