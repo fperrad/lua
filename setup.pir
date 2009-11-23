@@ -286,7 +286,10 @@ SOURCES
     .local pmc config
     config = get_config()
     .local string value
-    value = "platform = { osname=[["
+    value = "platform = { lua=[["
+    $S0 = get_parrot()
+    value .= $S0
+    value .= " lua.pbc]], osname=[["
     $S0 = config['osname']
     value .= $S0
     value .= "]], intsize="
