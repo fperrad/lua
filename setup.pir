@@ -185,7 +185,6 @@ SOURCES
   L3:
 
     # tests not yet converted
-    unlink('t/standalone.t')
     unlink('t/shootout.t')
 .end
 
