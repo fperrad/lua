@@ -187,7 +187,6 @@ SOURCES
     # tests not yet converted
     unlink('t/standalone.t')
     unlink('t/shootout.t')
-    unlink('t/tables.t')
 .end
 
 .sub 'clean' :anon
