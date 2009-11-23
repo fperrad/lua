@@ -34,5 +34,5 @@ luad.lua
 luad.luac
 test_lex.lua
 
-Test/More.*
+lua/library/Test/More.*
 
