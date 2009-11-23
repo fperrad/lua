@@ -6,7 +6,7 @@
 
 =head2 Synopsis
 
-    % parrot t/math.t
+    % parrot t/libmath.t
 
 =head2 Description
 

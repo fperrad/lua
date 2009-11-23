@@ -6,7 +6,7 @@
 
 =head2 Synopsis
 
-    % parrot t/package.t
+    % parrot t/libpackage.t
 
 =head2 Description
 

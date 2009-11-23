@@ -2,20 +2,20 @@
 # Copyright (C) 2009, Parrot Foundation.
 # $Id$
 
-=head1 Lua String Library
+=head1 Lua Regex Compiler
 
 =head2 Synopsis
 
-    % parrot t/string.t
+    % parrot t/libregex.t
 
 =head2 Description
 
-Wrapper for t/lua-TestMore/test_lua51/304-string.t
+Wrapper for t/lua-TestMore/test_lua51/314-regex.t
 
 =cut
 
 .sub 'main'
-    $I0 = spawnw 'parrot lua.pbc t/lua-TestMore/test_lua51/304-string.t'
+    $I0 = spawnw 'parrot lua.pbc t/lua-TestMore/test_lua51/314-regex.t'
 .end
 
 # Local Variables:

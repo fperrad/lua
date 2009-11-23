@@ -2,20 +2,20 @@
 # Copyright (C) 2009, Parrot Foundation.
 # $Id$
 
-=head1 Lua Basic Library
+=head1 Lua Input/Output Library
 
 =head2 Synopsis
 
-    % parrot t/basic.t
+    % parrot t/libio.t
 
 =head2 Description
 
-Wrapper for t/lua-TestMore/test_lua51/301-basic.t
+Wrapper for t/lua-TestMore/test_lua51/307-io.t
 
 =cut
 
 .sub 'main'
-    $I0 = spawnw 'parrot lua.pbc t/lua-TestMore/test_lua51/301-basic.t'
+    $I0 = spawnw 'parrot lua.pbc t/lua-TestMore/test_lua51/307-io.t'
 .end
 
 # Local Variables:

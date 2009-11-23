@@ -2,20 +2,20 @@
 # Copyright (C) 2009, Parrot Foundation.
 # $Id$
 
-=head1 Lua Regex Compiler
+=head1 Lua Operating System Library
 
 =head2 Synopsis
 
-    % parrot t/regex.t
+    % parrot t/libos.t
 
 =head2 Description
 
-Wrapper for t/lua-TestMore/test_lua51/314-regex.t
+Wrapper for t/lua-TestMore/test_lua51/308-os.t
 
 =cut
 
 .sub 'main'
-    $I0 = spawnw 'parrot lua.pbc t/lua-TestMore/test_lua51/314-regex.t'
+    $I0 = spawnw 'parrot lua.pbc t/lua-TestMore/test_lua51/308-os.t'
 .end
 
 # Local Variables:

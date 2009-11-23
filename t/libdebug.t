@@ -6,7 +6,7 @@
 
 =head2 Synopsis
 
-    % parrot t/debug.t
+    % parrot t/libdebug.t
 
 =head2 Description
 
