@@ -1,4 +1,4 @@
-#! /usr/local/bin/parrot
+#!/usr/bin/env parrot
 # Copyright (C) 2009, Parrot Foundation.
 
 =head1 NAME
@@ -183,9 +183,6 @@ SOURCES
     if $I0 goto L3
     install('t/lua-TestMore/src/Test/More.lua', 'lua/library/Test/More.lua')
   L3:
-
-    # tests not yet converted
-    unlink('t/shootout.t')
 .end
 
 .sub 'clean' :anon
