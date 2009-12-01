@@ -61,7 +61,6 @@ No Configure step, no Makefile generated.
     $P0['license_type'] = 'Artistic License 2.0'
     $P0['license_uri'] = 'http://www.perlfoundation.org/artistic_license_2_0'
     $P0['copyright_holder'] = 'Parrot Foundation'
-    $P0['generated_by'] = 'Francois Perrad <francois.perrad@gadz.org>'
     $P0['checkout_uri'] = 'git://github.com/fperrad/lua.git'
     $P0['browser_uri'] = 'http://github.com/fperrad/lua'
     $P0['project_uri'] = 'http://github.com/fperrad/lua'
@@ -125,17 +124,18 @@ SOURCES
     $P5['lua/luad.pbc'] = 'luad.pir'
     $P0['pbc_pir'] = $P5
 
+    $P7 = new 'Hash'
+    $P7['parrot-lua'] = 'lua.pbc'
+    $P7['parrot-luap'] = 'luap.pbc'
+    $P0['installable_pbc'] = $P7
+
+    # post build
     $P9 = new 'Hash'
     $P9['lua/library/Test/More.pbc'] = 'lua/library/Test/More.pir'
     $P0['liblua__pbc_pir'] = $P9
     $P10 = new 'Hash'
     $P10['lua/library/Test/More.pir'] = 'lua/library/Test/More.lua'
     $P0['liblua__pir_lua'] = $P10
-
-    $P7 = new 'Hash'
-    $P7['parrot-lua'] = 'lua.pbc'
-    $P7['parrot-luap'] = 'luap.pbc'
-    $P0['installable_pbc'] = $P7
 
     # test
     $S0 = get_parrot()
@@ -153,12 +153,21 @@ SOURCES
     $P8 = split ' ', 'lua/lua.pbc lua/luad.pbc'
     $P0['inst_lang'] = $P8
 
+    # dist
+    $P1 = split ' ', 'luac2pir.pir test_lex.pir lua/lib/luabytecode.rules build/translator.pl lua/library/Test/More.lua'
+    $P0['manifest_includes'] = $P1
+    $P2 = split ' ', 'lua/lib/luabytecode_gen.pir lua/library/Test/More.pir'
+    $P0['manifest_excludes'] = $P2
+
     .tailcall setup(args :flat, $P0 :flat :named)
 .end
 
 .sub 'update' :anon
     .param pmc kv :slurpy :named
+    $I0 = file_exists('.git')
+    unless $I0 goto L1
     system('git submodule update')
+  L1:
 .end
 
 .sub 'prebuild' :anon
@@ -173,6 +182,8 @@ SOURCES
     system(cmd)
   L1:
 
+    $I0 = file_exists('.git')
+    unless $I0 goto L2
     $I0 = file_exists('t/lua-TestMore/src/Test/More.lua')
     if $I0 goto L2
     system('git submodule init t/lua-TestMore')

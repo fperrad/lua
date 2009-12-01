@@ -1,3 +1,4 @@
+MANIFEST
 Makefile
 
 *.pbc
@@ -10,6 +11,7 @@ installable_lua
 installable_luap
 
 *.tar.gz
+*.zip
 *.patch
 
 *.tmp
