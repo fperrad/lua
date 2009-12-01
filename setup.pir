@@ -154,8 +154,10 @@ SOURCES
     $P0['inst_lang'] = $P8
 
     # dist
-    $P0['manifest_includes'] = 'luac2pir.pir test_lex.pir lua/lib/luabytecode.rules build/translator.pl lua/library/Test/More.lua t/lua-TestMore/test_lua51/*.t'
-    $P0['manifest_excludes'] = 'lua/lib/luabytecode_gen.pir lua/library/Test/More.pir'
+    $P1 = glob('luac2pir.pir test_lex.pir lua/lib/luabytecode.rules build/translator.pl lua/library/Test/More.lua t/lua-TestMore/test_lua51/*.t')
+    $P0['manifest_includes'] = $P1
+    $P2 = split ' ', 'lua/lib/luabytecode_gen.pir lua/library/Test/More.pir'
+    $P0['manifest_excludes'] = $P2
 
     .tailcall setup(args :flat, $P0 :flat :named)
 .end
