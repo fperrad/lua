@@ -166,7 +166,7 @@ SOURCES
     .param pmc kv :slurpy :named
     $I0 = file_exists('.git')
     unless $I0 goto L1
-    system('git submodule update')
+    system('git submodule update', 1 :named('verbose'))
   L1:
 .end
 
@@ -179,27 +179,27 @@ SOURCES
     cmd = 'perl build/translator.pl'
     cmd .= ' --output lua/lib/luabytecode_gen.pir'
     cmd .= ' lua/lib/luabytecode.rules'
-    system(cmd)
+    system(cmd, 1 :named('verbose'))
   L1:
 
     $I0 = file_exists('.git')
     unless $I0 goto L2
     $I0 = file_exists('t/lua-TestMore/src/Test/More.lua')
     if $I0 goto L2
-    system('git submodule init t/lua-TestMore')
-    system('git submodule update')
+    system('git submodule init t/lua-TestMore', 1 :named('verbose'))
+    system('git submodule update', 1 :named('verbose'))
   L2:
 
     $I0 = newer('lua/library/Test/More.lua', 't/lua-TestMore/src/Test/More.lua')
     if $I0 goto L3
-    install('t/lua-TestMore/src/Test/More.lua', 'lua/library/Test/More.lua')
+    install('t/lua-TestMore/src/Test/More.lua', 'lua/library/Test/More.lua', 1 :named('verbose'))
   L3:
 .end
 
 .sub 'clean' :anon
     .param pmc kv :slurpy :named
-    unlink('lua/lib/luabytecode_gen.pir')
-    unlink('lua/library/Test/More.lua')
+    unlink('lua/lib/luabytecode_gen.pir', 1 :named('verbose'))
+    unlink('lua/library/Test/More.lua', 1 :named('verbose'))
 .end
 
 .sub 'liblua_build' :anon
@@ -226,7 +226,7 @@ SOURCES
     cmd .= lua
     cmd .= " > "
     cmd .= pir
-    system(cmd)
+    system(cmd, 1 :named('verbose'))
     goto L1
   L2:
 .end
@@ -248,7 +248,7 @@ SOURCES
     $S0 = get_parrot()
     cmd .= $S0
     cmd .= " t/pmc/*.t"
-    system(cmd)
+    system(cmd, 1 :named('verbose'))
 .end
 
 .sub 'sanity' :anon
@@ -260,7 +260,7 @@ SOURCES
     $S0 = get_parrot()
     cmd .= $S0
     cmd .= " lua.pbc\" t/lua-TestMore/test_lua51/0*.t"
-    system(cmd)
+    system(cmd, 1 :named('verbose'))
 .end
 
 .sub 'spectest' :anon
@@ -273,7 +273,7 @@ SOURCES
     $S0 = get_parrot()
     cmd .= $S0
     cmd .= " lua.pbc\" t/lua-TestMore/test_lua51/*.t"
-    system(cmd)
+    system(cmd, 1 :named('verbose'))
 .end
 
 .sub 'get_tags'
@@ -306,7 +306,7 @@ SOURCES
     $S0 = config['longsize']
     value .= $S0
     value .= " }"
-    setenv('LUA_INIT', value)
+    setenv('LUA_INIT', value, 1 :named('verbose'))
 .end
 
 
