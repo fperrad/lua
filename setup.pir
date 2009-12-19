@@ -158,6 +158,8 @@ SOURCES
     $P0['manifest_includes'] = $P1
     $P2 = split ' ', 'lua/lib/luabytecode_gen.pir lua/library/Test/More.pir'
     $P0['manifest_excludes'] = $P2
+    $P3 = split ' ', 'CREDITS MAINTAINER README'
+    $P0['doc_files'] = $P3
 
     .tailcall setup(args :flat, $P0 :flat :named)
 .end
