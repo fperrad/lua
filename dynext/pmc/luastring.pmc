@@ -236,9 +236,8 @@ Used to archive the string.
 
 */
     VTABLE void freeze(visit_info *info) {
-        IMAGE_IO * const io = info->image_io;
         SUPER(info);
-        VTABLE_push_string(INTERP, io, SELF.get_string());
+        VTABLE_push_string(INTERP, info, SELF.get_string());
     }
 
 /*
@@ -251,10 +250,8 @@ Used to unarchive the string.
 
 */
     VTABLE void thaw(visit_info *info) {
-        IMAGE_IO * const io = info->image_io;
         SUPER(info);
-        if (info->extra_flags == EXTRA_IS_NULL)
-            SELF.set_string_native(VTABLE_shift_string(INTERP, io));
+        SET_ATTR_str_val(INTERP, SELF, VTABLE_shift_string(INTERP, info));
     }
 
 /*
