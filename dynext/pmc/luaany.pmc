@@ -104,6 +104,21 @@ Returns C<true>.
 
 /*
 
+=item C<FLOATVAL get_number()>
+
+Throws an exception.
+
+=cut
+
+*/
+    VTABLE FLOATVAL get_number() {
+        Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
+                "attempt to perform arithmetic on a %Ss value", SELF.name());
+        return 0.0;
+    }
+
+/*
+
 =item C<void *get_pointer()>
 
 Returns the address of the PMC.
@@ -299,10 +314,6 @@ Throws an exception.
 
 =item C<void i_modulus(PMC *value)>
 
-=item C<PMC* pow(PMC *value, PMC *dest)>
-
-=item C<void i_pow(PMC *value)>
-
 =item C<PMC* concatenate(PMC *value, PMC *dest)>
 
 =item C<void i_concatenate(PMC *value)>
@@ -437,34 +448,6 @@ Throws an exception.
 
     MULTI void i_modulus(DEFAULT value) {
         PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__mod");
-
-        if (PMC_IS_NULL(meth))
-            Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
-                "attempt to perform arithmetic on a %Ss value", SELF.name());
-
-        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
-
-        if (PMC_IS_NULL(SELF))
-            SELF = pmc_new(INTERP, dynpmc_LuaNil);
-    }
-
-    MULTI PMC* pow(DEFAULT value, PMC *dest) {
-        PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__pow");
-
-        if (PMC_IS_NULL(meth))
-            Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
-                "attempt to perform arithmetic on a %Ss value", SELF.name());
-
-        Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
-
-        if (PMC_IS_NULL(dest))
-            return pmc_new(INTERP, dynpmc_LuaNil);
-
-        return dest;
-    }
-
-    MULTI void i_pow(DEFAULT value) {
-        PMC * const meth = _LuaAny_find_meth(INTERP, SELF, "__pow");
 
         if (PMC_IS_NULL(meth))
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
