@@ -26,7 +26,7 @@ This implementation is based on C<Parrot::Coroutine>.
 static PMC* getcurrenv(PARROT_INTERP) {
     PMC *env = PMCNULL;
     PMC * const sub = Parrot_pcc_get_sub(interp, CURRENT_CONTEXT(interp));
-    if (!PMC_IS_NULL(sub) 
+    if (!PMC_IS_NULL(sub)
      && PMC_type(sub) == dynpmc_LuaFunction) {
         env = _LuaFunction_get_environment(interp, sub);
     }
@@ -74,7 +74,7 @@ Raises an exception. Use C<init_pmc()>.
             Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_GLOBAL_NOT_FOUND,
                            "Parrot::Coroutine not found");
 
-        init_args = pmc_new(INTERP, enum_class_Hash);
+        init_args = Parrot_pmc_new(INTERP, enum_class_Hash);
         VTABLE_set_pmc_keyed_str(INTERP, init_args,
                                  Parrot_str_new_constant(INTERP, "initial_sub"), sub);
         t_val(SELF) = VTABLE_instantiate(INTERP, classobj, init_args);
@@ -199,7 +199,7 @@ Return the string "thread".
         PMC *retval = t_env(SELF);
 
         if (PMC_IS_NULL(retval))
-            retval = pmc_new(INTERP, dynpmc_LuaNil);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);
     }
@@ -214,7 +214,7 @@ Return the string "thread".
     METHOD PMC* rawequal(PMC *value) {
         const INTVAL b = (PMC_type(SELF) == PMC_type(value) && SELF == value)
                          ? 1 : 0;
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_integer_native(INTERP, retval, b);
         RETURN(PMC *retval);
     }

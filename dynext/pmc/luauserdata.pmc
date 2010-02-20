@@ -309,7 +309,7 @@ The C<==> operation. Compares reference (not in depth).
         PMC *retval = u_env(SELF);
 
         if (PMC_IS_NULL(retval))
-            retval = pmc_new(INTERP, dynpmc_LuaNil);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);
     }
@@ -325,7 +325,7 @@ The C<==> operation. Compares reference (not in depth).
         PMC *retval = _LuaUserdata_get_metatable(INTERP, SELF);
 
         if (PMC_IS_NULL(retval))
-            retval = pmc_new(INTERP, dynpmc_LuaNil);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);
     }
@@ -342,7 +342,7 @@ The C<==> operation. Compares reference (not in depth).
                           && u_val(SELF) == u_val(value)
                           && u_env(SELF) == u_env(value))
                          ? 1 : 0;
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_integer_native(INTERP, retval, b);
         RETURN(PMC *retval);
     }

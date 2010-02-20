@@ -132,7 +132,7 @@ static PMC* _load_function(Interp *interp);
 
 static PMC* _load_bool(Interp *interp)
 {
-    PMC* const ret = pmc_new(interp, pmc_type(interp,
+    PMC* const ret = Parrot_pmc_new(interp, Parrot_pmc_get_type_str(interp,
           Parrot_str_new_constant(interp, "Boolean")));
     VTABLE_set_integer_native(interp, ret, _get_byte());
     return ret;
@@ -140,7 +140,7 @@ static PMC* _load_bool(Interp *interp)
 
 static PMC* _load_byte(Interp *interp)
 {
-    PMC* const ret = pmc_new(interp, pmc_type(interp,
+    PMC* const ret = Parrot_pmc_new(interp, Parrot_pmc_get_type_str(interp,
           Parrot_str_new_constant(interp, "Integer")));
     VTABLE_set_integer_native(interp, ret, _get_byte());
     return ret;
@@ -148,7 +148,7 @@ static PMC* _load_byte(Interp *interp)
 
 static PMC* _load_integer(Interp *interp)
 {
-    PMC* const ret = pmc_new(interp, pmc_type(interp,
+    PMC* const ret = Parrot_pmc_new(interp, Parrot_pmc_get_type_str(interp,
           Parrot_str_new_constant(interp, "Integer")));
     VTABLE_set_integer_native(interp, ret, _get_integer());
     return ret;
@@ -156,7 +156,7 @@ static PMC* _load_integer(Interp *interp)
 
 static PMC* _load_string(Interp *interp)
 {
-    PMC* const ret = pmc_new(interp, pmc_type(interp,
+    PMC* const ret = Parrot_pmc_new(interp, Parrot_pmc_get_type_str(interp,
           Parrot_str_new_constant(interp, "String")));
     VTABLE_set_string_native(interp, ret, _get_string(interp));
     return ret;

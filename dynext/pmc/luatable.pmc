@@ -394,7 +394,7 @@ Marks the hash as live.
         if (!PMC_IS_NULL(meta)) {
             PMC **m;
 #if 0
-            PMC * const key = pmc_new(INTERP, dynpmc_LuaString);
+            PMC * const key = Parrot_pmc_new(INTERP, dynpmc_LuaString);
             VTABLE_set_string_native(INTERP, key,
                     Parrot_str_new_constant(INTERP, "__mode"));
             m = lua_get(INTERP, PARROT_LUATABLE(meta), key);
@@ -509,7 +509,7 @@ C<table> accessor.
         if (value)
             return value;
 
-        return pmc_new(INTERP, dynpmc_LuaNil);
+        return Parrot_pmc_new(INTERP, dynpmc_LuaNil);
     }
 
 /*
@@ -555,7 +555,7 @@ Need by NameSpace.export_to().
 
 */
     VTABLE void set_pmc_keyed_str(STRING *key, PMC *value) {
-        PMC * const pmc_key = pmc_new(INTERP, dynpmc_LuaString);
+        PMC * const pmc_key = Parrot_pmc_new(INTERP, dynpmc_LuaString);
         VTABLE_set_string_native(INTERP, pmc_key, Parrot_str_copy(INTERP, key));
         value = VTABLE_clone(INTERP, value);
         *lua_set(INTERP, PARROT_LUATABLE(SELF), pmc_key) = value;
@@ -688,7 +688,7 @@ The C<==> operation. Compares reference (not in depth).
         PMC *retval = _LuaTable_get_metatable(INTERP, SELF);
 
         if (PMC_IS_NULL(retval))
-            retval = pmc_new(INTERP, dynpmc_LuaNil);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);
     }
@@ -702,7 +702,7 @@ The C<==> operation. Compares reference (not in depth).
 */
     METHOD PMC* len() {
         PMC **pvalue;
-        PMC * const key = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const key = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         INTVAL idx = 1;
 
         VTABLE_set_integer_native(INTERP, key, idx);
@@ -730,14 +730,14 @@ The C<==> operation. Compares reference (not in depth).
         Node * const n = lua_next(INTERP, PARROT_LUATABLE(SELF), index);
 
         if (n) {
-            PMC * const retval = pmc_new(INTERP, enum_class_FixedPMCArray);
+            PMC * const retval = Parrot_pmc_new(INTERP, enum_class_FixedPMCArray);
             VTABLE_set_integer_native(INTERP, retval, 2);
             VTABLE_set_pmc_keyed_int(INTERP, retval, 0, n->key);
             VTABLE_set_pmc_keyed_int(INTERP, retval, 1, n->val);
             RETURN(PMC *retval);
         }
         else {
-            PMC * const retval = pmc_new(INTERP, dynpmc_LuaNil);
+            PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
             RETURN(PMC *retval);
         }
 
@@ -752,7 +752,7 @@ The C<==> operation. Compares reference (not in depth).
 */
     METHOD PMC* rawequal(PMC *value) {
         const INTVAL b = (SELF == value) ? 1 : 0;
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_integer_native(INTERP, retval, b);
         RETURN(PMC *retval);
     }
@@ -769,7 +769,7 @@ The C<==> operation. Compares reference (not in depth).
         PMC *retval;
 
         if (! pvalue || ! *pvalue)
-            retval = pmc_new(INTERP, dynpmc_LuaNil);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
         else
             retval = *pvalue;
 

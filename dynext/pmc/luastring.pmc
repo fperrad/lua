@@ -79,7 +79,7 @@ Creates a copy of the string.
 
 */
     VTABLE PMC* clone() {
-        PMC * const res = pmc_new(INTERP, PMC_type(SELF));
+        PMC * const res = Parrot_pmc_new(INTERP, PMC_type(SELF));
         VTABLE_set_string_native(INTERP, res, Parrot_str_copy(INTERP, SELF.get_string()));
         return res;
     }
@@ -142,7 +142,7 @@ Return the string "string".
 
 */
     VTABLE void set_integer_native(INTVAL value) {
-        pmc_reuse(INTERP, SELF, dynpmc_LuaNumber, 0);
+        Parrot_pmc_reuse(INTERP, SELF, dynpmc_LuaNumber, 0);
         SELF.set_integer_native(value);
     }
 
@@ -154,7 +154,7 @@ Return the string "string".
 
 */
     VTABLE void set_number_native(FLOATVAL value) {
-        pmc_reuse(INTERP, SELF, dynpmc_LuaNumber, 0);
+        Parrot_pmc_reuse(INTERP, SELF, dynpmc_LuaNumber, 0);
         SELF.set_number_native(value);
     }
 
@@ -205,7 +205,7 @@ the specified C<PMC>.
 
         if (PMC_type(n) == dynpmc_LuaNumber) {
             const FLOATVAL v = - VTABLE_get_number(INTERP, n);
-            dest = pmc_new(INTERP, dynpmc_LuaNumber);
+            dest = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
             VTABLE_set_number_native(INTERP, dest, v);
             return dest;
         }
@@ -326,7 +326,7 @@ Used to unarchive the string.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
             if (PMC_IS_NULL(dest))
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return dest;
         }
@@ -376,7 +376,7 @@ Used to unarchive the string.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -430,7 +430,7 @@ Used to unarchive the string.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
             if (PMC_IS_NULL(dest))
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return dest;
         }
@@ -481,7 +481,7 @@ Used to unarchive the string.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -535,7 +535,7 @@ Used to unarchive the string.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
             if (PMC_IS_NULL(dest))
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return dest;
         }
@@ -585,7 +585,7 @@ Used to unarchive the string.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -640,7 +640,7 @@ Used to unarchive the string.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
             if (PMC_IS_NULL(dest))
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return dest;
         }
@@ -690,7 +690,7 @@ Used to unarchive the string.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -745,7 +745,7 @@ Used to unarchive the string.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
             if (PMC_IS_NULL(dest))
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return dest;
         }
@@ -795,7 +795,7 @@ Used to unarchive the string.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -861,7 +861,7 @@ Throws an exception unless C<value> is a LuaString.
         STRING * const s = Parrot_str_concat(INTERP,
             SELF.get_string(), VTABLE_get_string(INTERP, value), 0);
 
-        dest = pmc_new(INTERP, dynpmc_LuaString);
+        dest = Parrot_pmc_new(INTERP, dynpmc_LuaString);
         VTABLE_set_string_native(INTERP, dest, s);
         return dest;
     }
@@ -870,7 +870,7 @@ Throws an exception unless C<value> is a LuaString.
         STRING * const s = Parrot_str_concat(INTERP,
             SELF.get_string(), VTABLE_get_string(INTERP, value), 0);
 
-        dest = pmc_new(INTERP, dynpmc_LuaString);
+        dest = Parrot_pmc_new(INTERP, dynpmc_LuaString);
         VTABLE_set_string_native(INTERP, dest, s);
         return dest;
     }
@@ -881,7 +881,7 @@ Throws an exception unless C<value> is a LuaString.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
             if (PMC_IS_NULL(dest))
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return dest;
         }
@@ -916,7 +916,7 @@ Throws an exception unless C<value> is a LuaString.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -943,7 +943,7 @@ Throws an exception unless C<value> is a LuaString.
         PMC *retval = _LuaString_get_metatable(INTERP);
 
         if (PMC_IS_NULL(retval))
-            retval = pmc_new(INTERP, dynpmc_LuaNil);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);
     }
@@ -957,7 +957,7 @@ Throws an exception unless C<value> is a LuaString.
 
 */
     METHOD PMC* len() {
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, SELF.elements());
         RETURN(PMC *retval);
     }
@@ -970,7 +970,7 @@ Throws an exception unless C<value> is a LuaString.
 
 */
     METHOD PMC* rawequal(PMC *value) {
-        PMC *retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        PMC *retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
 
         if (PMC_type(SELF) == PMC_type(value)
         && 0               == Parrot_str_not_equal(INTERP, SELF.get_string(),
@@ -1003,13 +1003,13 @@ Throws an exception unless C<value> is a LuaString.
 
             /* no invalid trailing characters? */
             if (*s2 == '\0') {
-                retval = pmc_new(INTERP, dynpmc_LuaNumber);
+                retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
                 VTABLE_set_number_native(INTERP, retval, d);
                 Parrot_str_free_cstring(s1);
                 RETURN(PMC *retval);
             }
         }
-        retval = pmc_new(INTERP, dynpmc_LuaNil);
+        retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
         Parrot_str_free_cstring(s1);
         RETURN(PMC *retval);
     }
@@ -1036,13 +1036,13 @@ Throws an exception unless C<value> is a LuaString.
 
             /* no invalid trailing characters? */
             if (*s2 == '\0') {
-                retval = pmc_new(INTERP, dynpmc_LuaNumber);
+                retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
                 VTABLE_set_number_native(INTERP, retval, n);
                 Parrot_str_free_cstring(s1);
                 RETURN(PMC *retval);
             }
         }
-        retval = pmc_new(INTERP, dynpmc_LuaNil);
+        retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
         Parrot_str_free_cstring(s1);
         RETURN(PMC *retval);
     }

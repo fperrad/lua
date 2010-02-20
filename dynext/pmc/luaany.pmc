@@ -73,7 +73,7 @@ _LuaAny_find_meth(PARROT_INTERP, PMC *obj, const char *name) {
     }
     else {
         PMC *method;
-        PMC * const key = pmc_new(interp, dynpmc_LuaString);
+        PMC * const key = Parrot_pmc_new(interp, dynpmc_LuaString);
         VTABLE_set_string_native(interp, key, Parrot_str_new_constant(interp, name));
 
         method = VTABLE_get_pmc_keyed(interp, meta, key);
@@ -140,7 +140,7 @@ Returns the address of the PMC.
     VTABLE void assign_pmc(PMC *value) {
         const INTVAL type = PMC_type(value);
         if (PMC_type(SELF) != type)
-            pmc_reuse(INTERP, SELF, type, 0);
+            Parrot_pmc_reuse(INTERP, SELF, type, 0);
         if (type != dynpmc_LuaNil)
             SELF.set_pmc(value);
     }
@@ -165,7 +165,7 @@ Throws an exception.
             PMC * retval = PMCNULL;
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, key, &retval);
             if (PMC_IS_NULL(retval))
-                return pmc_new(INTERP, dynpmc_LuaNil);
+                return Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return retval;
         }
@@ -217,7 +217,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "Pi->P", SELF, &dest);
 
         if (PMC_IS_NULL(dest))
-            return pmc_new(INTERP, dynpmc_LuaNil);
+            return Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         return dest;
     }
@@ -232,7 +232,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "Pi->P", SELF, &SELF);
 
         if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
     }
 
 /*
@@ -246,7 +246,7 @@ Common implementation
 */
     VTABLE PMC* logical_not(PMC *dest) {
         const INTVAL result = ! SELF.get_bool();
-        dest = pmc_new(INTERP, dynpmc_LuaBoolean);
+        dest = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_bool(INTERP, dest, result);
         return dest;
     }
@@ -332,7 +332,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
-            return pmc_new(INTERP, dynpmc_LuaNil);
+            return Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         return dest;
     }
@@ -346,7 +346,7 @@ Throws an exception.
 
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
         if (PMC_IS_NULL(SELF))
-            SELF = pmc_new(INTERP, dynpmc_LuaNil);
+            SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
     }
 
     MULTI PMC* subtract(DEFAULT value, PMC *dest) {
@@ -358,7 +358,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
-            return pmc_new(INTERP, dynpmc_LuaNil);
+            return Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         return dest;
     }
@@ -372,7 +372,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
         if (PMC_IS_NULL(SELF))
-            SELF = pmc_new(INTERP, dynpmc_LuaNil);
+            SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
     }
 
     MULTI PMC* multiply(DEFAULT value, PMC *dest) {
@@ -385,7 +385,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
-            return pmc_new(INTERP, dynpmc_LuaNil);
+            return Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         return dest;
     }
@@ -400,7 +400,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
         if (PMC_IS_NULL(SELF))
-            SELF = pmc_new(INTERP, dynpmc_LuaNil);
+            SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
     }
 
     MULTI PMC* divide(DEFAULT value, PMC *dest) {
@@ -413,7 +413,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
-            return pmc_new(INTERP, dynpmc_LuaNil);
+            return Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         return dest;
     }
@@ -428,7 +428,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
         if (PMC_IS_NULL(SELF))
-            SELF = pmc_new(INTERP, dynpmc_LuaNil);
+            SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
     }
 
     MULTI PMC* modulus(DEFAULT value, PMC *dest) {
@@ -441,7 +441,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
-            return pmc_new(INTERP, dynpmc_LuaNil);
+            return Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         return dest;
     }
@@ -456,7 +456,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
         if (PMC_IS_NULL(SELF))
-            SELF = pmc_new(INTERP, dynpmc_LuaNil);
+            SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
     }
 
     MULTI PMC* concatenate(DEFAULT value, PMC *dest) {
@@ -469,7 +469,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
         if (PMC_IS_NULL(dest))
-            return pmc_new(INTERP, dynpmc_LuaNil);
+            return Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         return dest;
     }
@@ -483,7 +483,7 @@ Throws an exception.
         Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
         if (PMC_IS_NULL(SELF))
-            SELF = pmc_new(INTERP, dynpmc_LuaNil);
+            SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
     }
 
 /*
@@ -540,7 +540,7 @@ Without shortcut like in Default PMC.
 
 */
     METHOD PMC* get_metatable() {
-        PMC * const nil = pmc_new(INTERP, dynpmc_LuaNil);
+        PMC * const nil = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
         RETURN(PMC *nil);
     }
 
@@ -564,7 +564,7 @@ Without shortcut like in Default PMC.
         Parrot_ext_call(INTERP, meth, "Pi->P", SELF, &retval);
 
         if (PMC_IS_NULL(retval))
-            retval = pmc_new(INTERP, dynpmc_LuaNil);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);
     }
@@ -579,7 +579,7 @@ Returns C<nil>.
 
 */
     METHOD PMC* tonumber() {
-        PMC * const nil = pmc_new(INTERP, dynpmc_LuaNil);
+        PMC * const nil = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
         RETURN(PMC *nil);
     }
 
@@ -603,10 +603,10 @@ Common implementation (use C<__tostring> or C<get_string>).
             Parrot_ext_call(INTERP, meth, "Pi->P", SELF, &retval);
 
             if (PMC_IS_NULL(retval))
-                retval = pmc_new(INTERP, dynpmc_LuaNil);
+                retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
         }
         else {
-            retval = pmc_new(INTERP, dynpmc_LuaString);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaString);
             VTABLE_set_string_native(INTERP, retval, SELF.get_string());
         }
 

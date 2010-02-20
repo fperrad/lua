@@ -197,7 +197,7 @@ Return the string "function".
         PMC *retval = f_env(SELF);
 
         if (PMC_IS_NULL(retval))
-            retval = pmc_new(INTERP, dynpmc_LuaNil);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);
     }
@@ -219,7 +219,7 @@ Return the string "function".
                  && my_sub->seg     == value_sub->seg)
               ? 1 : 0;
         }
-        retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_integer_native(INTERP, retval, b);
         RETURN(PMC *retval);
     }

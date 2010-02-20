@@ -72,7 +72,7 @@ Creates and returns a clone of the scalar.
 */
     VTABLE PMC *clone() {
         FLOATVAL fv;
-        PMC * const dest = pmc_new(INTERP, PMC_type(SELF));
+        PMC * const dest = Parrot_pmc_new(INTERP, PMC_type(SELF));
         GET_ATTR_fv(INTERP, SELF, fv);
         SET_ATTR_fv(INTERP, dest, fv);
         return dest;
@@ -152,7 +152,7 @@ Returns a Parrot string representation of the number.
 
 */
     VTABLE void set_string_native(STRING *value) {
-        pmc_reuse(INTERP, SELF, dynpmc_LuaString, 0);
+        Parrot_pmc_reuse(INTERP, SELF, dynpmc_LuaString, 0);
         SELF.set_string_native(value);
     }
 
@@ -210,7 +210,7 @@ Decrements the number.
 */
     VTABLE PMC *neg(PMC *dest) {
         const FLOATVAL n = - SELF.get_number();
-        dest = pmc_new(INTERP, dynpmc_LuaNumber);
+        dest = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, dest, n);
         return dest;
     }
@@ -273,7 +273,7 @@ Used to unarchive the number.
     MULTI PMC *add(LuaNumber value, PMC *dest) {
         const FLOATVAL n = SELF.get_number()
                          + VTABLE_get_number(INTERP, value);
-        dest = pmc_new(INTERP, dynpmc_LuaNumber);
+        dest = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, dest, n);
         return dest;
     }
@@ -297,7 +297,7 @@ Used to unarchive the number.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
             if (PMC_IS_NULL(dest))
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return dest;
         }
@@ -339,7 +339,7 @@ Used to unarchive the number.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -359,7 +359,7 @@ Used to unarchive the number.
     MULTI PMC *subtract(LuaNumber value, PMC *dest) {
         const FLOATVAL n = SELF.get_number()
                          - VTABLE_get_number(INTERP, value);
-        dest = pmc_new(INTERP, dynpmc_LuaNumber);
+        dest = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, dest, n);
         return dest;
     }
@@ -383,7 +383,7 @@ Used to unarchive the number.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
             if (PMC_IS_NULL(dest)) {
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
             }
 
             return dest;
@@ -425,7 +425,7 @@ Used to unarchive the number.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -445,7 +445,7 @@ Used to unarchive the number.
     MULTI PMC *multiply(LuaNumber value, PMC *dest) {
         const FLOATVAL n = SELF.get_number()
                          * VTABLE_get_number(INTERP, value);
-        dest = pmc_new(INTERP, dynpmc_LuaNumber);
+        dest = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, dest, n);
         return dest;
     }
@@ -468,7 +468,7 @@ Used to unarchive the number.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
             if (PMC_IS_NULL(dest))
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return dest;
         }
@@ -508,7 +508,7 @@ Used to unarchive the number.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -528,7 +528,7 @@ Used to unarchive the number.
     MULTI PMC *divide(LuaNumber value, PMC *dest) {
         const FLOATVAL n = SELF.get_number()
                          / VTABLE_get_number(INTERP, value);
-        dest = pmc_new(INTERP, dynpmc_LuaNumber);
+        dest = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, dest, n);
         return dest;
     }
@@ -551,7 +551,7 @@ Used to unarchive the number.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
             if (PMC_IS_NULL(dest))
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return dest;
         }
@@ -592,7 +592,7 @@ Used to unarchive the number.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -613,7 +613,7 @@ Used to unarchive the number.
         const FLOATVAL a = SELF.get_number();
         const FLOATVAL b = VTABLE_get_number(INTERP, value);
         const FLOATVAL n = a - floor(a / b) * b;
-        dest = pmc_new(INTERP, dynpmc_LuaNumber);
+        dest = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, dest, n);
         return dest;
     }
@@ -636,7 +636,7 @@ Used to unarchive the number.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
             if (PMC_IS_NULL(dest))
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return dest;
         }
@@ -678,7 +678,7 @@ Used to unarchive the number.
         if (!PMC_IS_NULL(meth)) {
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -731,7 +731,7 @@ Used to unarchive the number.
     MULTI PMC *concatenate(LuaNumber value, PMC *dest) {
         STRING * const s = Parrot_str_concat(INTERP, SELF.get_string(),
             VTABLE_get_string(INTERP, value), 0);
-        dest = pmc_new(INTERP, dynpmc_LuaNumber);
+        dest = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_string_native(INTERP, dest, s);
         return dest;
     }
@@ -739,7 +739,7 @@ Used to unarchive the number.
     MULTI PMC *concatenate(LuaString value, PMC *dest) {
         STRING * const s = Parrot_str_concat(INTERP, SELF.get_string(),
             VTABLE_get_string(INTERP, value), 0);
-        dest = pmc_new(INTERP, dynpmc_LuaNumber);
+        dest = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_string_native(INTERP, dest, s);
         return dest;
     }
@@ -751,7 +751,7 @@ Used to unarchive the number.
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &dest);
 
             if (PMC_IS_NULL(dest))
-                dest = pmc_new(INTERP, dynpmc_LuaNil);
+                dest = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return dest;
         }
@@ -786,7 +786,7 @@ Used to unarchive the number.
             Parrot_ext_call(INTERP, meth, "PiP->P", SELF, value, &SELF);
 
             if (PMC_IS_NULL(SELF))
-                SELF = pmc_new(INTERP, dynpmc_LuaNil);
+                SELF = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
             return;
         }
@@ -811,7 +811,7 @@ Used to unarchive the number.
 */
     METHOD PMC* acosh() {
         const FLOATVAL n = acosh(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -825,7 +825,7 @@ Used to unarchive the number.
 */
     METHOD PMC* asinh() {
         const FLOATVAL n = asinh(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -839,7 +839,7 @@ Used to unarchive the number.
 */
     METHOD PMC* atanh() {
         const FLOATVAL n = atanh(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -853,7 +853,7 @@ Used to unarchive the number.
 */
     METHOD PMC* cbrt() {
         const FLOATVAL n = cbrt(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -868,7 +868,7 @@ Used to unarchive the number.
     METHOD PMC* copysign(PMC* y) {
         const FLOATVAL n = copysign(VTABLE_get_number(INTERP, SELF),
                                     VTABLE_get_number(INTERP, y));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -882,7 +882,7 @@ Used to unarchive the number.
 */
     METHOD PMC* cosh() {
         const FLOATVAL n = cosh(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -896,7 +896,7 @@ Used to unarchive the number.
 */
     METHOD PMC* erf() {
         const FLOATVAL n = erf(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -910,7 +910,7 @@ Used to unarchive the number.
 */
     METHOD PMC* erfc() {
         const FLOATVAL n = erfc(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -924,7 +924,7 @@ Used to unarchive the number.
 */
     METHOD PMC* exp2() {
         const FLOATVAL n = exp2(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -938,7 +938,7 @@ Used to unarchive the number.
 */
     METHOD PMC* expm1() {
         const FLOATVAL n = expm1(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -953,7 +953,7 @@ Used to unarchive the number.
     METHOD PMC* fdim(PMC* y) {
         const FLOATVAL n = fdim(VTABLE_get_number(INTERP, SELF),
                                 VTABLE_get_number(INTERP, y));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -969,7 +969,7 @@ Used to unarchive the number.
         const FLOATVAL n = fma(VTABLE_get_number(INTERP, SELF),
                                VTABLE_get_number(INTERP, y),
                                VTABLE_get_number(INTERP, z));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -984,7 +984,7 @@ Used to unarchive the number.
     METHOD PMC* fmax(PMC* y) {
         const FLOATVAL n = fmax(VTABLE_get_number(INTERP, SELF),
                                 VTABLE_get_number(INTERP, y));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -999,7 +999,7 @@ Used to unarchive the number.
     METHOD PMC* fmin(PMC* y) {
         const FLOATVAL n = fmin(VTABLE_get_number(INTERP, SELF),
                                 VTABLE_get_number(INTERP, y));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1012,7 +1012,7 @@ Used to unarchive the number.
 
 */
     METHOD PMC* fpclassify() {
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaString);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaString);
         const char *p;
         switch (fpclassify(VTABLE_get_number(INTERP, SELF))) {
         case FP_INFINITE:       p = "inf";              break;
@@ -1037,9 +1037,9 @@ Used to unarchive the number.
     METHOD PMC* frexp() {
         int _e;
         const FLOATVAL _y  = frexp(VTABLE_get_number(INTERP, SELF), &_e);
-        PMC * const y      = pmc_new(INTERP, dynpmc_LuaNumber);
-        PMC * const expn   = pmc_new(INTERP, dynpmc_LuaNumber);
-        PMC * const retval = pmc_new(INTERP, enum_class_FixedPMCArray);
+        PMC * const y      = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const expn   = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, enum_class_FixedPMCArray);
 
         VTABLE_set_number_native(INTERP, y, _y);
         VTABLE_set_integer_native(INTERP, expn, _e);
@@ -1060,7 +1060,7 @@ Used to unarchive the number.
     METHOD PMC* hypot(PMC* y) {
         const FLOATVAL n = hypot(VTABLE_get_number(INTERP, SELF),
                                  VTABLE_get_number(INTERP, y));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1074,7 +1074,7 @@ Used to unarchive the number.
 */
     METHOD PMC* ilogb() {
         const FLOATVAL n = ilogb(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1088,7 +1088,7 @@ Used to unarchive the number.
 */
     METHOD PMC* isfinite() {
         const INTVAL b = isfinite(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_bool(INTERP, retval, b);
         RETURN(PMC *retval);
     }
@@ -1102,7 +1102,7 @@ Used to unarchive the number.
 */
     METHOD PMC* isinf() {
         const INTVAL b = isinf(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_bool(INTERP, retval, b);
         RETURN(PMC *retval);
     }
@@ -1116,7 +1116,7 @@ Used to unarchive the number.
 */
     METHOD PMC* isnan() {
         const INTVAL b = isnan(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_bool(INTERP, retval, b);
         RETURN(PMC *retval);
     }
@@ -1130,7 +1130,7 @@ Used to unarchive the number.
 */
     METHOD PMC* isnormal() {
         const INTVAL b = isnormal(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_bool(INTERP, retval, b);
         RETURN(PMC *retval);
     }
@@ -1145,7 +1145,7 @@ Used to unarchive the number.
     METHOD PMC* ldexp(PMC *expn) {
         const FLOATVAL n = ldexp(VTABLE_get_number(INTERP, SELF),
                                  VTABLE_get_integer(INTERP, expn));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1159,7 +1159,7 @@ Used to unarchive the number.
 */
     METHOD PMC* lgamma() {
         const FLOATVAL n = lgamma(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1173,7 +1173,7 @@ Used to unarchive the number.
 */
     METHOD PMC* log1p() {
         const FLOATVAL n = log1p(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1187,7 +1187,7 @@ Used to unarchive the number.
 */
     METHOD PMC* log2() {
         const FLOATVAL n = log2(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1201,7 +1201,7 @@ Used to unarchive the number.
 */
     METHOD PMC* logb() {
         const FLOATVAL n = logb(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1216,9 +1216,9 @@ Used to unarchive the number.
     METHOD PMC* modf() {
         FLOATVAL _d;
         const FLOATVAL _y  = modf(VTABLE_get_number(INTERP, SELF), &_d);
-        PMC * const y      = pmc_new(INTERP, dynpmc_LuaNumber);
-        PMC * const d      = pmc_new(INTERP, dynpmc_LuaNumber);
-        PMC * const retval = pmc_new(INTERP, enum_class_FixedPMCArray);
+        PMC * const y      = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const d      = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, enum_class_FixedPMCArray);
 
         VTABLE_set_number_native(INTERP, y, _y);
         VTABLE_set_number_native(INTERP, d, _d);
@@ -1238,7 +1238,7 @@ Used to unarchive the number.
 */
     METHOD PMC* nearbyint() {
         const FLOATVAL n = nearbyint(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1253,7 +1253,7 @@ Used to unarchive the number.
     METHOD PMC* nextafter(PMC* y) {
         const FLOATVAL n = nextafter(VTABLE_get_number(INTERP, SELF),
                                      VTABLE_get_number(INTERP, y));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1268,7 +1268,7 @@ Used to unarchive the number.
     METHOD PMC* nexttoward(PMC* y) {
         const FLOATVAL n = nexttoward(VTABLE_get_number(INTERP, SELF),
                                       VTABLE_get_number(INTERP, y));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1284,7 +1284,7 @@ Used to unarchive the number.
         const INTVAL b = (PMC_type(SELF) == PMC_type(value)
             && VTABLE_get_number(INTERP, SELF) == VTABLE_get_number(INTERP, value))
                          ? 1 : 0;
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_integer_native(INTERP, retval, b);
         RETURN(PMC *retval);
     }
@@ -1299,7 +1299,7 @@ Used to unarchive the number.
     METHOD PMC* remainder(PMC* y) {
         const FLOATVAL n = remainder(VTABLE_get_number(INTERP, SELF),
                                      VTABLE_get_number(INTERP, y));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1313,7 +1313,7 @@ Used to unarchive the number.
 */
     METHOD PMC* rint() {
         const FLOATVAL n = rint(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1327,7 +1327,7 @@ Used to unarchive the number.
 */
     METHOD PMC* round() {
         const FLOATVAL n = round(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1342,7 +1342,7 @@ Used to unarchive the number.
     METHOD PMC* scalbn(PMC* ex) {
         const FLOATVAL n = scalbn(VTABLE_get_number(INTERP, SELF),
                                   VTABLE_get_number(INTERP, ex));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1356,7 +1356,7 @@ Used to unarchive the number.
 */
     METHOD PMC* signbit() {
         const FLOATVAL n = signbit(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1370,7 +1370,7 @@ Used to unarchive the number.
 */
     METHOD PMC* sinh() {
         const FLOATVAL n = sinh(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1384,7 +1384,7 @@ Used to unarchive the number.
 */
     METHOD PMC* tanh() {
         const FLOATVAL n = tanh(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1398,7 +1398,7 @@ Used to unarchive the number.
 */
     METHOD PMC* tgamma() {
         const FLOATVAL n = tgamma(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }
@@ -1412,7 +1412,7 @@ Used to unarchive the number.
 */
     METHOD PMC* trunc() {
         const FLOATVAL n = trunc(VTABLE_get_number(INTERP, SELF));
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, n);
         RETURN(PMC *retval);
     }

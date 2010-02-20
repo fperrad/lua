@@ -41,19 +41,19 @@ pmclass Lua
     void class_init() {
         Lua_PMC = NULL;
 
-        dynpmc_LuaBoolean = pmc_type(INTERP,
+        dynpmc_LuaBoolean = Parrot_pmc_get_type_str(INTERP,
             Parrot_str_new_constant(INTERP, "LuaBoolean"));
-        dynpmc_LuaFunction = pmc_type(INTERP,
+        dynpmc_LuaFunction = Parrot_pmc_get_type_str(INTERP,
             Parrot_str_new_constant(INTERP, "LuaFunction"));
-        dynpmc_LuaNil = pmc_type(INTERP,
+        dynpmc_LuaNil = Parrot_pmc_get_type_str(INTERP,
             Parrot_str_new_constant(INTERP, "LuaNil"));
-        dynpmc_LuaNumber = pmc_type(INTERP,
+        dynpmc_LuaNumber = Parrot_pmc_get_type_str(INTERP,
             Parrot_str_new_constant(INTERP, "LuaNumber"));
-        dynpmc_LuaString = pmc_type(INTERP,
+        dynpmc_LuaString = Parrot_pmc_get_type_str(INTERP,
             Parrot_str_new_constant(INTERP, "LuaString"));
-        dynpmc_LuaTable = pmc_type(INTERP,
+        dynpmc_LuaTable = Parrot_pmc_get_type_str(INTERP,
             Parrot_str_new_constant(INTERP, "LuaTable"));
-        dynpmc_LuaUserdata = pmc_type(INTERP,
+        dynpmc_LuaUserdata = Parrot_pmc_get_type_str(INTERP,
             Parrot_str_new_constant(INTERP, "LuaUserdata"));
     }
 
@@ -86,7 +86,7 @@ information see F<src/pmc.c>.
 */
     METHOD PMC* clock() {
         const FLOATVAL f = clock() / (FLOATVAL)CLOCKS_PER_SEC;
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaNumber);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_number_native(INTERP, retval, f);
         RETURN(PMC *retval);
     }
@@ -114,9 +114,9 @@ information see F<src/pmc.c>.
         t = mktime(&ts);
 
         if (t == -1)
-            retval = pmc_new(INTERP, dynpmc_LuaNil);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
         else {
-            retval = pmc_new(INTERP, dynpmc_LuaNumber);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
             VTABLE_set_integer_native(INTERP, retval, t);
         }
 
@@ -140,12 +140,12 @@ information see F<src/pmc.c>.
         PMC  *retval;
 
         if (p) {
-            retval = pmc_new(INTERP, dynpmc_LuaString);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaString);
             VTABLE_set_string_native(INTERP, retval,
                                      Parrot_str_new(INTERP, p, 0));
         }
         else
-            retval = pmc_new(INTERP, dynpmc_LuaNil);
+            retval = Parrot_pmc_new(INTERP, dynpmc_LuaNil);
 
         RETURN(PMC *retval);
     }

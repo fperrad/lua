@@ -59,7 +59,7 @@ Creates and returns a clone of the scalar.
 
 */
     VTABLE PMC* clone() {
-        return pmc_new(INTERP, PMC_type(SELF));
+        return Parrot_pmc_new(INTERP, PMC_type(SELF));
     }
 
 /*
@@ -137,7 +137,7 @@ Return always C<false>.
 */
     METHOD PMC *rawequal(PMC *value) {
         const INTVAL b = (PMC_type(SELF) == PMC_type(value)) ? 1 : 0;
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_integer_native(INTERP, retval, b);
         RETURN(PMC *retval);
     }

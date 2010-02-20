@@ -72,7 +72,7 @@ Creates and returns a clone of the scalar.
 */
     VTABLE PMC* clone() {
         INTVAL iv;
-        PMC *dest = pmc_new(INTERP, PMC_type(SELF));
+        PMC *dest = Parrot_pmc_new(INTERP, PMC_type(SELF));
         GET_ATTR_iv(INTERP, SELF, iv);
         SET_ATTR_iv(INTERP, dest, iv);
         return dest;
@@ -223,7 +223,7 @@ Used to unarchive the boolean.
         const INTVAL b = (PMC_type(SELF) == PMC_type(value)
             && VTABLE_get_integer(INTERP, SELF) == VTABLE_get_integer(INTERP, value))
                          ? 1 : 0;
-        PMC * const retval = pmc_new(INTERP, dynpmc_LuaBoolean);
+        PMC * const retval = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
         VTABLE_set_integer_native(INTERP, retval, b);
         RETURN(PMC *retval);
     }
