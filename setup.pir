@@ -246,7 +246,7 @@ SOURCES
     run_step('build', kv :flat :named)
 
     .local string cmd
-    cmd = "prove --exec="
+    cmd = "tapir --exec="
     $S0 = get_parrot()
     cmd .= $S0
     cmd .= " t/pmc/*.t"
@@ -258,7 +258,7 @@ SOURCES
     run_step('build', kv :flat :named)
 
     .local string cmd
-    cmd = "prove --exec=\""
+    cmd = "tapir --exec=\""
     $S0 = get_parrot()
     cmd .= $S0
     cmd .= " lua.pbc\" t/lua-TestMore/test_lua51/0*.t"
@@ -271,7 +271,7 @@ SOURCES
     run_step('set_LUA_INIT', kv :flat :named)
 
     .local string cmd
-    cmd = "prove --exec=\""
+    cmd = "tapir --exec=\""
     $S0 = get_parrot()
     cmd .= $S0
     cmd .= " lua.pbc\" t/lua-TestMore/test_lua51/*.t"
