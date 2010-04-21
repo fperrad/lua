@@ -730,7 +730,7 @@ Used to unarchive the number.
 */
     MULTI PMC *concatenate(LuaNumber value, PMC *dest) {
         STRING * const s = Parrot_str_concat(INTERP, SELF.get_string(),
-            VTABLE_get_string(INTERP, value), 0);
+            VTABLE_get_string(INTERP, value));
         dest = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_string_native(INTERP, dest, s);
         return dest;
@@ -738,7 +738,7 @@ Used to unarchive the number.
 
     MULTI PMC *concatenate(LuaString value, PMC *dest) {
         STRING * const s = Parrot_str_concat(INTERP, SELF.get_string(),
-            VTABLE_get_string(INTERP, value), 0);
+            VTABLE_get_string(INTERP, value));
         dest = Parrot_pmc_new(INTERP, dynpmc_LuaNumber);
         VTABLE_set_string_native(INTERP, dest, s);
         return dest;
@@ -771,13 +771,13 @@ Used to unarchive the number.
     MULTI void i_concatenate(LuaNumber value) {
         STRING * const s = SELF.get_string();
         STRING * const v = VTABLE_get_string(INTERP, value);
-        SELF.set_string_native(Parrot_str_append(INTERP, s, v));
+        SELF.set_string_native(Parrot_str_concat(INTERP, s, v));
     }
 
     MULTI void i_concatenate(LuaString value) {
         STRING * const s = SELF.get_string();
         STRING * const v = VTABLE_get_string(INTERP, value);
-        SELF.set_string_native(Parrot_str_append(INTERP, s, v));
+        SELF.set_string_native(Parrot_str_concat(INTERP, s, v));
     }
 
     MULTI void i_concatenate(DEFAULT value) {
