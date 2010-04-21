@@ -1,4 +1,4 @@
-# Copyright (C) 2006-2009, Parrot Foundation.
+# Copyright (C) 2006-2010, Parrot Foundation.
 # $Id$
 
 =head1 elements of grammar for Lua 5.1
@@ -24,7 +24,7 @@ L<http://www.lua.org/manual/5.1/manual.html#2.1>.
 
 =cut
 
-.sub 'syntaxerror' :method
+.sub 'syntaxerror' :method :nsentry
     .param string message :optional
     .param pmc adv :slurpy :named
     unless null message goto L1

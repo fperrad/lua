@@ -1,4 +1,4 @@
-# Copyright (C) 2007-2009, Parrot Foundation.
+# Copyright (C) 2007-2010, Parrot Foundation.
 # $Id$
 
 =head1 Lua Input/Output Library
@@ -58,7 +58,7 @@ are garbage collected, but that takes an unpredictable amount of time to happen.
 
 =cut
 
-.sub 'close' :method
+.sub 'close' :method :nsentry
     .param pmc extra :slurpy
     .local pmc res
     tofile(self)
@@ -73,7 +73,7 @@ Saves any written data to C<file>.
 
 =cut
 
-.sub 'flush' :method
+.sub 'flush' :method :nsentry
     .param pmc extra :slurpy
     .local pmc f
     .local pmc res
@@ -97,7 +97,7 @@ does not close the file when the loop ends.)
 
 =cut
 
-.sub 'lines' :method
+.sub 'lines' :method :nsentry
     .param pmc extra :slurpy
     tofile(self)
     .tailcall aux_lines(self, 0)
@@ -141,7 +141,7 @@ empty string, or B<nil> on end of file.
 
 =cut
 
-.sub 'read' :method
+.sub 'read' :method :nsentry
     .param pmc formats :slurpy
     .local pmc res
     .local pmc f
@@ -239,7 +239,7 @@ position to the end of the file, and returns its size.
 
 =cut
 
-.sub 'seek' :method
+.sub 'seek' :method :nsentry
     .param pmc whence :optional
     .param pmc offset :optional
     .param pmc extra :slurpy
@@ -285,7 +285,7 @@ The default is an appropriate size.
 
 =cut
 
-.sub 'setvbuf' :method
+.sub 'setvbuf' :method :nsentry
     .param pmc mode :optional
     .param pmc size :optional
     .param pmc extra :slurpy
@@ -317,7 +317,7 @@ or C<string.format> before write.
 
 =cut
 
-.sub 'write' :method
+.sub 'write' :method :nsentry
     .param pmc argv :slurpy
     .local pmc res
     .local int argc
@@ -346,7 +346,7 @@ or C<string.format> before write.
 .end
 
 
-.sub '__gc' :method
+.sub '__gc' :method :nsentry
     .local pmc f
     f = tofilep(self)
     # ignore closed files
@@ -357,7 +357,7 @@ or C<string.format> before write.
 .end
 
 
-.sub '__tostring' :method
+.sub '__tostring' :method :nsentry
     .local pmc f
     .local pmc res
     f = tofilep(self)
