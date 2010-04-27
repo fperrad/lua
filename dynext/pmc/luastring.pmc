@@ -80,7 +80,7 @@ Creates a copy of the string.
 */
     VTABLE PMC* clone() {
         PMC * const res = Parrot_pmc_new(INTERP, PMC_type(SELF));
-        VTABLE_set_string_native(INTERP, res, Parrot_str_copy(INTERP, SELF.get_string()));
+        VTABLE_set_string_native(INTERP, res, SELF.get_string());
         return res;
     }
 
@@ -118,7 +118,7 @@ Returns the string itself.
     VTABLE STRING* get_string() {
         STRING *str_val;
         GET_ATTR_str_val(INTERP, SELF, str_val);
-        return Parrot_str_copy(INTERP, str_val);
+        return str_val;
     }
 
 /*

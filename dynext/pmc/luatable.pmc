@@ -556,7 +556,7 @@ Need by NameSpace.export_to().
 */
     VTABLE void set_pmc_keyed_str(STRING *key, PMC *value) {
         PMC * const pmc_key = Parrot_pmc_new(INTERP, dynpmc_LuaString);
-        VTABLE_set_string_native(INTERP, pmc_key, Parrot_str_copy(INTERP, key));
+        VTABLE_set_string_native(INTERP, pmc_key, key);
         value = VTABLE_clone(INTERP, value);
         *lua_set(INTERP, PARROT_LUATABLE(SELF), pmc_key) = value;
     }
