@@ -136,14 +136,14 @@ used in F<languages/lua/src/POSTGrammar.tg>
     $I0 = index $S0, "/"
   L1:
     unless $I0 >= 0 goto L2
-    substr $S0, $I0, 1, "."
+    $S0 = replace $S0, $I0, 1, "."
     $I0 = index $S0, "/", $I0
     goto L1
   L2:
     $I0 = index $S0, "\\"
   L3:
     unless $I0 >= 0 goto L4
-    substr $S0, $I0, 1, "."
+    $S0 = replace $S0, $I0, 1, "."
     $I0 = index $S0, "\\", $I0
     goto L3
   L4:
