@@ -855,9 +855,9 @@ of what is an uppercase letter depends on the current locale.
     .param pmc extra :slurpy
     .local pmc res
     $S1 = lua_checkstring(1, s)
-    downcase $S1
+    $S0 = downcase $S1
     new res, 'LuaString'
-    set res, $S1
+    set res, $S0
     .return (res)
 .end
 
@@ -988,9 +988,9 @@ of what is a lowercase letter depends on the current locale.
     .param pmc extra :slurpy
     .local pmc res
     $S1 = lua_checkstring(1, s)
-    upcase $S1
+    $S0 = upcase $S1
     new res, 'LuaString'
-    set res, $S1
+    set res, $S0
     .return (res)
 .end
 
