@@ -16,6 +16,7 @@ L<http://www.lua.org/manual/5.1/manual.html#2.1>.
 =cut
 
 .sub 'main' :main
+    $P0 = loadlib 'os'
     .include 'test_more.pir'
 
     plan(3)

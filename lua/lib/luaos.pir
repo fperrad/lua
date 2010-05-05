@@ -22,6 +22,7 @@ L<http://www.lua.org/manual/5.1/manual.html#5.8>.
 
 .sub 'luaopen_os'
 #    print "init Lua OS\n"
+    $P0 = loadlib 'os'
 
     .local pmc _lua__GLOBAL
     _lua__GLOBAL = get_hll_global '_G'

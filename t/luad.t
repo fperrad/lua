@@ -19,6 +19,7 @@ by Kein-Hong Man
 =cut
 
 .sub 'main' :main
+    $P0 = loadlib 'os'
     .include 'test_more.pir'
 
     $P0 = open 'luac -v', 'rp'
