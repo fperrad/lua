@@ -416,6 +416,7 @@ This function does not accept string values containing embedded zeros.
     unless $S0 == '%' goto L4
     b .= $S0
     inc idx
+    goto L1
   L4:
     .local string form
     .local string buff
