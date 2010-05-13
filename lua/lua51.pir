@@ -225,7 +225,7 @@ used in F<languages/lua/src/POSTGrammar.tg>
     if $S0 == '' goto L1
     .local pmc code
     code = find_caller_lex '$CODE'
-    code.'emit'($S0)
+    code.'append_format'($S0)
   L1:
     .tailcall self.'pir_children'(node)
 .end
