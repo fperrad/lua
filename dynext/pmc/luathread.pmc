@@ -36,6 +36,7 @@ static PMC* getcurrenv(PARROT_INTERP) {
 
 pmclass LuaThread
     extends LuaAny
+    provides invokable
     auto_attrs
     dynpmc
     group lua_group

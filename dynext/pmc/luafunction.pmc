@@ -29,8 +29,7 @@ _LuaFunction_get_environment(PARROT_INTERP, PMC *obj) {
 pmclass LuaFunction
     extends  Sub
     extends  LuaAny
-    provides scalar
-    provides sub
+    provides invokable
     auto_attrs
     dynpmc
     group    lua_group

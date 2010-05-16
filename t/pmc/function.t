@@ -20,7 +20,7 @@ Tests C<LuaFunction> PMC
 
     .include 'test_more.pir'
 
-    plan(14)
+    plan(13)
 
     check_inheritance()
     check_interface()
@@ -46,10 +46,8 @@ Tests C<LuaFunction> PMC
 
 .sub 'check_interface'
     $P0 = new 'LuaFunction'
-    $I0 = does $P0, 'scalar'
+    $I0 = does $P0, 'invokable'
     ok($I0, "check interface")
-    $I0 = does $P0, 'sub'
-    ok($I0)
     $I0 = does $P0, 'no_interface'
     nok($I0)
 .end

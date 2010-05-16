@@ -50,7 +50,7 @@ Tests Lua C<thread> type
 .sub 'check_interface'
     .const 'Sub' F1 = 'f1'
     $P0 = new 'LuaThread', F1
-    $I0 = does $P0, 'scalar'
+    $I0 = does $P0, 'invokable'
     ok($I0, "check interface")
     $I0 = does $P0, 'no_interface'
     nok($I0)
