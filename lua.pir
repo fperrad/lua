@@ -84,6 +84,8 @@ show version information.
 
 =cut
 
+.loadlib 'io_ops'
+
 .sub '__gcstop' :anon :init
     sweepoff  # stop collector during initialization
 .end

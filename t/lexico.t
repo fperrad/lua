@@ -33,9 +33,10 @@ L<http://www.lua.org/manual/5.1/manual.html#2.1>.
 .sub 'lexico' :anon
     .param string code
     spew('lexico.lua', code)
-    $P0 = open 'parrot lua.pbc lexico.lua', 'rp'
+    $P0 = new 'FileHandle'
+    $P0.'open'('parrot lua.pbc lexico.lua', 'rp')
     $S0 = $P0.'readall'()
-    close $P0
+    $P0.'close'()
     .return ($S0)
 .end
 

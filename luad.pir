@@ -17,6 +17,10 @@ L<http://luaforge.net/projects/chunkspy/>
 
 =cut
 
+.loadlib 'io_ops'
+.loadlib 'sys_ops'
+.loadlib 'math_ops'
+.loadlib 'trans_ops'
 .loadlib 'lua_group'
 
 .sub 'main' :main

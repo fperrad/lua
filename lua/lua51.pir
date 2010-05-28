@@ -24,6 +24,8 @@ Used by F<languages/lua/lua.pir>.
 
 =cut
 
+.loadlib 'io_ops'
+
 .namespace [ 'Lua' ]
 
 .sub '__onload' :anon :load

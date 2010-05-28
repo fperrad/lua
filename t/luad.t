@@ -22,9 +22,10 @@ by Kein-Hong Man
     $P0 = loadlib 'os'
     .include 'test_more.pir'
 
-    $P0 = open 'luac -v', 'rp'
-    $S0 = readline $P0
-    close $P0
+    $P0 = new 'FileHandle'
+    $P0.'open'('luac -v', 'rp')
+    $S0 = $P0.'readline'()
+    $P0.'close'()
     $S0 = substr $S0, 0, 7
     if $S0 == "Lua 5.1" goto L1
     # skip_all("luac no available")
@@ -104,9 +105,10 @@ by Kein-Hong Man
     .param string code
     spew('luad.lua', code)
     $I0 = spawnw 'luac -o luad.luac luad.lua'
-    $P0 = open 'parrot lua/luad.pbc luad.luac', 'rp'
+    $P0 = new 'FileHandle'
+    $P0.'open'('parrot lua/luad.pbc luad.luac', 'rp')
     $S0 = $P0.'readall'()
-    close $P0
+    $P0.'close'()
     .return ($S0)
 .end
 

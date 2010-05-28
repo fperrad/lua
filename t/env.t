@@ -43,9 +43,10 @@
     cmd .= " "
     cmd .= params
   L1:
-    $P0 = open cmd, 'rp'
+    $P0 = new 'FileHandle'
+    $P0.'open'(cmd, 'rp')
     $S0 = $P0.'readall'()
-    close $P0
+    $P0.'close'()
     .return ($S0)
 .end
 

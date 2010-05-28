@@ -56,9 +56,10 @@ L<http://www.lua.org/manual/5.1/manual.html#2.1>.
 .sub 'lua_lex' :anon
     .param string code
     spew('test_lex.lua', code)
-    $P0 = open 'parrot test_lex.pir test_lex.lua', 'rp'
+    $P0 = new 'FileHandle'
+    $P0.'open'('parrot test_lex.pir test_lex.lua', 'rp')
     $S0 = $P0.'readall'()
-    close $P0
+    $P0.'close'()
     .return ($S0)
 .end
 

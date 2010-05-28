@@ -127,6 +127,7 @@ PIRCODE
     .tailcall $P0.'new'(start, 'node'=>node, 'prologue'=><<'PIRCODE')
 .include "interpinfo.pasm"
 .HLL "lua"
+.loadlib "io_ops"
 .loadlib "lua_group"
 PIRCODE
 }

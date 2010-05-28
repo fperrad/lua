@@ -47,6 +47,10 @@ L<http://www.lua.org/manual/5.1/manual.html#5.6>.
 
 .HLL 'lua'
 .loadlib 'lua_group'
+.loadlib 'io_ops'
+.loadlib 'sys_ops'
+.loadlib 'math_ops'
+.loadlib 'trans_ops'
 .namespace [ 'math' ]
 
 .sub 'luaopen_math'
@@ -111,12 +115,6 @@ LIST
     div $P0, $P2
     set $P1, 'huge'
     _math[$P1] = $P0
-
-    load_bytecode 'Math/Rand.pbc'
-    $P0 = get_root_namespace ['parrot'; 'Math'; 'Rand']
-    $P1 = get_namespace
-    $P2 = split ' ', 'rand srand RAND_MAX'
-    $P0.'export_to'($P1, $P2)
 
 .end
 
@@ -410,8 +408,11 @@ LIST
     .local pmc res
     .local int u
     .local int l
-    $I0 = rand()
-    $I1 = RAND_MAX()
+    load_bytecode 'Math/Rand.pbc'
+    $P0 = get_root_global ['parrot'; 'Math'; 'Rand'], 'rand'
+    $I0 = $P0()
+    $P0 = get_root_global ['parrot'; 'Math'; 'Rand'], 'RAND_MAX'
+    $I1 = $P0()
     inc $I1
     $N0 = $I0 / $I1
     new res, 'LuaNumber'
@@ -452,7 +453,9 @@ LIST
     .param pmc seed :optional
     .param pmc extra :slurpy
     $I1 = lua_checknumber(1, seed)
-    srand($I1)
+    load_bytecode 'Math/Rand.pbc'
+    $P0 = get_root_global ['parrot'; 'Math'; 'Rand'], 'srand'
+    $P0($I1)
 .end
 
 
