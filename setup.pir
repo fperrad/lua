@@ -245,25 +245,21 @@ SOURCES
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
 
-    .local pmc opts, files
-    opts = new 'Hash'
+    $P0 = glob('t/pmc/*.t')
+    $P0 = sort_strings($P0)
     $S0 = get_parrot()
-    opts['exec'] = $S0
-    files = glob('t/pmc/*.t')
-    runtests(opts, files)
+    runtests($P0 :flat, $S0 :named('exec'))
 .end
 
 .sub 'sanity' :anon
     .param pmc kv :slurpy :named
     run_step('build', kv :flat :named)
 
-    .local pmc opts, files
-    opts = new 'Hash'
+    $P0 = glob('t/lua-TestMore/test_lua51/0*.t')
+    $P0 = sort_strings($P0)
     $S0 = get_parrot()
     $S0 .= ' lua.pbc'
-    opts['exec'] = $S0
-    files = glob('t/lua-TestMore/test_lua51/0*.t')
-    runtests(opts, files)
+    runtests($P0 :flat, $S0 :named('exec'))
 .end
 
 .sub 'spectest' :anon
@@ -271,28 +267,11 @@ SOURCES
     run_step('build', kv :flat :named)
     run_step('set_LUA_INIT', kv :flat :named)
 
-    .local pmc opts, files
-    opts = new 'Hash'
+    $P0 = glob('t/lua-TestMore/test_lua51/*.t')
+    $P0 = sort_strings($P0)
     $S0 = get_parrot()
     $S0 .= ' lua.pbc'
-    opts['exec'] = $S0
-    files = glob('t/lua-TestMore/test_lua51/*.t')
-    runtests(opts, files)
-.end
-
-.sub 'runtests'
-    .param pmc opts
-    .param pmc files
-    load_bytecode 'TAP/Harness.pbc'
-    files = sort_strings(files)
-    .local pmc harness, aggregate
-    harness = new ['TAP';'Harness']
-    harness.'process_args'(opts)
-    aggregate = harness.'runtests'(files)
-    $I0 = aggregate.'has_errors'()
-    unless $I0 goto L1
-    die "test fails"
-  L1:
+    runtests($P0 :flat, $S0 :named('exec'))
 .end
 
 .sub 'get_tags'
