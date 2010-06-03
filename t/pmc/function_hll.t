@@ -93,6 +93,7 @@ Tests C<LuaFunction> PMC
     is($S0, "f1()")
 .end
 
+.loadlib 'io_ops'
 .sub 'load_from_pbc_1'
     load_bytecode 'lua/lib/luaaux.pbc'
     load_bytecode 'lua/lib/luabasic.pbc'
