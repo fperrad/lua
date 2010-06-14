@@ -123,7 +123,9 @@ It's a temporary work. Waiting for the real PIR compiler/interpreter.
     .get_results (e)
     $P0 = new 'FileHandle'
     $S0 = $P0.'readall'(out)
-    printerr $S0
+    .local pmc stderr
+    stderr = getstderr
+    print stderr, $S0
     unlink(out)  # cleaning up the temporary file
     rethrow e
 .end

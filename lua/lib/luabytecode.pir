@@ -82,8 +82,10 @@
     main.'setfenv'(env)
     ($I0, $P0) = docall(main, vararg :flat)
     unless $I0 goto L1
-    printerr 'luac2pir: '
-    printerr $P0
+    .local pmc stderr
+    stderr = getstderr
+    print stderr, 'luac2pir: '
+    print stderr, $P0
   L1:
 .end
 

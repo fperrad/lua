@@ -476,17 +476,21 @@ show version information.
 .sub 'l_message' :anon
     .param string pname
     .param string msg
+    .local pmc stderr
+    stderr = getstderr
     unless pname goto L1
-    printerr pname
-    printerr ': '
+    print stderr, pname
+    print stderr, ': '
   L1:
-    printerr msg
-    printerr "\n"
+    print stderr, msg
+    print stderr, "\n"
 .end
 
 
 .sub 'print_usage' :anon
-    printerr <<'USAGE'
+    .local pmc stderr
+    stderr = getstderr
+    print stderr, <<'USAGE'
 usage: lua.pbc [options] [script [args]].
 Available options are:
   -e stat  execute string 'stat'

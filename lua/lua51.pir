@@ -109,7 +109,9 @@ used in F<languages/lua/src/PASTGrammar.tg>
     .param string msg
     $S0 = "ERROR_INTERNAL (PAST): " . msg
     $S0 .= "\n"
-    printerr $S0
+    .local pmc stderr
+    stderr = getstderr
+    print stderr, $S0
     exit 1
 .end
 
@@ -126,7 +128,9 @@ used in F<languages/lua/src/POSTGrammar.tg>
     .param string msg
     $S0 = "ERROR_INTERNAL (POST): " . msg
     $S0 .= "\n"
-    printerr $S0
+    .local pmc stderr
+    stderr = getstderr
+    print stderr, $S0
     exit 1
 .end
 

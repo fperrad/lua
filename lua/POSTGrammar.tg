@@ -106,8 +106,10 @@ PIRCODE
     main."setfenv"(env)
     ($I0, $P0) = docall(main, vararg :flat)
     unless $I0 goto L3
-    printerr "luap: "
-    printerr $P0
+    .local pmc stderr
+    stderr = getstderr
+    print stderr, "luap: "
+    print stderr, $P0
   L3:
 PIRCODE
     post.'outer'(start)

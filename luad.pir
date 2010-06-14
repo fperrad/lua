@@ -47,7 +47,9 @@ L<http://luaforge.net/projects/chunkspy/>
     pop_eh
     end
   USAGE:
-    printerr "Usage: parrot luad.pir filename\n"
+    .local pmc stderr
+    stderr = getstderr
+    print stderr, "Usage: parrot luad.pir filename\n"
     exit -1
   _handler:
     .local pmc e
@@ -73,7 +75,9 @@ L<http://luaforge.net/projects/chunkspy/>
     $S1 = err
     $S0 .= $S1
     $S0 .= ")\n"
-    printerr $S0
+    .local pmc stderr
+    stderr = getstderr
+    print stderr, $S0
     .return ('')
 .end
 

@@ -80,19 +80,20 @@ function, and so have no direct access to local variables.
 .sub 'debug'
     .param pmc extra :slurpy
     .local string buffer
-    .local pmc stdin
+    .local pmc stdin, stderr
     $P0 = getinterp
     stdin = $P0.'stdhandle'(.PIO_STDIN_FILENO)
+    stderr = $P0.'stdhandle'(.PIO_STDERR_FILENO)
   L1:
-    printerr 'lua_debug> '
+    print stderr, 'lua_debug> '
     buffer = readline stdin
     if buffer == '' goto L2
     $I0 = index buffer, "cont"
     if $I0 == 0 goto L2
     ($P0, $S0) = lua_loadbuffer(buffer, '=(debug command)')
     unless null $P0 goto L3
-    printerr $S0
-    printerr "\n"
+    print stderr, $S0
+    print stderr, "\n"
     goto L1
   L3:
     push_eh _handler
@@ -104,8 +105,8 @@ function, and so have no direct access to local variables.
     .local string msg
     .get_results (e)
     msg = e
-    printerr msg
-    printerr "\n"
+    print stderr, msg
+    print stderr, "\n"
     goto L1
   L2:
 .end

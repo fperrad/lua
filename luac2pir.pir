@@ -40,7 +40,9 @@ luad
     pop_eh
     end
   USAGE:
-    printerr "Usage: parrot luac2pir.pir filename\n"
+    .local pmc stderr
+    stderr = getstderr
+    print stderr, "Usage: parrot luac2pir.pir filename\n"
     exit -1
   _handler:
     .local pmc e
