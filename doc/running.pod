@@ -1,4 +1,4 @@
-# Copyright (C) 2005-2009, Parrot Foundation.
+# Copyright (C) 2005-2010, Parrot Foundation.
 # $Id$
 
 =head1 Using Lua on Parrot
@@ -18,7 +18,7 @@ Configure & build & install Parrot
   cd parrot
   perl Configure.pl
   make
-  sudo make install-dev
+  sudo make install
 
 Retrieve Lua
 
@@ -28,22 +28,21 @@ Retrieve Lua
   git submodule init t/lua-TestMore
   git submodule update
 
-Configure & build Lua
+Build Lua
 
-  parrot Configure.pir
-  make
+  parrot setup.pir
 
 =head2 Running the Test Suite
 
-  make test
+  parrot setup.pir test
 
 With t/lua-TestMore/test_lua51 is used as Test Suite
 
-  make spectest
+  parrot setup.pir spectest
 
 =head2 Smoking to Smolder
 
-  make smoke
+  parrot setup.pir smoke
 
 Note : t/lua-TestMore/test_lua51 is used as Test Suite
 
@@ -57,7 +56,7 @@ or in interactive mode :
 
 =head2 Installing
 
-  make install
+  parrot setup.pir install
 
 and now :
 
