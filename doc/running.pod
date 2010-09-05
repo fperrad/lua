@@ -48,11 +48,11 @@ Note : t/lua-TestMore/test_lua51 is used as Test Suite
 
 =head2 Running your own code
 
-  ../../parrot lua.pbc example.lua
+  parrot lua.pbc example.lua
 
 or in interactive mode :
 
-  ../../parrot lua.pbc
+  parrot lua.pbc
 
 =head2 Installing
 
