@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2006-2009, Parrot Foundation.
+Copyright (C) 2006-2010, Parrot Foundation.
 $Id$
 
 =head1 Lua abstract base class
@@ -237,18 +237,16 @@ Throws an exception.
 
 /*
 
-=item C<PMC* logical_not(PMC *dest)>
+=item C<void set_bool(INTVAL value)>
 
 Common implementation
 
 =cut
 
 */
-    VTABLE PMC* logical_not(PMC *dest) {
-        const INTVAL result = ! SELF.get_bool();
-        dest = Parrot_pmc_new(INTERP, dynpmc_LuaBoolean);
-        VTABLE_set_bool(INTERP, dest, result);
-        return dest;
+    VTABLE void set_bool(INTVAL value) {
+        Parrot_pmc_reuse(INTERP, SELF, dynpmc_LuaBoolean, 0);
+        SELF.set_bool(value);
     }
 
 /*
