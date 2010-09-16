@@ -144,7 +144,7 @@ SOURCES
 
     # smoke
     $P0['prove_archive'] = 'test_lua51.tar.gz'
-    $P0['smolder_url'] = 'http://smolder.plusthree.com/app/projects/process_add_report/12'
+    $P0['smolder_url'] = 'http://smolder.parrot.org/app/projects/process_add_report/7'
     $P0['smolder_comments'] = 'parrot-lua'
     $S0 = get_tags()
     $P0['smolder_tags'] = $S0
