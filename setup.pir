@@ -79,6 +79,7 @@ dynext/pmc/luastring.pmc
 dynext/pmc/luatable.pmc
 dynext/pmc/luathread.pmc
 dynext/pmc/luauserdata.pmc
+dynext/pmc/lua_private.h
 SOURCES
     $S0 = pop $P2
     $P1['lua_group'] = $P2
@@ -154,7 +155,7 @@ SOURCES
     $P0['inst_lang'] = $P8
 
     # dist
-    $P1 = glob('luac2pir.pir test_lex.pir dynext/pmc/lua_private.h lua/lib/luabytecode.rules build/translator.pl lua/library/Test/More.lua t/lua-TestMore/test_lua51/*.t')
+    $P1 = glob('luac2pir.pir test_lex.pir lua/lib/luabytecode.rules build/translator.pl lua/library/Test/More.lua t/lua-TestMore/test_lua51/*.t')
     $P0['manifest_includes'] = $P1
     $P2 = split ' ', 'lua/lib/luabytecode_gen.pir lua/library/Test/More.pir'
     $P0['manifest_excludes'] = $P2
