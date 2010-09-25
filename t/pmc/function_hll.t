@@ -1,5 +1,5 @@
 #! ../../parrot
-# Copyright (C) 2009, Parrot Foundation.
+# Copyright (C) 2009-2010, Parrot Foundation.
 # $Id$
 
 =head1 LuaFunction
@@ -21,12 +21,13 @@ Tests C<LuaFunction> PMC
 .sub 'main' :main
     .include 'test_more.pir'
 
-    plan(14)
+    plan(16)
 
     check_HLL()
     check_HLL_autoboxing()
     check_tostring()
     check_tonumber()
+    check_logical_not()
     check_init_pmc()
     load_from_pbc_1()
     load_from_pbc_2()
@@ -83,6 +84,14 @@ Tests C<LuaFunction> PMC
     $P0 = new 'LuaFunction'
     $P1 = $P0.'tonumber'()
     isa_ok($P1, 'LuaNil', "check tonumber")
+.end
+
+.sub 'check_logical_not'
+    $P0 = new 'LuaFunction'
+    $P1 = not $P0
+    isa_ok($P1, 'LuaBoolean', "check logical_not")
+    $S0 = $P1
+    is($S0, 'false')
 .end
 
 .sub 'check_init_pmc'

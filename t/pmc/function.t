@@ -1,5 +1,5 @@
 #! ../../parrot
-# Copyright (C) 2009, Parrot Foundation.
+# Copyright (C) 2009-2010, Parrot Foundation.
 # $Id$
 
 =head1 LuaFunction
@@ -20,14 +20,13 @@ Tests C<LuaFunction> PMC
 
     .include 'test_more.pir'
 
-    plan(13)
+    plan(11)
 
     check_inheritance()
     check_interface()
     check_name()
     check_get_string()
     check_get_bool()
-    check_logical_not()
 .end
 
 .sub 'check_inheritance'
@@ -76,14 +75,6 @@ Tests C<LuaFunction> PMC
 .sub f1
     print "f1()\n"
     end
-.end
-
-.sub 'check_logical_not'
-    $P0 = new 'LuaFunction'
-    $P1 = not $P0
-    isa_ok($P1, 'LuaBoolean', "check logical_not")
-    $S0 = $P1
-    is($S0, 'false')
 .end
 
 # Local Variables:

@@ -1,5 +1,5 @@
 #! ../../parrot
-# Copyright (C) 2005-2009, Parrot Foundation.
+# Copyright (C) 2005-2010, Parrot Foundation.
 # $Id$
 
 =head1 LuaThread
@@ -23,12 +23,13 @@ Tests Lua C<thread> type
 
     .include 'test_more.pir'
 
-    plan(6)
+    plan(8)
 
     check_HLL()
     check_tostring()
     check_tonumber()
     check__add()
+    check_logical_not()
 .end
 
 .sub 'check_HLL'
@@ -76,6 +77,15 @@ Tests Lua C<thread> type
     end
   .end
 CODE
+.end
+
+.sub 'check_logical_not'
+    .const 'Sub' F1 = 'f1'
+    $P0 = new 'LuaThread', F1
+    $P1 = not $P0
+    isa_ok($P1, 'LuaBoolean', "check logical_not")
+    $S0 = $P1
+    is($S0, 'false')
 .end
 
 # Local Variables:

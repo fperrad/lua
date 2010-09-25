@@ -1,5 +1,5 @@
 #! ../../parrot
-# Copyright (C) 2009, Parrot Foundation.
+# Copyright (C) 2009-2010, Parrot Foundation.
 # $Id$
 
 =head1 LuaUserdata
@@ -21,11 +21,12 @@ Tests C<userdata> type
 .sub 'main' :main
     .include 'test_more.pir'
 
-    plan(5)
+    plan(7)
 
     check_HLL()
     check_tostring()
     check_tonumber()
+    check_logical_not()
 .end
 
 .sub 'check_HLL'
@@ -53,6 +54,16 @@ Tests C<userdata> type
     setattribute $P0, 'data', $P1
     $P2 = $P0.'tonumber'()
     isa_ok($P2, 'LuaNil', "check tonumber")
+.end
+
+.sub 'check_logical_not'
+    $P0 = new 'LuaUserdata'
+    $P1 = new 'FileHandle'
+    setattribute $P0, 'data', $P1
+    $P2 = not $P0
+    isa_ok($P2, 'LuaBoolean', "check logical_not")
+    $S0 = $P2
+    is($S0, 'false')
 .end
 
 # Local Variables:

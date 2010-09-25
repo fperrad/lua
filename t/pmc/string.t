@@ -1,5 +1,5 @@
 #! ../../parrot
-# Copyright (C) 2009, Parrot Foundation.
+# Copyright (C) 2009-2010, Parrot Foundation.
 # $Id$
 
 =head1 LuaString
@@ -20,13 +20,12 @@ Tests C<LuaString> PMC
 
     .include 'test_more.pir'
 
-    plan(11)
+    plan(9)
 
     check_inheritance()
     check_interface()
     check_name()
     check_get_bool()
-    check_logical_not()
     check_embedded_zero()
 .end
 
@@ -62,15 +61,6 @@ Tests C<LuaString> PMC
     set $P0, ''
     $I0 = istrue $P0
     is($I0, 1)
-.end
-
-.sub 'check_logical_not'
-    $P0 = new 'LuaString'
-    set $P0, 'str'
-    $P1 = not $P0
-    isa_ok($P1, 'LuaBoolean', "check logical_not")
-    $S0 = $P1
-    is($S0, 'false')
 .end
 
 .sub 'check_embedded_zero'

@@ -1,5 +1,5 @@
 #! ../../parrot
-# Copyright (C) 2009, Parrot Foundation.
+# Copyright (C) 2009-2010, Parrot Foundation.
 # $Id$
 
 =head1 LuaTable
@@ -20,14 +20,13 @@ Tests C<table> type
 
     .include 'test_more.pir'
 
-    plan(18)
+    plan(16)
 
     check_inheritance()
     check_interface()
     check_name()
     check_get_string()
     check_get_bool()
-    check_logical_not()
     check_key_PMC()
     check_key_nil()
     check_deletion()
@@ -67,14 +66,6 @@ Tests C<table> type
     $P0 = new 'LuaTable'
     $I0 = istrue $P0
     is($I0, 1, "check get_bool")
-.end
-
-.sub 'check_logical_not'
-    $P0 = new 'LuaTable'
-    $P1 = not $P0
-    isa_ok($P1, 'LuaBoolean', "check logical_not")
-    $S0 = $P1
-    is($S0, 'false')
 .end
 
 .sub 'check_key_PMC'

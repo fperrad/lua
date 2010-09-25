@@ -1,5 +1,5 @@
 #! ../../parrot
-# Copyright (C) 2009, Parrot Foundation.
+# Copyright (C) 2009-2010, Parrot Foundation.
 # $Id$
 
 =head1 LuaNil
@@ -21,11 +21,12 @@ Tests C<LuaNil> PMC
 .sub 'main' :main
     .include 'test_more.pir'
 
-    plan(7)
+    plan(9)
 
     check_HLL()
     check_tostring()
     check_tonumber()
+    check_logical_not()
 .end
 
 .sub 'check_HLL'
@@ -51,6 +52,14 @@ Tests C<LuaNil> PMC
     is($S0, 'nil', "check tonumber")
     $P1 = $P0.'tonumber'()
     isa_ok($P1, 'LuaNil')
+.end
+
+.sub 'check_logical_not'
+    $P0 = new 'LuaNil'
+    $P1 = not $P0
+    isa_ok($P1, 'LuaBoolean', "check logical_not")
+    $S0 = $P1
+    is($S0, 'true')
 .end
 
 # Local Variables:
