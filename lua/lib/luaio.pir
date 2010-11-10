@@ -98,7 +98,6 @@ LIST
 
 .const int IO_INPUT = 1
 .const int IO_OUTPUT = 2
-.include 'stdio.pasm'
 
 .sub 'createstdfiles' :anon
     .param pmc mt
@@ -110,11 +109,8 @@ LIST
     new $P1, 'LuaString'
     new $P3, 'LuaNumber'
 
-    .local pmc interp
-    interp = getinterp
-
     set $P1, 'stdin'
-    $P2 =  interp.'stdhandle'(.PIO_STDIN_FILENO)
+    $P2 = getstdin
     $P0 = lua_newuserdata($P2, mt)
     $P0.'setfenv'(env)
     io[$P1] = $P0
@@ -122,7 +118,7 @@ LIST
     io_env[$P3] = $P0
 
     set $P1, 'stdout'
-    $P2 =  interp.'stdhandle'(.PIO_STDOUT_FILENO)
+    $P2 = getstdout
     $P0 = lua_newuserdata($P2, mt)
     $P0.'setfenv'(env)
     io[$P1] = $P0
@@ -130,7 +126,7 @@ LIST
     io_env[$P3] = $P0
 
     set $P1, 'stderr'
-    $P2 =  interp.'stdhandle'(.PIO_STDERR_FILENO)
+    $P2 = getstderr
     $P0 = lua_newuserdata($P2, mt)
     $P0.'setfenv'(env)
     io[$P1] = $P0

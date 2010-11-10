@@ -75,15 +75,12 @@ function, and so have no direct access to local variables.
 
 =cut
 
-.include 'stdio.pasm'
-
 .sub 'debug'
     .param pmc extra :slurpy
     .local string buffer
     .local pmc stdin, stderr
-    $P0 = getinterp
-    stdin = $P0.'stdhandle'(.PIO_STDIN_FILENO)
-    stderr = $P0.'stdhandle'(.PIO_STDERR_FILENO)
+    stdin = getstdin
+    stderr = getstderr
   L1:
     print stderr, 'lua_debug> '
     buffer = readline stdin

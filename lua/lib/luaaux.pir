@@ -673,7 +673,6 @@ This function only loads the chunk; it does not run it.
 =cut
 
 .include 'stat.pasm'
-.include 'stdio.pasm'
 
 .sub 'lua_loadfile'
     .param string filename
@@ -683,8 +682,7 @@ This function only loads the chunk; it does not run it.
     .local pmc f
     unless filename == '' goto L1
     chunkname = '=stdin'
-    $P0 = getinterp
-    f = $P0.'stdhandle'(.PIO_STDIN_FILENO)
+    f = getstdin
     goto L2
   L1:
     chunkname = filename
