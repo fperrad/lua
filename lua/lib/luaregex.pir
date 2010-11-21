@@ -729,11 +729,12 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
     .local string begin, end
     $S0 = self.'ast'()
     begin = substr $S0, 0, 1
-    begin = code.'escape'(begin)
+    $P0 = get_root_global ['parrot';'PGE';'Util'], 'pir_str_escape'
+    begin = $P0(begin)
     end = substr $S0, 1, 1
-    end = code.'escape'(end)
+    end = $P0(end)
 
-    code.'emit'(<<"        CODE", label, begin, end, next)
+    code.'append_format'(<<"        CODE", label, begin, end, next)
         %0: # balanced
           if pos >= lastpos goto fail
           $S0 = substr target, pos, 1
