@@ -633,7 +633,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
     .local string captgen, captsave, captback
     (captgen, captsave, captback) = self.'gencapture'(label)
 
-    code.'emit'(<<"        CODE", captgen, captsave, captback, args :flat :named)
+    code.'append_format'(<<"        CODE", captgen, captsave, captback, args :flat :named)
         %L: # empty capture
           %0
           push ustack, captscope
