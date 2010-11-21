@@ -680,13 +680,14 @@ transform past (Lua::Grammar::simple_expression) :language('PIR') {
 
 
 transform past (Lua::Grammar::primary_expression) :language('PIR') {
-    .local pmc source, pos
+    .local pmc pos
     .local int line
     .local pmc past
+    .local pmc lineof
+    lineof = get_root_global ['parrot';'PGE';'Util'], 'line_number'
     $P0 = node['prefix_expression']
-    source = getattribute $P0, '$.target'
     pos = $P0.'from'()
-    line = source.'lineof'(pos)
+    line = lineof($P0, pos)
     past = tree.'get'('past', $P0, 'Lua::Grammar::prefix_expression')
     $P0 = node['slice_expression']
     if null $P0 goto L1
@@ -700,20 +701,18 @@ transform past (Lua::Grammar::primary_expression) :language('PIR') {
     args = tree.'get'('explist', $P1, 'Lua::Grammar::function_args')
     $P2 = $P1['expression_list']
     if null $P2 goto L9
-    source = getattribute $P1, '$.target'
     pos = $P1.'from'()
-    $I1 = source.'lineof'(pos)
+    $I1 = lineof($P1, pos)
     if line == $I1 goto L9
     $P2 = get_hll_global [ 'Lua';'Grammar' ], 'syntaxerror'
     $P2($P1, 'ambiguous syntax (function call x new statement)')
   L9:
     pos = $P1.'to'()
-    line = source.'lineof'(pos)
+    line = lineof($P1, pos)
     $P1 = $P0['Name']
     if null $P1 goto L4
-    source = getattribute $P1, '$.target'
     pos = $P1.'from'()
-    line = source.'lineof'(pos)
+    line = lineof($P1, pos)
     key = tree.'get'('key', $P1, 'Lua::Grammar::Name')
     $P2 = get_hll_global ['PAST'], 'Op'
     past = $P2.'new'(past, key, args :flat, 'node'=>node, 'pasttype'=>'callmethod')
@@ -725,9 +724,8 @@ transform past (Lua::Grammar::primary_expression) :language('PIR') {
   L3:
     $P1 = $P0['Name']
     if null $P1 goto L5
-    source = getattribute $P1, '$.target'
     pos = $P1.'from'()
-    line = source.'lineof'(pos)
+    line = lineof($P1, pos)
     key = tree.'get'('key', $P1, 'Lua::Grammar::Name')
     $P2 = get_hll_global ['PAST'], 'Var'
     past = $P2.'new'(past, key, 'node'=>node, 'scope'=>'keyed')
@@ -735,9 +733,8 @@ transform past (Lua::Grammar::primary_expression) :language('PIR') {
   L5:
     $P1 = $P0['index']
     if null $P1 goto L6
-    source = getattribute $P1, '$.target'
     pos = $P1.'to'()
-    line = source.'lineof'(pos)
+    line = lineof($P1, pos)
     key = tree.'get'('key', $P1, 'Lua::Grammar::index')
     $P2 = get_hll_global ['PAST'], 'Var'
     past = $P2.'new'(past, key, 'node'=>node, 'scope'=>'keyed')
