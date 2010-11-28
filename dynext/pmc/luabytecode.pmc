@@ -118,9 +118,9 @@ static STRING* _get_string(Interp *interp)
 
 static PMC * _new_lua(Interp *interp, const char *name)
 {
-    PMC * const key = key_append(interp,
-          key_new_cstring(interp, "Lua"),
-          key_new_cstring(interp, name));
+    PMC * const key = Parrot_key_append(interp,
+          Parrot_key_new_cstring(interp, "Lua"),
+          Parrot_key_new_cstring(interp, name));
     PMC * const class_object = Parrot_oo_get_class(interp, key);
     if (PMC_IS_NULL(class_object))
         Parrot_ex_throw_from_c_args(interp, NULL, EXCEPTION_ILL_INHERIT,

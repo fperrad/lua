@@ -67,9 +67,9 @@ Raises an exception. Use C<init_pmc()>.
 
 */
     VTABLE void init_pmc(PMC *sub) {
-        PMC * const key = key_append(interp,
-                key_new_cstring(interp, "Parrot"),
-                key_new_cstring(interp, "Coroutine"));
+        PMC * const key = Parrot_key_append(interp,
+                Parrot_key_new_cstring(interp, "Parrot"),
+                Parrot_key_new_cstring(interp, "Coroutine"));
         PMC * const classobj = Parrot_oo_get_class(interp, key);
         PMC *init_args;
 
