@@ -21,7 +21,7 @@ the Lua C<String> type.
 
 PMC *
 _LuaString_get_metatable(PARROT_INTERP) {
-    PMC * const hll_ns = Parrot_get_ctx_HLL_namespace(interp);
+    PMC * const hll_ns = Parrot_hll_get_ctx_HLL_namespace(interp);
     PMC * const ns = Parrot_ns_get_namespace_keyed_str(interp,
             hll_ns, Parrot_str_new_constant(interp, "string"));
     return Parrot_ns_find_namespace_global(interp,
