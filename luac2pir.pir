@@ -58,6 +58,7 @@ luad
     .local pmc fh
     .local string content
     fh = new 'FileHandle'
+    fh.'encoding'('binary')
     push_eh _handler
     content = fh.'readall'(filename)
     pop_eh
