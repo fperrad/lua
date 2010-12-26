@@ -168,7 +168,7 @@ sub generate_initial_code {
     .param pmc func
     .param string funcname
     .param pmc lineinfo
-    .local string gen_pir
+    .local pmc gen_pir
     .local int pc, next_pc, bc_length, cur_ic, cur_op
     .local int arg_a
     .local int arg_b
@@ -191,7 +191,8 @@ sub generate_initial_code {
 PIRCODE
 
     $pir .= <<'PIRCODE';
-    gen_pir = concat "\n# BEGIN OF TRANSLATED BYTECODE\n\n"
+    gen_pir = new 'StringBuilder'
+    push gen_pir, "\n# BEGIN OF TRANSLATED BYTECODE\n\n"
 
   LOOP:
     pc = next_pc
@@ -207,16 +208,16 @@ PIRCODE
     $I0 = lineinfo[pc]
     unless line < $I0 goto SAME_LINE
     line = $I0
-    gen_pir = concat "  .annotate 'line', "
+    push gen_pir, "  .annotate 'line', "
     $S0 = line
-    gen_pir = concat $S0
-    gen_pir = concat "\n"
+    push gen_pir, $S0
+    push gen_pir, "\n"
   SAME_LINE:
 
     $S0 = pc
-    gen_pir = concat "PC"
-    gen_pir = concat $S0
-    gen_pir = concat ":"
+    push gen_pir, "PC"
+    push gen_pir, $S0
+    push gen_pir, ":"
 
 PIRCODE
 
@@ -301,8 +302,8 @@ PIRCODE
     .local string msg
     msg = "unknown instruction (code "
     $S0 = cur_ic
-    msg = concat $S0
-    msg = concat ")"
+    msg = concat msg, $S0
+    msg = concat msg, ")"
     die msg
 
 PIRCODE
@@ -363,7 +364,7 @@ sub generate_rule_code {
     my $pir = <<"PIRCODE";
   BDISPATCH_$rule->{name}:
     # Translation code for $rule->{name} ($rule->{code})
-    gen_pir = concat "  # $rule->{name}\\n"
+    push gen_pir, "  # $rule->{name}\\n"
 ### arguments (format $rule->{format})
 PIRCODE
 
@@ -418,7 +419,7 @@ sub translation_code {
         $pir .= sub_meta( $rule->{pir}, $mv, "pir for rule $rule->{name}" );
     }
     else {
-        $pir .= "    gen_pir = concat \"  $rule->{name}_not_translated()\\n\"\n";
+        $pir .= "    push gen_pir, \"  $rule->{name}_not_translated()\\n\"\n";
     }
     $pir .= "### end translation\n";
 
@@ -518,11 +519,11 @@ sub generate_final_code {
   COMPLETE:
 
     $S0 = pc
-    gen_pir = concat "PC"
-    gen_pir = concat $S0
-    gen_pir = concat ": \n"
+    push gen_pir, "PC"
+    push gen_pir, $S0
+    push gen_pir, ": \n"
 
-    gen_pir = concat "\n# END OF TRANSLATED BYTECODE\n"
+    push gen_pir, "\n# END OF TRANSLATED BYTECODE\n"
 
 PIRCODE
 

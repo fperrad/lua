@@ -28,9 +28,9 @@ my $opcodes = {
         synopsis => 'R(A) := R(B)',
         pir => <<'PIR',
     if ${UPVAL} < ${NUPS} goto ${LABEL}_1
-    ${INS} = concat "  clone ${REG}"
+    push ${INS}, "  clone ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
+    push ${INS}, $S1
     goto ${LABEL}_2
   ${LABEL}_1:
     $P0 = getattribute ${CLOSURE}, 'upvalues'
@@ -40,14 +40,14 @@ my $opcodes = {
     $I0 = exists ${LEX}[$S0]
     if $I0 goto ${LABEL}_3
     ${LEX}[$S0] = 1
-    ${INS} = concat "  .lex '"
-    ${INS} = concat $S0
-    ${INS} = concat "'"
+    push ${INS}, "  .lex '"
+    push ${INS}, $S0
+    push ${INS}, "'"
   ${LABEL}_2:
-    ${INS} = concat ", ${REG}"
+    push ${INS}, ", ${REG}"
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat "\n"
+    push ${INS}, $S2
+    push ${INS}, "\n"
   ${LABEL}_3:
 PIR
     },
@@ -60,10 +60,10 @@ PIR
     $I0 = ${A}
   ${LABEL}_1:
     unless $I0 <= ${B} goto ${LABEL}_2
-    ${INS} = concat "  new ${REG}"
+    push ${INS}, "  new ${REG}"
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", 'LuaNil'\n"
+    push ${INS}, $S0
+    push ${INS}, ", 'LuaNil'\n"
     inc $I0
     goto ${LABEL}_1
   ${LABEL}_2:
@@ -75,13 +75,13 @@ PIR
         format => 'ABx',
         synopsis => 'R(A) := Kst(Bx)',
         pir => <<'PIR',
-    ${INS} = concat "  clone ${REG}"
+    push ${INS}, "  clone ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat ", ${K}"
+    push ${INS}, $S1
+    push ${INS}, ", ${K}"
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat "\n"
+    push ${INS}, $S2
+    push ${INS}, "\n"
 PIR
     },
 
@@ -90,21 +90,21 @@ PIR
         format => 'ABC',
         synopsis => 'R(A) := (Bool)B; if (C) PC++',
         pir => <<'PIR',
-    ${INS} = concat "  new ${REG}"
+    push ${INS}, "  new ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat ", 'LuaBoolean'\n  set ${REG}"
-    ${INS} = concat $S1
-    ${INS} = concat ", "
+    push ${INS}, $S1
+    push ${INS}, ", 'LuaBoolean'\n  set ${REG}"
+    push ${INS}, $S1
+    push ${INS}, ", "
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat "\n"
+    push ${INS}, $S2
+    push ${INS}, "\n"
     unless ${C} goto ${LABEL}_1
     $I0 = ${NEXTPC} + 1
     $S7 = $I0
-    ${INS} = concat "  goto PC"
-    ${INS} = concat $S7
-    ${INS} = concat "\n"
+    push ${INS}, "  goto PC"
+    push ${INS}, $S7
+    push ${INS}, "\n"
   ${LABEL}_1:
 PIR
     },
@@ -117,18 +117,18 @@ PIR
         synopsis => 'R(A) := UpValue[B]',
         pir => <<'PIR',
     if ${UPVAL} < ${NUPS} goto ${LABEL}_1
-    ${INS} = concat "  find_lex ${REG}"
+    push ${INS}, "  find_lex ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat ", '"
+    push ${INS}, $S1
+    push ${INS}, ", '"
     $P0 = getattribute ${FCT}, 'upvalues'
     $P1 = $P0[${B}]
     $S0 = $P1
-    ${INS} = concat $S0
-    ${INS} = concat "'\n"
+    push ${INS}, $S0
+    push ${INS}, "'\n"
     goto ${LABEL}_2
   ${LABEL}_1:
-    ${INS} = concat "  # nothing\n"
+    push ${INS}, "  # nothing\n"
     inc ${UPVAL}
   ${LABEL}_2:
 PIR
@@ -139,14 +139,14 @@ PIR
         format => 'ABx',
         synopsis => 'R(A) := Gbl[Kst(Bx)]',
         pir => <<'PIR',
-    ${INS} = concat "  ${GLOB} = ${SUBR}.'getfenv'()\n"
-    ${INS} = concat "  ${REG}"
+    push ${INS}, "  ${GLOB} = ${SUBR}.'getfenv'()\n"
+    push ${INS}, "  ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat " = ${GLOB}[${K}"
+    push ${INS}, $S1
+    push ${INS}, " = ${GLOB}[${K}"
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat "]\n"
+    push ${INS}, $S2
+    push ${INS}, "]\n"
 PIR
     },
 
@@ -155,14 +155,14 @@ PIR
         format => 'ABx',
         synopsis => 'Gbl[Kst(Bx)] := R(A)',
         pir => <<'PIR',
-    ${INS} = concat "  ${GLOB} = ${SUBR}.'getfenv'()\n"
-    ${INS} = concat "  ${GLOB}[${K}"
+    push ${INS}, "  ${GLOB} = ${SUBR}.'getfenv'()\n"
+    push ${INS}, "  ${GLOB}[${K}"
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat "] = ${REG}"
+    push ${INS}, $S2
+    push ${INS}, "] = ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat "\n"
+    push ${INS}, $S1
+    push ${INS}, "\n"
 PIR
     },
 
@@ -171,15 +171,15 @@ PIR
         format => 'AB',
         synopsis => 'UpValue[B] := R(A)',
         pir => <<'PIR',
-    ${INS} = concat "  store_lex '"
+    push ${INS}, "  store_lex '"
     $P0 = getattribute ${FCT}, 'upvalues'
     $P1 = $P0[${B}]
     $S0 = $P1
-    ${INS} = concat $S0
-    ${INS} = concat "', ${REG}"
+    push ${INS}, $S0
+    push ${INS}, "', ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat "\n"
+    push ${INS}, $S1
+    push ${INS}, "\n"
 PIR
     },
 
@@ -190,24 +190,24 @@ PIR
         format => 'ABC',
         synopsis => 'R(A) := R(B)[RK(C)]',
         pir => <<'PIR',
-    ${INS} = concat "  ${REG}"
+    push ${INS}, "  ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat " = ${REG}"
+    push ${INS}, $S1
+    push ${INS}, " = ${REG}"
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat "["
+    push ${INS}, $S2
+    push ${INS}, "["
     $I0 = ${C} & ${BITRK}
     unless $I0 goto ${LABEL}_1
-    ${INS} = concat "${K}"
+    push ${INS}, "${K}"
     ${C} &= ${MASKRK}
     goto ${LABEL}_2
   ${LABEL}_1:
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
   ${LABEL}_2:
     $S3 = ${C}
-    ${INS} = concat $S3
-    ${INS} = concat "]\n"
+    push ${INS}, $S3
+    push ${INS}, "]\n"
 PIR
     },
 
@@ -216,32 +216,32 @@ PIR
         format => 'ABC',
         synopsis => 'R(A)[RK(B)] := RK(C)',
         pir => <<'PIR',
-    ${INS} = concat "  ${REG}"
+    push ${INS}, "  ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat "["
+    push ${INS}, $S1
+    push ${INS}, "["
     $I0 = ${B} & ${BITRK}
     unless $I0 goto ${LABEL}_1
-    ${INS} = concat "${K}"
+    push ${INS}, "${K}"
     ${B} &= ${MASKRK}
     goto ${LABEL}_2
   ${LABEL}_1:
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
   ${LABEL}_2:
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat "] = "
+    push ${INS}, $S2
+    push ${INS}, "] = "
     $I0 = ${C} & ${BITRK}
     unless $I0 goto ${LABEL}_3
-    ${INS} = concat "${K}"
+    push ${INS}, "${K}"
     ${C} &= ${MASKRK}
     goto ${LABEL}_4
   ${LABEL}_3:
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
   ${LABEL}_4:
     $S3 = ${C}
-    ${INS} = concat $S3
-    ${INS} = concat "\n"
+    push ${INS}, $S3
+    push ${INS}, "\n"
 PIR
     },
 
@@ -252,43 +252,43 @@ PIR
         format => 'ABC',
          synopsis => 'R(A) := RK(B) + RK(C)',
         pir => <<'PIR',
-    ${INS} = concat "  add "
+    push ${INS}, "  add "
     unless ${A} == ${B} goto ${LABEL}_1
     $I1 = 1
-    ${INS} = concat "${PTEMP}0"
+    push ${INS}, "${PTEMP}0"
     goto ${LABEL}_2
   ${LABEL}_1:
     $I1 = 0
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
+    push ${INS}, $S1
   ${LABEL}_2:
     $I0 = ${B} & ${BITRK}
     unless $I0 goto ${LABEL}_3
-    ${INS} = concat ", ${K}"
+    push ${INS}, ", ${K}"
     ${B} &= ${MASKRK}
     goto ${LABEL}_4
   ${LABEL}_3:
-    ${INS} = concat ", ${REG}"
+    push ${INS}, ", ${REG}"
   ${LABEL}_4:
     $S2 = ${B}
-    ${INS} = concat $S2
+    push ${INS}, $S2
     $I0 = ${C} & ${BITRK}
     unless $I0 goto ${LABEL}_5
-    ${INS} = concat ", ${K}"
+    push ${INS}, ", ${K}"
     ${C} &= ${MASKRK}
     goto ${LABEL}_6
   ${LABEL}_5:
-    ${INS} = concat ", ${REG}"
+    push ${INS}, ", ${REG}"
   ${LABEL}_6:
     $S3 = ${C}
-    ${INS} = concat $S3
-    ${INS} = concat "\n"
+    push ${INS}, $S3
+    push ${INS}, "\n"
     unless $I1 goto ${LABEL}_7
-    ${INS} = concat "  ${REG}"
+    push ${INS}, "  ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat " = ${PTEMP}0\n"
+    push ${INS}, $S1
+    push ${INS}, " = ${PTEMP}0\n"
   ${LABEL}_7:
 PIR
     },
@@ -333,13 +333,13 @@ PIR
         format => 'AB',
         synopsis => 'R(A) := - RK(B)',
         pir => <<'PIR',
-    ${INS} = concat "  neg ${REG}"
+    push ${INS}, "  neg ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat ", ${REG}"
+    push ${INS}, $S1
+    push ${INS}, ", ${REG}"
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat "\n"
+    push ${INS}, $S2
+    push ${INS}, "\n"
 PIR
     },
 
@@ -355,13 +355,13 @@ PIR
         format => 'AB',
         synopsis => 'R(A) := length of RK(B)',
         pir => <<'PIR',
-    ${INS} = concat "  ${REG}"
+    push ${INS}, "  ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat " = ${REG}"
+    push ${INS}, $S1
+    push ${INS}, " = ${REG}"
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat ".'len'()\n"
+    push ${INS}, $S2
+    push ${INS}, ".'len'()\n"
 PIR
     },
 
@@ -379,32 +379,32 @@ PIR
     $S1 = ${A}
     $S4 = concat "${REG}", $S1
   ${LABEL}_2:
-    ${INS} = concat "  concat "
-    ${INS} = concat $S4
-    ${INS} = concat ", ${REG}"
+    push ${INS}, "  concat "
+    push ${INS}, $S4
+    push ${INS}, ", ${REG}"
     $I0 = ${B}
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", ${REG}"
+    push ${INS}, $S0
+    push ${INS}, ", ${REG}"
     inc $I0
     $S0 = $I0
-    ${INS} = concat $S0
+    push ${INS}, $S0
   ${LABEL}_3:
     unless $I0 < ${C} goto ${LABEL}_4
-    ${INS} = concat "\n  concat "
-    ${INS} = concat $S4
-    ${INS} = concat ", ${REG}"
+    push ${INS}, "\n  concat "
+    push ${INS}, $S4
+    push ${INS}, ", ${REG}"
     inc $I0
     $S0 = $I0
-    ${INS} = concat $S0
+    push ${INS}, $S0
     goto ${LABEL}_3
   ${LABEL}_4:
-    ${INS} = concat "\n"
+    push ${INS}, "\n"
     unless $I1 goto ${LABEL}_5
-    ${INS} = concat "  ${REG}"
+    push ${INS}, "  ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat " = ${PTEMP}0\n"
+    push ${INS}, $S1
+    push ${INS}, " = ${PTEMP}0\n"
   ${LABEL}_5:
 PIR
     },
@@ -418,9 +418,9 @@ PIR
         pir => <<'PIR',
     $I0 = ${NEXTPC} + ${B}
     $S7 = $I0
-    ${INS} = concat "  goto PC"
-    ${INS} = concat $S7
-    ${INS} = concat "\n"
+    push ${INS}, "  goto PC"
+    push ${INS}, $S7
+    push ${INS}, "\n"
 PIR
     },
 
@@ -429,12 +429,12 @@ PIR
         format => 'ABC',
         synopsis => 'R(A), ... , R(A+C-2) := R(A)(R(A+1), ... , R(A+B-1))',
         pir => <<'PIR',
-    ${INS} = concat "  "
+    push ${INS}, "  "
     if ${C} goto ${LABEL}_1
-    ${INS} = concat "(${REG}"
+    push ${INS}, "(${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat " :slurpy) = "
+    push ${INS}, $S1
+    push ${INS}, " :slurpy) = "
     goto ${LABEL}_2
   ${LABEL}_1:
     if ${C} == 1 goto ${LABEL}_2
@@ -442,37 +442,37 @@ PIR
     $I1 = ${C} - 1
   ${LABEL}_3:
     unless $I1 goto ${LABEL}_4
-    ${INS} = concat "new ${PTEMP}"
+    push ${INS}, "new ${PTEMP}"
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", 'LuaNil'\n  "
+    push ${INS}, $S0
+    push ${INS}, ", 'LuaNil'\n  "
     inc $I0
     dec $I1
     goto ${LABEL}_3
   ${LABEL}_4:
-    ${INS} = concat "("
+    push ${INS}, "("
     $I0 = ${A}
     $I1 = ${C} - 1
     $I2 = 1
   ${LABEL}_5:
     unless $I1 goto ${LABEL}_6
     if $I2 goto ${LABEL}_7
-    ${INS} = concat ", "
+    push ${INS}, ", "
   ${LABEL}_7:
     $I2 = 0
-    ${INS} = concat "${PTEMP}"
+    push ${INS}, "${PTEMP}"
     $S0 = $I0
-    ${INS} = concat $S0
+    push ${INS}, $S0
     inc $I0
     dec $I1
     goto ${LABEL}_5
   ${LABEL}_6:
-    ${INS} = concat ") = "
+    push ${INS}, ") = "
   ${LABEL}_2:
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat "("
+    push ${INS}, $S1
+    push ${INS}, "("
     $I0 = ${A} + 1
     $I2 = 1
     unless ${B} goto ${LABEL}_8
@@ -484,37 +484,37 @@ PIR
   ${LABEL}_9:
     unless $I0 < $I1 goto ${LABEL}_10
     if $I2 goto ${LABEL}_11
-    ${INS} = concat ", "
+    push ${INS}, ", "
   ${LABEL}_11:
     $I2 = 0
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
     $S0 = $I0
-    ${INS} = concat $S0
+    push ${INS}, $S0
     inc $I0
     goto ${LABEL}_9
   ${LABEL}_10:
     if ${B} goto ${LABEL}_12
     if $I2 goto ${LABEL}_13
-    ${INS} = concat ", "
+    push ${INS}, ", "
   ${LABEL}_13:
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
     $I0 = ${STACK}
     $S9 = $I0
-    ${INS} = concat $S9
-    ${INS} = concat " :flat"
+    push ${INS}, $S9
+    push ${INS}, " :flat"
   ${LABEL}_12:
-    ${INS} = concat ")\n"
+    push ${INS}, ")\n"
     unless ${C} > 1 goto ${LABEL}_14
     $I0 = ${A}
     $I1 = ${C} - 1
   ${LABEL}_15:
     unless $I1 goto ${LABEL}_14
-    ${INS} = concat "  set ${REG}"
+    push ${INS}, "  set ${REG}"
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", ${PTEMP}"
-    ${INS} = concat $S0
-    ${INS} = concat "\n"
+    push ${INS}, $S0
+    push ${INS}, ", ${PTEMP}"
+    push ${INS}, $S0
+    push ${INS}, "\n"
     inc $I0
     dec $I1
     goto ${LABEL}_15
@@ -528,10 +528,10 @@ PIR
         format => 'ABC',
         synopsis => 'return R(A)(R(A+1), ... , R(A+B-1))',
         pir => <<'PIR',
-    ${INS} = concat "  .tailcall ${REG}"
+    push ${INS}, "  .tailcall ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat "("
+    push ${INS}, $S1
+    push ${INS}, "("
     $I0 = ${A} + 1
     $I2 = 1
     unless ${B} goto ${LABEL}_1
@@ -543,26 +543,26 @@ PIR
   ${LABEL}_2:
     unless $I0 < $I1 goto ${LABEL}_3
     if $I2 goto ${LABEL}_4
-    ${INS} = concat ", "
+    push ${INS}, ", "
   ${LABEL}_4:
     $I2 = 0
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
     $S0 = $I0
-    ${INS} = concat $S0
+    push ${INS}, $S0
     inc $I0
     goto ${LABEL}_2
   ${LABEL}_3:
     if ${B} goto ${LABEL}_5
     if $I2 goto ${LABEL}_6
-    ${INS} = concat ", "
+    push ${INS}, ", "
   ${LABEL}_6:
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
     $I0 = ${STACK}
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat " :flat"
+    push ${INS}, $S0
+    push ${INS}, " :flat"
   ${LABEL}_5:
-    ${INS} = concat ")\n"
+    push ${INS}, ")\n"
 PIR
     },
 
@@ -571,7 +571,7 @@ PIR
         format => 'AB',
         synopsis => 'return R(A), ... , R(A+B-2)',
         pir => <<'PIR',
-    ${INS} = concat "  .return ("
+    push ${INS}, "  .return ("
     $I0 = ${A}
     $I2 = 1
     unless ${B} goto ${LABEL}_6
@@ -584,26 +584,26 @@ PIR
   ${LABEL}_7:
     unless $I0 < $I1 goto ${LABEL}_8
     if $I2 goto ${LABEL}_9
-    ${INS} = concat ", "
+    push ${INS}, ", "
   ${LABEL}_9:
     $I2 = 0
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
     $S0 = $I0
-    ${INS} = concat $S0
+    push ${INS}, $S0
     inc $I0
     goto ${LABEL}_7
   ${LABEL}_8:
     if ${B} goto ${LABEL}_10
     if $I2 goto ${LABEL}_11
-    ${INS} = concat ", "
+    push ${INS}, ", "
   ${LABEL}_11:
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
     $I0 = ${STACK}
     $S9 = $I0
-    ${INS} = concat $S9
-    ${INS} = concat " :flat"
+    push ${INS}, $S9
+    push ${INS}, " :flat"
   ${LABEL}_10:
-    ${INS} = concat ")\n"
+    push ${INS}, ")\n"
 PIR
     },
 
@@ -612,12 +612,12 @@ PIR
         format => 'AB',
         synopsis => 'R(A), ... , R(A+B-1) := vararg',
         pir => <<'PIR',
-    ${INS} = concat "  ("
+    push ${INS}, "  ("
     if ${B} goto ${LABEL}_1
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat " :slurpy) = "
+    push ${INS}, $S1
+    push ${INS}, " :slurpy) = "
     goto ${LABEL}_2
   ${LABEL}_1:
     $I0 = ${A}
@@ -626,39 +626,39 @@ PIR
   ${LABEL}_3:
     unless $I1 goto ${LABEL}_4
     if $I2 goto ${LABEL}_5
-    ${INS} = concat ", "
+    push ${INS}, ", "
   ${LABEL}_5:
     $I2 = 0
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
     $S0 = $I0
-    ${INS} = concat $S0
+    push ${INS}, $S0
     inc $I0
     dec $I1
     goto ${LABEL}_3
   ${LABEL}_4:
-    ${INS} = concat ") = "
+    push ${INS}, ") = "
   ${LABEL}_2:
-    ${INS} = concat "mkarg(vararg)\n"
+    push ${INS}, "mkarg(vararg)\n"
     unless ${B} goto ${LABEL}_6
     $I0 = ${A}
     $I1 = ${B} - 1
   ${LABEL}_7:
     unless $I1 goto ${LABEL}_6
-    ${INS} = concat "  unless_null ${REG}"
+    push ${INS}, "  unless_null ${REG}"
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", vivify_"
+    push ${INS}, $S0
+    push ${INS}, ", vivify_"
     $S8 = ${PC}
-    ${INS} = concat $S8
-    ${INS} = concat "_"
-    ${INS} = concat $S0
-    ${INS} = concat "\n  new ${REG}"
-    ${INS} = concat $S0
-    ${INS} = concat ", 'LuaNil'\nvivify_"
-    ${INS} = concat $S8
-    ${INS} = concat "_"
-    ${INS} = concat $S0
-    ${INS} = concat ":\n"
+    push ${INS}, $S8
+    push ${INS}, "_"
+    push ${INS}, $S0
+    push ${INS}, "\n  new ${REG}"
+    push ${INS}, $S0
+    push ${INS}, ", 'LuaNil'\nvivify_"
+    push ${INS}, $S8
+    push ${INS}, "_"
+    push ${INS}, $S0
+    push ${INS}, ":\n"
     inc $I0
     dec $I1
     goto ${LABEL}_7
@@ -672,30 +672,30 @@ PIR
         format => 'ABC',
         synopsis => 'R(A+1) := R(B); R(A) := R(B)[RK(C)]',
         pir => <<'PIR',
-    ${INS} = concat "  clone ${REG}"
+    push ${INS}, "  clone ${REG}"
     $I0 = ${A} + 1
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", ${REG}"
+    push ${INS}, $S0
+    push ${INS}, ", ${REG}"
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat "\n  ${REG}"
+    push ${INS}, $S2
+    push ${INS}, "\n  ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat " = ${REG}"
-    ${INS} = concat $S2
-    ${INS} = concat "["
+    push ${INS}, $S1
+    push ${INS}, " = ${REG}"
+    push ${INS}, $S2
+    push ${INS}, "["
     $I0 = ${C} & ${BITRK}
     unless $I0 goto ${LABEL}_1
-    ${INS} = concat "${K}"
+    push ${INS}, "${K}"
     ${C} &= ${MASKRK}
     goto ${LABEL}_2
   ${LABEL}_1:
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
   ${LABEL}_2:
     $S3 = ${C}
-    ${INS} = concat $S3
-    ${INS} = concat "]\n"
+    push ${INS}, $S3
+    push ${INS}, "]\n"
 PIR
     },
 
@@ -707,36 +707,36 @@ PIR
         synopsis => 'if (RK(B) == RK(C)) ~= A) then PC++',
         pir => <<'PIR',
     if ${A} goto ${LABEL}_1
-    ${INS} = concat "  eq"
+    push ${INS}, "  eq"
     goto ${LABEL}_2
   ${LABEL}_1:
-    ${INS} = concat "  ne"
+    push ${INS}, "  ne"
   ${LABEL}_2:
     $I0 = ${B} & ${BITRK}
     unless $I0 goto ${LABEL}_3
-    ${INS} = concat " ${K}"
+    push ${INS}, " ${K}"
     ${B} &= ${MASKRK}
     goto ${LABEL}_4
   ${LABEL}_3:
-    ${INS} = concat " ${REG}"
+    push ${INS}, " ${REG}"
   ${LABEL}_4:
     $S2 = ${B}
-    ${INS} = concat $S2
+    push ${INS}, $S2
     $I0 = ${C} & ${BITRK}
     unless $I0 goto ${LABEL}_5
-    ${INS} = concat ", ${K}"
+    push ${INS}, ", ${K}"
     ${C} &= ${MASKRK}
     goto ${LABEL}_6
   ${LABEL}_5:
-    ${INS} = concat ", ${REG}"
+    push ${INS}, ", ${REG}"
   ${LABEL}_6:
     $S3 = ${C}
-    ${INS} = concat $S3
-    ${INS} = concat ", PC"
+    push ${INS}, $S3
+    push ${INS}, ", PC"
     $I0 = ${NEXTPC} + 1
     $S7 = $I0
-    ${INS} = concat $S7
-    ${INS} = concat "\n"
+    push ${INS}, $S7
+    push ${INS}, "\n"
 PIR
     },
 
@@ -759,21 +759,21 @@ PIR
         format => 'AC',
         synopsis => 'if not (R(A) <=> C) then PC++',
         pir => <<'PIR',
-    ${INS} = concat "  is"
+    push ${INS}, "  is"
     unless ${C} goto ${LABEL}_1
-    ${INS} = concat "true"
+    push ${INS}, "true"
     goto ${LABEL}_2
   ${LABEL}_1:
-    ${INS} = concat "false"
+    push ${INS}, "false"
   ${LABEL}_2:
-    ${INS} = concat " ${ITEMP}0, ${REG}"
+    push ${INS}, " ${ITEMP}0, ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat "\n  unless ${ITEMP}0 goto PC"
+    push ${INS}, $S1
+    push ${INS}, "\n  unless ${ITEMP}0 goto PC"
     $I0 = ${NEXTPC} + 1
     $S7 = $I0
-    ${INS} = concat $S7
-    ${INS} = concat "\n"
+    push ${INS}, $S7
+    push ${INS}, "\n"
 PIR
     },
 
@@ -782,26 +782,26 @@ PIR
         format => 'ABC',
         synopsis => 'if (R(B) <=> C) then R(A) := R(B) else PC++',
         pir => <<'PIR',
-    ${INS} = concat "  is"
+    push ${INS}, "  is"
     unless ${C} goto ${LABEL}_1
-    ${INS} = concat "true"
+    push ${INS}, "true"
     goto ${LABEL}_2
   ${LABEL}_1:
-    ${INS} = concat "false"
+    push ${INS}, "false"
   ${LABEL}_2:
-    ${INS} = concat " ${ITEMP}0, ${REG}"
+    push ${INS}, " ${ITEMP}0, ${REG}"
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat "\n  unless ${ITEMP}0 goto PC"
+    push ${INS}, $S2
+    push ${INS}, "\n  unless ${ITEMP}0 goto PC"
     $I0 = ${NEXTPC} + 1
     $S7 = $I0
-    ${INS} = concat $S7
-    ${INS} = concat "\n  clone ${REG}"
+    push ${INS}, $S7
+    push ${INS}, "\n  clone ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat ", ${REG}"
-    ${INS} = concat $S2
-    ${INS} = concat "\n"
+    push ${INS}, $S1
+    push ${INS}, ", ${REG}"
+    push ${INS}, $S2
+    push ${INS}, "\n"
 PIR
     },
 
@@ -812,50 +812,50 @@ PIR
         format => 'AsBx',
         synopsis => 'R(A) += R(A+2); if (R(A) <?= R(A+1)) then { PC += sBx; R(A+3) := R(A) }',
         pir => <<'PIR',
-    ${INS} = concat "  add ${REG}"
+    push ${INS}, "  add ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat ", ${REG}"
+    push ${INS}, $S1
+    push ${INS}, ", ${REG}"
     $I0 = ${A} + 2
     $S5 = $I0
-    ${INS} = concat $S5
-    ${INS} = concat "\n  ${NTEMP}0 = ${REG}"
-    ${INS} = concat $S5
-    ${INS} = concat "\n  le ${NTEMP}0, 0.0, PC"
+    push ${INS}, $S5
+    push ${INS}, "\n  ${NTEMP}0 = ${REG}"
+    push ${INS}, $S5
+    push ${INS}, "\n  le ${NTEMP}0, 0.0, PC"
     $S8 = ${PC}
-    ${INS} = concat $S8
-    ${INS} = concat "_or\n  gt ${REG}"
-    ${INS} = concat $S1
-    ${INS} = concat ", ${REG}"
+    push ${INS}, $S8
+    push ${INS}, "_or\n  gt ${REG}"
+    push ${INS}, $S1
+    push ${INS}, ", ${REG}"
     $I0 = ${A} + 1
     $S4 = $I0
-    ${INS} = concat $S4
-    ${INS} = concat ", PC"
+    push ${INS}, $S4
+    push ${INS}, ", PC"
     $S7 = ${NEXTPC}
-    ${INS} = concat $S7
-    ${INS} = concat "\n  goto PC"
-    ${INS} = concat $S8
-    ${INS} = concat "_blk\nPC"
-    ${INS} = concat $S0
-    ${INS} = concat "_or:\n  lt ${REG}"
-    ${INS} = concat $S1
-    ${INS} = concat ", ${REG}"
-    ${INS} = concat $S4
-    ${INS} = concat ", PC"
-    ${INS} = concat $S7
-    ${INS} = concat "\nPC"
-    ${INS} = concat $S8
-    ${INS} = concat "_blk:\n  clone ${REG}"
+    push ${INS}, $S7
+    push ${INS}, "\n  goto PC"
+    push ${INS}, $S8
+    push ${INS}, "_blk\nPC"
+    push ${INS}, $S0
+    push ${INS}, "_or:\n  lt ${REG}"
+    push ${INS}, $S1
+    push ${INS}, ", ${REG}"
+    push ${INS}, $S4
+    push ${INS}, ", PC"
+    push ${INS}, $S7
+    push ${INS}, "\nPC"
+    push ${INS}, $S8
+    push ${INS}, "_blk:\n  clone ${REG}"
     $I0 = ${A} + 3
     $S6 = $I0
-    ${INS} = concat $S6
-    ${INS} = concat ", ${REG}"
-    ${INS} = concat $S1
-    ${INS} = concat "\n  goto PC"
+    push ${INS}, $S6
+    push ${INS}, ", ${REG}"
+    push ${INS}, $S1
+    push ${INS}, "\n  goto PC"
     $I0 = ${NEXTPC} + ${B}
     $S7 = $I0
-    ${INS} = concat $S7
-    ${INS} = concat "\n"
+    push ${INS}, $S7
+    push ${INS}, "\n"
 PIR
     },
 
@@ -865,41 +865,41 @@ PIR
         synopsis => 'R(A) -= R(A+2); PC += sBx',
         pir => <<'PIR',
     $I0 = ${A}
-    ${INS} = concat "  (${REG}"
+    push ${INS}, "  (${REG}"
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", ${REG}"
+    push ${INS}, $S0
+    push ${INS}, ", ${REG}"
     inc $I0
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", ${REG}"
+    push ${INS}, $S0
+    push ${INS}, ", ${REG}"
     inc $I0
     $S0 = $I0
-    ${INS} = concat $S0
+    push ${INS}, $S0
     $I0 = ${A}
-    ${INS} = concat ") = checkforloop(${REG}"
+    push ${INS}, ") = checkforloop(${REG}"
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", ${REG}"
+    push ${INS}, $S0
+    push ${INS}, ", ${REG}"
     inc $I0
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", ${REG}"
+    push ${INS}, $S0
+    push ${INS}, ", ${REG}"
     inc $I0
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ")\n  sub ${REG}"
+    push ${INS}, $S0
+    push ${INS}, ")\n  sub ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat ", ${REG}"
+    push ${INS}, $S1
+    push ${INS}, ", ${REG}"
     $I0 = ${A} + 2
     $S5 = $I0
-    ${INS} = concat $S5
-    ${INS} = concat "\n  goto PC"
+    push ${INS}, $S5
+    push ${INS}, "\n  goto PC"
     $I0 = ${NEXTPC} + ${B}
     $S7 = $I0
-    ${INS} = concat $S7
-    ${INS} = concat "\n"
+    push ${INS}, $S7
+    push ${INS}, "\n"
 PIR
     },
 
@@ -912,58 +912,58 @@ PIR
     $I1 = ${C}
   ${LABEL}_1:
     unless $I1 goto ${LABEL}_2
-    ${INS} = concat "  new ${REG}"
+    push ${INS}, "  new ${REG}"
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", 'LuaNil'\n"
+    push ${INS}, $S0
+    push ${INS}, ", 'LuaNil'\n"
     inc $I0
     dec $I1
     goto ${LABEL}_1
   ${LABEL}_2:
-    ${INS} = concat "  ("
+    push ${INS}, "  ("
     $I0 = ${A} + 3
     $I1 = ${C}
     $I2 = 1
   ${LABEL}_3:
     unless $I1 goto ${LABEL}_4
     if $I2 goto ${LABEL}_5
-    ${INS} = concat ", "
+    push ${INS}, ", "
   ${LABEL}_5:
     $I2 = 0
-    ${INS} = concat "${REG}"
+    push ${INS}, "${REG}"
     $S0 = $I0
-    ${INS} = concat $S0
+    push ${INS}, $S0
     inc $I0
     dec $I1
     goto ${LABEL}_3
   ${LABEL}_4:
-    ${INS} = concat ") = ${REG}"
+    push ${INS}, ") = ${REG}"
     $I0 = ${A}
     $S1 = $I0
-    ${INS} = concat $S1
-    ${INS} = concat "(${REG}"
+    push ${INS}, $S1
+    push ${INS}, "(${REG}"
     inc $I0
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ", ${REG}"
+    push ${INS}, $S0
+    push ${INS}, ", ${REG}"
     inc $I0
     $S0 = $I0
-    ${INS} = concat $S0
-    ${INS} = concat ")\n  isa ${ITEMP}0, ${REG}"
+    push ${INS}, $S0
+    push ${INS}, ")\n  isa ${ITEMP}0, ${REG}"
     $I0 = ${A} + 3
     $S6 = $I0
-    ${INS} = concat $S6
-    ${INS} = concat ", 'LuaNil'\n  if ${ITEMP}0 goto PC"
+    push ${INS}, $S6
+    push ${INS}, ", 'LuaNil'\n  if ${ITEMP}0 goto PC"
     $I0 = ${NEXTPC} + 1
     $S7 = $I0
-    ${INS} = concat $S7
-    ${INS} = concat "\n  clone ${REG}"
+    push ${INS}, $S7
+    push ${INS}, "\n  clone ${REG}"
     $I0 = ${A} + 2
     $S5 = $I0
-    ${INS} = concat $S5
-    ${INS} = concat ", ${REG}"
-    ${INS} = concat $S6
-    ${INS} = concat "\n"
+    push ${INS}, $S5
+    push ${INS}, ", ${REG}"
+    push ${INS}, $S6
+    push ${INS}, "\n"
 PIR
     },
 
@@ -974,10 +974,10 @@ PIR
         format => 'ABC',
         synopsis => 'R(A) := {}',
         pir => <<'PIR',
-    ${INS} = concat "  new ${REG}"
+    push ${INS}, "  new ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat ", 'LuaTable'\n"
+    push ${INS}, $S1
+    push ${INS}, ", 'LuaTable'\n"
 PIR
     },
 
@@ -986,13 +986,13 @@ PIR
         format => 'ABC',
         synopsis => 'R(A)[(C-1)*FPF+i] := R(A+i), 1 <= i <= B',
         pir => <<'PIR',
-    ${INS} = concat "  box ${PTEMP}0, "
+    push ${INS}, "  box ${PTEMP}0, "
     $I0 = ${C} - 1
     $I0 *= ${FPF}
     inc $I0
     $S3 = $I0
-    ${INS} = concat $S3
-    ${INS} = concat "\n"
+    push ${INS}, $S3
+    push ${INS}, "\n"
     $I0 = 1
     unless ${B} goto ${LABEL}_1
     $I1 = ${B}
@@ -1002,25 +1002,25 @@ PIR
     dec $I1
   ${LABEL}_2:
     unless $I0 <= $I1 goto ${LABEL}_3
-    ${INS} = concat "  ${REG}"
+    push ${INS}, "  ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat "[${PTEMP}0] = ${REG}"
+    push ${INS}, $S1
+    push ${INS}, "[${PTEMP}0] = ${REG}"
     $I2 = ${A} + $I0
     $S0 = $I2
-    ${INS} = concat $S0
-    ${INS} = concat "\n  inc ${PTEMP}0\n"
+    push ${INS}, $S0
+    push ${INS}, "\n  inc ${PTEMP}0\n"
     inc $I0
     goto ${LABEL}_2
   ${LABEL}_3:
     if ${B} goto ${LABEL}_4
-    ${INS} = concat "  tconstruct(${REG}"
+    push ${INS}, "  tconstruct(${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat ", ${PTEMP}0, ${REG}"
+    push ${INS}, $S1
+    push ${INS}, ", ${PTEMP}0, ${REG}"
     $S9 = ${STACK}
-    ${INS} = concat $S9
-    ${INS} = concat " :flat)\n"
+    push ${INS}, $S9
+    push ${INS}, " :flat)\n"
   ${LABEL}_4:
 PIR
     },
@@ -1032,7 +1032,7 @@ PIR
         format => 'A',
         synopsis => 'close all variables in the stack up to R(A)',
         pir => <<'PIR',
-    ${INS} = concat "  # nothing\n"
+    push ${INS}, "  # nothing\n"
 PIR
     },
 
@@ -1041,22 +1041,22 @@ PIR
         format => 'ABx',
         synopsis => 'R(A) := closure(KPROTO[Bx], R(A), ... , R(A+n))',
         pir => <<'PIR',
-    ${INS} = concat "  .const 'Sub' ${PROTO}"
+    push ${INS}, "  .const 'Sub' ${PROTO}"
     $S2 = ${B}
-    ${INS} = concat $S2
-    ${INS} = concat " = '"
-    ${INS} = concat ${FNAME}
-    ${INS} = concat "_"
-    ${INS} = concat $S2
-    ${INS} = concat "'\n  newclosure ${REG}"
+    push ${INS}, $S2
+    push ${INS}, " = '"
+    push ${INS}, ${FNAME}
+    push ${INS}, "_"
+    push ${INS}, $S2
+    push ${INS}, "'\n  newclosure ${REG}"
     $S1 = ${A}
-    ${INS} = concat $S1
-    ${INS} = concat ", ${PROTO}"
-    ${INS} = concat $S2
-    ${INS} = concat "\n  ${GLOB} = ${SUBR}.'getfenv'()\n"
-    ${INS} = concat "  ${REG}"
-    ${INS} = concat $S1
-    ${INS} = concat ".'setfenv'(${GLOB})\n"
+    push ${INS}, $S1
+    push ${INS}, ", ${PROTO}"
+    push ${INS}, $S2
+    push ${INS}, "\n  ${GLOB} = ${SUBR}.'getfenv'()\n"
+    push ${INS}, "  ${REG}"
+    push ${INS}, $S1
+    push ${INS}, ".'setfenv'(${GLOB})\n"
     $P0 = getattribute func, 'p'
     ${CLOSURE} = $P0[${B}]
     $P0 = getattribute ${CLOSURE}, 'nups'
