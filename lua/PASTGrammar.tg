@@ -446,11 +446,11 @@ transform Name (Lua::Grammar::functionname) :language('PIR') {
   L2:
     unless it goto L1
     if name == '' goto L3
-    name = concat '.'
+    name = concat name, '.'
   L3:
     $P0 = shift it
     $S0 = $P0.'ast'()
-    name = concat $S0
+    name = concat name, $S0
     goto L2
   L1:
     .return (name)

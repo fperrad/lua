@@ -369,8 +369,8 @@ or C<string.format> before write.
     $S0 = "file ("
     $S1 = self
     $S1 = substr $S1, 10, 8
-    concat $S0, $S1
-    concat $S0, ")"
+    $S0 = concat $S0, $S1
+    $S0 = concat $S0, ")"
   L2:
     set res, $S0
     .return (res)

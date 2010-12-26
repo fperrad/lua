@@ -79,7 +79,7 @@ empty string.
   L1:
     unless $I3 < last goto L2
     res = addfield(res, table, $I3)
-    concat res, $S2
+    res = concat res, $S2
     inc $I3
     goto L1
   L2:
@@ -108,7 +108,7 @@ empty string.
     lua_error("invalid value (", $S0, ") at index ",i," in table for 'concat'")
   L1:
     $S0 = value
-    concat b, $S0
+    b = concat b, $S0
     .return (b)
 .end
 

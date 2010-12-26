@@ -307,8 +307,8 @@ describing the error.
     .local string s
     .get_results (e)
     s = e
-    concat $S0, ': '
-    concat $S0, s
+    $S0 = concat $S0, ': '
+    $S0 = concat $S0, s
     new nil, 'LuaNil'
     new msg, 'LuaString'
     set msg, $S0
@@ -345,8 +345,8 @@ fails, it returns B<nil>, plus a string describing the error.
     .local string s
     .get_results (e)
     s = e
-    concat $S0, ': '
-    concat $S0, s
+    $S0 = concat $S0, ': '
+    $S0 = concat $S0, s
     new nil, 'LuaNil'
     new msg, 'LuaString'
     set msg, $S0

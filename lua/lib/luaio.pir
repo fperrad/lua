@@ -510,8 +510,8 @@ in the standard C function C<fopen>.
     .local pmc msg
     new msg, 'LuaString'
     $S0 = err
-    concat $S1, ': '
-    concat $S1, $S0
+    $S1 = concat $S1, ': '
+    $S1 = concat $S1, $S0
     set msg, $S1
     .return (res, msg)
 .end
@@ -585,8 +585,8 @@ This function is system dependent and is not available on all platforms.
     .local pmc msg
     new msg, 'LuaString'
     $S0 = err
-    concat $S1, ': '
-    concat $S1, $S0
+    $S1 = concat $S1, ': '
+    $S1 = concat $S1, $S0
     set msg, $S1
     .return (res, msg)
 .end
@@ -633,8 +633,8 @@ it is automatically removed when the program ends.
     .local pmc msg
     new msg, 'LuaString'
     $S0 = err
-    concat $S1, ': '
-    concat $S1, $S0
+    $S1 = concat $S1, ': '
+    $S1 = concat $S1, $S0
     set msg, $S1
     .return (res, msg)
 .end

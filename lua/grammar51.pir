@@ -364,7 +364,7 @@ no problem with them.)
     $S0 = chr $I0
 
   CONCAT:
-    concat literal, $S0
+    literal = concat literal, $S0
     inc pos
     goto LOOP
 .end
@@ -467,7 +467,7 @@ and C<'1'> is coded as 49), the five literals below denote the same string:
   L8:
 
   CONCAT:
-    concat literal, $S0
+    literal = concat literal, $S0
     inc pos
     goto LOOP
 
