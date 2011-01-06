@@ -158,7 +158,7 @@ by prefixing them with C<0x>. Examples of valid numerical constants are
 
 .sub 'number'
     .param pmc mob
-    .param pmc params :slurpy
+    .param pmc adverbs         :slurpy :named
 
     mob = read_numeral(mob)
     unless mob goto L1

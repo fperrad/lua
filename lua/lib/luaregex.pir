@@ -344,6 +344,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
 
 .sub 'parse_literal'
     .param pmc mob
+    .param pmc adverbs         :slurpy :named
     .local string target
     .local int pos, lastpos
     .local int litstart, litlen
@@ -392,6 +393,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
 
 .sub 'parse_quantifier'
     .param pmc mob
+    .param pmc adverbs         :slurpy :named
     .local string target
     .local int min, max, backtrack
     .local int pos, lastpos
@@ -421,6 +423,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
 
 .sub 'parse_enumclass'
     .param pmc mob
+    .param pmc adverbs         :slurpy :named
     .local string target
     .local int pos, lastpos
     .local int isrange
@@ -495,6 +498,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
 
 .sub 'parse_enumclass2'
     .param pmc mob
+    .param pmc adverbs         :slurpy :named
     .local string target
     .local int pos
     .local string charlist
@@ -519,6 +523,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
 
 .sub 'parse_balanced'
     .param pmc mob
+    .param pmc adverbs         :slurpy :named
     .local string target
     .local int pos, lastpos
     .local string xy
@@ -538,6 +543,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
 
 .sub 'parse_backref'
     .param pmc mob
+    .param pmc adverbs         :slurpy :named
     .local string target
     .local int pos
     .local string cname
@@ -558,6 +564,7 @@ Mostly taken from F<compilers/pge/PGE/P5Regex.pir>.
 
 .sub 'parse_anchor'
     .param pmc mob
+    .param pmc adverbs         :slurpy :named
     .local string target
     .local int pos, lastpos
     .local string key
