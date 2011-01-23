@@ -597,7 +597,9 @@ messages and in debug information.
     unless $S0 == "\033Lua" goto L2
     .tailcall undump(data, chunkname)
   L2:
-    .tailcall parser(data, chunkname)
+    $I0 = find_encoding 'ascii'
+    $S0 = trans_encoding data, $I0
+    .tailcall parser($S0, chunkname)
 .end
 
 .sub 'parser' :anon
@@ -714,6 +716,7 @@ This function only loads the chunk; it does not run it.
     f = new 'FileHandle'
     push_eh _handler
     f.'open'(filename, 'r')
+    f.'encoding'('binary')
     pop_eh
   L2:
     $S0 = f.'readall'()
