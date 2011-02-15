@@ -60,6 +60,7 @@ See L<http://shootout.alioth.debian.org>.
   L1:
     $P0 = new 'FileHandle'
     $P0.'open'(cmd, 'rp')
+    $P0.'encoding'('binary')
     $S0 = $P0.'readall'()
     $P0.'close'()
     .return ($S0)
@@ -69,6 +70,7 @@ See L<http://shootout.alioth.debian.org>.
     .param string filename
     $P0 = new 'FileHandle'
     push_eh _handler
+    $P0.'encoding'('binary')
     $S0 = $P0.'readall'(filename)
     pop_eh
     $P0 = split "\r\n", $S0 # hack from win32
