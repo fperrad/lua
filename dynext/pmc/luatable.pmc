@@ -118,7 +118,8 @@ static PMC** lua_getstr(PARROT_INTERP, const Parrot_LuaTable_attributes *t, STRI
     Node         *n = &t->node[h&(t->size-1)];
 
     do {
-        if (PMC_type(n->key) == dynpmc_LuaString
+        if (n->key
+         && PMC_type(n->key) == dynpmc_LuaString
          && 0 == Parrot_str_compare(interp, VTABLE_get_string(interp, n->key), key))
             return &n->val;
 
