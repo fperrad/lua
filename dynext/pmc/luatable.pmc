@@ -341,12 +341,10 @@ static void lua_mark_table(PARROT_INTERP, Parrot_LuaTable_attributes *t, STRING 
     }
 
     for (i = 0; i < t->size; i++) {
-        if (v[i].val) {
-            if (mark_key)
-                Parrot_gc_mark_PMC_alive(interp, v[i].key);
-            if (mark_val)
-                Parrot_gc_mark_PMC_alive(interp, v[i].val);
-        }
+        if (mark_val && v[i].val)
+            Parrot_gc_mark_PMC_alive(interp, v[i].val);
+        if (mark_key && v[i].key)
+            Parrot_gc_mark_PMC_alive(interp, v[i].key);
     }
 }
 
