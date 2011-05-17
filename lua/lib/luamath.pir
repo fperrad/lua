@@ -408,24 +408,16 @@ LIST
     .local pmc res
     .local int u
     .local int l
-    load_bytecode 'Math/Rand.pbc'
-    $P0 = get_root_global ['parrot'; 'Math'; 'Rand'], 'rand'
-    $I0 = $P0()
-    $P0 = get_root_global ['parrot'; 'Math'; 'Rand'], 'RAND_MAX'
-    $I1 = $P0()
-    inc $I1
-    $N0 = $I0 / $I1
     new res, 'LuaNumber'
     unless null arg1 goto L1
+    $N0 = rand
     set res, $N0
     goto L2
   L1:
     unless null arg2 goto L3
     u = lua_checknumber(1, arg1)
     unless 1 <= u goto L4
-    mul $N0, u
-    $I0 = floor $N0
-    inc $I0
+    $I0 = rand u
     set res, $I0
     goto L2
   L3:
@@ -433,11 +425,7 @@ LIST
     l = lua_checknumber(1, arg1)
     u = lua_checknumber(2, arg2)
     unless l <= u goto L4
-    $I0 = u - l
-    inc $I0
-    mul $N0, $I0
-    $I0 = floor $N0
-    add $I0, l
+    $I0 = rand l, u
     set res, $I0
     goto L2
   L4:
@@ -453,9 +441,7 @@ LIST
     .param pmc seed :optional
     .param pmc extra :slurpy
     $I1 = lua_checknumber(1, seed)
-    load_bytecode 'Math/Rand.pbc'
-    $P0 = get_root_global ['parrot'; 'Math'; 'Rand'], 'srand'
-    $P0($I1)
+    srand $I1
 .end
 
 
