@@ -417,7 +417,7 @@ LIST
     unless null arg2 goto L3
     u = lua_checknumber(1, arg1)
     unless 1 <= u goto L4
-    $I0 = rand u
+    $I0 = rand 1, u
     set res, $I0
     goto L2
   L3:
