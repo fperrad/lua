@@ -1,4 +1,4 @@
-# Copyright (C) 2005-2009, Parrot Foundation.
+# Copyright (C) 2005-2011, Parrot Foundation.
 # $Id$
 
 =head1 Lua Basic Library
@@ -434,12 +434,17 @@ To load and run a given string, use the idiom
 
 =cut
 
+.include 'cclass.pasm'
+
 .sub 'loadstring'
     .param pmc s :optional
     .param pmc chunkname :optional
     .param pmc extra :slurpy
     $S1 = lua_checkstring(1, s)
     $S2 = lua_optstring(2, chunkname, $S1)
+    $I0 = length $S2
+    $I0 = find_cclass .CCLASS_NEWLINE, $S2, 0, $I0
+    $S2 = substr $S2, 0, $I0
     ($P0, $S0) = lua_loadbuffer($S1, $S2)
     .tailcall load_aux($P0, $S0)
 .end
