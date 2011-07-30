@@ -1,4 +1,4 @@
-# Copyright (C) 2006-2009, Parrot Foundation.
+# Copyright (C) 2006-2011, Parrot Foundation.
 # $Id$
 
 =head1 PGE Parse to PAST
@@ -421,8 +421,10 @@ transform past (Lua::Grammar::function_stat) :language('PIR') {
     $P0 = node['functionname']
     var = tree.'get'('past', $P0, 'Lua::Grammar::functionname')
     $S0 = $P0.'ast'()
-    $I0 = index $S0, ':'
-    if $I0 < 0 goto L1
+    .local int is_method
+    is_method = index $S0, ':'
+    if is_method < 0 goto L1
+    symbtab.'push_scope'()
     $P1 = get_hll_global ['PAST'], 'Var'
     $S1 = symbtab.'insert'('self')
     past = $P1.'new'('node'=>$P0, 'name'=>$S1, 'scope'=>'parameter')
@@ -432,6 +434,9 @@ transform past (Lua::Grammar::function_stat) :language('PIR') {
     $P0 = node['function_body']
     past = tree.'get'('past', $P0, 'Lua::Grammar::function_body')
     past.'name'($S0)
+    if is_method < 0 goto L2
+    symbtab.'pop_scope'()
+  L2:
     $P0 = get_hll_global ['PAST'], 'Op'
     .tailcall $P0.'new'(var, past, 'node'=>node, 'pasttype'=>'assign')
 }
