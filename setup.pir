@@ -130,6 +130,11 @@ SOURCES
     $P7['parrot-luap'] = 'luap.pbc'
     $P0['installable_pbc'] = $P7
 
+    $P8 = new 'Hash'
+    $P8['man/man1/parrot-lua.1'] = 'lua.pir'
+    $P8['man/man1/parrot-luap.1'] = 'luap.pir'
+    $P0['man_pod'] = $P8
+
     # post build
     $P9 = new 'Hash'
     $P9['lua/library/Test/More.pbc'] = 'lua/library/Test/More.pir'
