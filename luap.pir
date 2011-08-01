@@ -1,9 +1,9 @@
-# Copyright (C) 2007-2009, Parrot Foundation.
-# $Id$
 
-=head1 A compiler for Lua 5.1
+=head1 NAME
 
-=head2 Synopsis
+parrot-luap - a compiler for Lua 5.1
+
+=head1 SYNOPSIS
 
   $ parrot-luap script.lua
   $ parrot-luap --target=parse script.lua
@@ -11,9 +11,9 @@
                          POST
                          PIR
 
-=head2 Description
+=head1 DESCRIPTION
 
-C<luap> is a compiler for Lua 5.1 on Parrot
+parrot-luap is a compiler for Lua 5.1 on Parrot
 with the standard interface of PCT::HLLCompiler.
 
 =cut
@@ -27,6 +27,18 @@ with the standard interface of PCT::HLLCompiler.
     $P0.'command_line'(args)
 .end
 
+=head1 AUTHOR
+
+Francois Perrad
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2007-2011, Parrot Foundation.
+
+This program is free software; you may redistribute it and/or modify
+it under the same terms as Parrot itself.
+
+=cut
 
 # Local Variables:
 #   mode: pir
