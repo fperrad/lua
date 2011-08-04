@@ -597,7 +597,7 @@ messages and in debug information.
     unless $S0 == "\033Lua" goto L2
     .tailcall undump(data, chunkname)
   L2:
-    $I0 = find_encoding 'ascii'
+    $I0 = find_encoding 'utf8'
     $S0 = trans_encoding data, $I0
     .tailcall parser($S0, chunkname)
 .end

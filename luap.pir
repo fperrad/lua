@@ -24,7 +24,7 @@ with the standard interface of PCT::HLLCompiler.
     $P0 = compreg 'lua'
     $S0 = "Compiler Lua 5.1 on Parrot  Copyright (C) 2005-2009, Parrot Foundation.\n"
     $P0.'commandline_banner'($S0)
-    $P0.'command_line'(args)
+    $P0.'command_line'(args, 'encoding'=>'utf8')
 .end
 
 =head1 AUTHOR
