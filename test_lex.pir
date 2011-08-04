@@ -1,4 +1,4 @@
-# Copyright (C) 2006-2009, Parrot Foundation.
+# Copyright (C) 2006-2011, Parrot Foundation.
 # $Id$
 
 =head1 A dumper for Lua 5.1 lexicography
@@ -73,7 +73,7 @@ and imports many definitions from the full Lua compiler
 .sub 'main' :anon :main
     .param pmc args
     $P0 = compreg 'LuaTestLex'
-    $P0.'command_line'(args)
+    $P0.'command_line'(args, 'encoding'=>'utf8')
 .end
 
 .include 'lua/dumplex_gen.pir'
