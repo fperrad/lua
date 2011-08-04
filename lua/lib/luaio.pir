@@ -1,4 +1,4 @@
-# Copyright (C) 2005-2009, Parrot Foundation.
+# Copyright (C) 2005-2011, Parrot Foundation.
 # $Id$
 
 =head1 Lua Input/Output Library
@@ -294,7 +294,7 @@ LIST
 
 .sub 'aux_lines' :lex
     .param pmc file
-    .param pmc toclose
+    .param int toclose
     .local pmc res
     .lex 'upvar_file', file
     .lex 'upvar_toclose', toclose
@@ -312,7 +312,7 @@ LIST
     res = read_line(f)
     $I0 = isa res, 'LuaNil'
     unless $I0 goto L1
-    .local pmc toclose
+    .local int toclose
     toclose = find_lex 'upvar_toclose'
     $I0 = toclose
     unless $I0 goto L1
