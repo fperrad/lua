@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2006-2010, Parrot Foundation.
+Copyright (C) 2006-2011, Parrot Foundation.
 $Id$
 
 =head1 Lua abstract base class
@@ -115,19 +115,6 @@ Throws an exception.
         Parrot_ex_throw_from_c_args(INTERP, NULL, EXCEPTION_ILL_INHERIT,
                 "attempt to perform arithmetic on a %Ss value", SELF.name());
         return 0.0;
-    }
-
-/*
-
-=item C<void *get_pointer()>
-
-Returns the address of the PMC.
-
-=cut
-
-*/
-    VTABLE void* get_pointer() {
-        return SELF;
     }
 
 /*
