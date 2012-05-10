@@ -381,7 +381,7 @@ Loads Lua 5.1 VM bytecode.
         _load_header(INTERP, script);
         VTABLE_set_attr_str(INTERP, script,
           Parrot_str_new_constant(INTERP, "top"), _load_function(INTERP));
-        Parrot_free_cstring(bytecode);
+        Parrot_str_free_cstring(bytecode);
 
         RETURN(PMC *script);
     }
